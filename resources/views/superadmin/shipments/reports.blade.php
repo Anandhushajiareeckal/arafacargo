@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                       <div class="card-box">
-                        <div class=" ">   
+                        <div class=" ">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                         </div>
-                            
+
                         </div>
                             <table id="datatable1"
                                    class="table table-striped table-bordered nowrap"
@@ -99,28 +99,28 @@
                                         <th>Branch Name</th>
                                         <th>Shipment Number</th>
                                         <th>Port of Origin</th>
-                                        <th>Shipment Type</th> 
-                                        <th>AWB No:</th>                                    
-                                        <th>Date</th>                                    
-                                        <th>Clearing Agent</th>                                    
-                                        <th>Created By</th>                                    
-                                        <th>Booking No:</th>                                    
-                                        <th>Box No:</th>                                    
-                                        <th>Enquiry collected</th>                                    
-                                        <th>Shipment Received</th>                                    
-                                        <th>Shipment Booked</th>                                    
-                                        <th>Shipment Forwarded</th>                                    
-                                        <th>Shipment Arrived</th>                                    
-                                        <th>Waiting for Clearance</th>                                    
-                                        <th>Shipment Hold</th>                                    
-                                        <th>Shipment Cleared</th>                                    
-                                        <th>Delivery Arranged</th>                                    
-                                        <th>Out for Delivery</th>                                    
-                                        <th>Delivered</th>                                    
-                                        <th>Not Delivered</th>                                    
-                                        <th>Pending</th>                                    
-                                        <th>More Tracking</th>                                    
-                                        <th>Transfer</th>                                    
+                                        <th>Shipment Type</th>
+                                        <th>AWB No:</th>
+                                        <th>Date</th>
+                                        <th>Clearing Agent</th>
+                                        <th>Created By</th>
+                                        <th>Booking No:</th>
+                                        <th>Box No:</th>
+                                        <th>Enquiry collected</th>
+                                        <th>Shipment Received</th>
+                                        <th>Shipment Booked</th>
+                                        <th>Shipment Forwarded</th>
+                                        <th>Shipment Arrived</th>
+                                        <th>Waiting for Clearance</th>
+                                        <th>Shipment Hold</th>
+                                        <th>Shipment Cleared</th>
+                                        <th>Delivery Arranged</th>
+                                        <th>Out for Delivery</th>
+                                        <th>Delivered</th>
+                                        <th>Not Delivered</th>
+                                        <th>Pending</th>
+                                        <th>More Tracking</th>
+                                        <th>Transfer</th>
                                     </tr>
                                 </thead>
                                 <tbody class="fetchDataMain">
@@ -155,7 +155,7 @@
                                     </tr>
                                     @endforeach
                                 </tbody>
-                            </table> 
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -182,7 +182,7 @@
         <div class="modal-body">
             <form action="" method="post">
                 @csrf
-                <div class="col-md-12"> 
+                <div class="col-md-12">
                     <div class="row">
                         <table id="shipsTable" class="table table-striped table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
@@ -192,13 +192,13 @@
                                 <th>Date</th>
                             </tr>
                             </thead>
-                            <tbody class="fetchData">  
-                                
+                            <tbody class="fetchData">
+
                             </tbody>
-                        </table>                              
+                        </table>
                     </div>
-                </div> 
-            </form>     
+                </div>
+            </form>
         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -232,7 +232,7 @@
                 processing: true,
                 serverSide: false,
                 searching: true,
-                
+
                 "aaSorting": [ [2,'desc'] ],
                 scrollX: true,
                 dom: 'Bfrtip',
@@ -287,7 +287,7 @@
                 var url = "{{route('super-admin.shipment.report.reportData')}}/"+fromDate+"/"+toDate;
                 viewData(url);
             }
-            
+
         });
 
         function viewData(url){
@@ -303,7 +303,7 @@
                         html += '<tr>'+
                         '<td colspan="26">No matching records found</td>'+
                         '</tr>';
-                    } else 
+                    } else
                     $.each(response, function (key, value) {
                         html += '<tr>'+
                                     '<td>'+value.view+'</td>'+
@@ -333,11 +333,11 @@
                                     '<td>'+value.moreTrackingDate+'</td>'+
                                     '<td>'+value.transferDate+'</td>'+
                                 '</tr>';
-                        
+
                     });
                     $('.fetchDataMain').html(html);
-                    
-                } 
+
+                }
             });
         }
         $(document).on('click',".detailedView", function() {
@@ -356,7 +356,7 @@
                     cache: false,
                     contentType: false,
                     processData: false,
-                    success: function (result) {  
+                    success: function (result) {
                         var html = [];
                         $('.fetchData').html('');
                         $("#detailedModal").modal('show');
@@ -386,7 +386,7 @@
                                             html += '</tr>';
                                 }
                             } else {
-                                
+
                                 html += '<tr>';
                                 if(value.box_name != null) {
                                     html +=  '<td>'+value.box_name+'</td>';
@@ -407,6 +407,6 @@
             }
         });
 
-    }); 
+    });
 </script>
 @endsection

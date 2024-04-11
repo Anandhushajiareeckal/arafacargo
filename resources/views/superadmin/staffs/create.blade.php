@@ -60,7 +60,7 @@
                                                 <option value>Selct Status</option>
                                                 <option value="active"  >Active</option>
                                                     <option value="inactive" >Inactive</option>
-                                                    <option value="cancel" >Cancel</option> 
+                                                    <option value="cancel" >Cancel</option>
                                             </select>
                                         </div>
 
@@ -70,9 +70,9 @@
                                                    placeholder="Enter Visa Expiry Date">
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group" style="display: none">
                                             <label for="propertyname">Finger capture</label><br>
-                                            <input type="submit" id="btnCapture" value="Capture" class=" capturebuttonpadding btn btn-primary btn-sm submit_buttom_padding" onclick="return Capture()" />                                           
+                                            <input type="submit" id="btnCapture" value="Capture" class=" capturebuttonpadding btn btn-primary btn-sm submit_buttom_padding" onclick="return Capture()" />
 
                                             <img id="imgFinger" width="145px" height="188px" Falt="Finger Image" class="padd_top" />
 
@@ -80,27 +80,30 @@
 
 
                                         <div class="form-group">
-                                            <label for="propertyname">Document Type</label> 
-                                            <select class="form-control" name="document_type_id" required> 
-                                                <option value="0">Select</option> 
+                                            <label for="propertyname">Document Type</label>
+                                            <select class="form-control" name="document_type_id" required>
+                                                <option value="0">Select</option>
                                                     @foreach($documentTypes as $documentType)
-                                                        <option value="{{$documentType->id}}">{{$documentType->name}}</option> 
+                                                        <option value="{{$documentType->id}}">{{$documentType->name}}</option>
                                                     @endforeach
                                             </select>
-                                        </div> 
+                                        </div>
                                         <div class="form-group">
                                         <label for="">Upload Document</label>
                                         <input type="file" class="form-control" name="document_path" id="document_path" placeholder="document">
-                                        </div> 
-
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="propertyname">Dcoument ID</label>
+                                            <input type="text" class="form-control" name="document_number" required>
+                                        </div>
 
                                     </div>
                                     <!-- end col -->
-                                    <div class="col-lg-6">                                           
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                         <label for="">Upload Photo</label>
                                         <input type="file" class="form-control" name="profile_photo" id="profile_photo" placeholder="document">
-                                        </div> 
+                                        </div>
 
 
                                          <div class="form-group">
@@ -134,50 +137,47 @@
                                                     <option value=" {{$role->name}}">{{$role->name}}</option>
                                                 @endforeach
                                             </select>
-                                        </div> 
+                                        </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group" style="display: none">
                                             <label for="propertyname">FingerPrint Mandatory</label>
-                                            <select class="form-control" name="fingerprint_mandatory" required> 
-                                                    <option value="yes">yes</option> 
-                                                    <option value="no">No</option> 
+                                            <select class="form-control" name="fingerprint_mandatory" required>
+                                                    <option value="yes">yes</option>
+                                                    <option value="no" selected >No</option>
                                             </select>
-                                        </div> 
+                                        </div>
 
                                         <div class="form-group">
                                             <label for="propertyname">Date of Appointment</label>
                                             <input type="date" class="form-control" name="appointment_date" required>
-                                        </div> 
+                                        </div>
 
 
                                         <div class="form-group">
                                             <label for="propertyname">Type of Visa</label>
-                                            <select class="form-control" name="visa_type" required> 
-                                                <option value="0">Select</option> 
+                                            <select class="form-control" name="visa_type" required>
+                                                <option value="0">Select</option>
                                                     @foreach($visaTypes as $visaType)
-                                                        <option value="{{$visaType->id}}">{{$visaType->name}}</option> 
+                                                        <option value="{{$visaType->id}}">{{$visaType->name}}</option>
                                                     @endforeach
                                             </select>
-                                        </div> 
+                                        </div>
 
                                         <div class="form-group">
                                             <label for="propertyname">Visa Status</label>
-                                            <select class="form-control" name="visa_status" required> 
-                                                    <option value="1">Active</option> 
-                                                    <option value="0">Inactive</option> 
+                                            <select class="form-control" name="visa_status" required>
+                                                    <option value="1">Active</option>
+                                                    <option value="0">Inactive</option>
                                             </select>
-                                        </div> 
-
-                                        <div class="form-group">
-                                            <label for="propertyname">Daily Wage</label>
-                                            <input type="text" class="form-control" name="daily_wage" required>
-                                        </div> 
-
-
-                                        <div class="form-group">
-                                            <label for="propertyname">Dcoument ID</label>
-                                            <input type="text" class="form-control" name="document_number" required>
                                         </div>
+
+                                        <div class="form-group" style="display: none;">
+                                            <label for="propertyname">Daily Wage</label>
+                                            <input type="text" class="form-control" name="daily_wage" value="0" >
+                                        </div>
+
+
+
 
 
                                         <div class="panel" style="display:none;">
@@ -195,7 +195,7 @@
                                                         <input type="text" value="" id="txtImageInfo" class="form-control" />
                                                     </td>
                                                 </tr>
-                                                
+
                                                 <tr class="hide">
                                                     <td>
                                                         Base64Encoded ISO Template
@@ -277,7 +277,7 @@
                                                         <input type="text" value="" id="txtPidTs" class="form-control" />
                                                     </td>
                                                 </tr>
-                                            </table>                   
+                                            </table>
                                         </div>
           <!-- <button type="submit" class="btn btn-primary btn-lg submit_buttom_padding" value="submit" onclick=" return validateform()" name="submit" id="sub">Submit</button>
                </form> -->
@@ -285,7 +285,7 @@
                                 </div>
 
 
-                                       
+
                                     </div>
 
 

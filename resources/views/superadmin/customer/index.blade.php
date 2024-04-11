@@ -52,6 +52,7 @@
                                         <td>{{$customer->user->email}}</td>
                                         <td>{{$customer->phone}}</td>
                                         <td>{{$customer->type}}</td>
+                                        @if (isset($customer))
                                         <form method="post" action="{{delete_url($customer->id)}}">
                                             <td>
                                                 <a href="{{edit_url($customer->id)}}"
@@ -59,12 +60,13 @@
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </a>
                                                 @method('DELETE')
-                                                @csrf  
+                                                @csrf
                                                 <button type="submit" class="btn btn-danger delete-user del">
                                                     <i class="fas fa-trash-alt"></i>
-                                                </button>  
+                                                </button>
                                             </td>
                                         </form>
+                                        @endif
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -77,13 +79,13 @@
             <!-- end container-fluid -->
 
         </div>
-        <!-- end content --> 
- 
+        <!-- end content -->
+
 
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
-    
+
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -91,24 +93,26 @@
           <h4 class="modal-title"></h4>
         </div>
         <div class="modal-body">
-        <form action="{{url('super-admin/customer/'.$customer->id)}}" method="post">
-                    <div class="modal-body">
-                        @csrf
-                        @method('DELETE')
-                        <h5 class="text-center">Are you sure you want to delete  {{$customer->name}}?</h5>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                    </div>
-                </form>     
-               
+        @if (isset($customer))
+            <form action="{{url('super-admin/customer/'.$customer->id)}}" method="post">
+                <div class="modal-body">
+                    @csrf
+                    @method('DELETE')
+                    <h5 class="text-center">Are you sure you want to delete  {{$customer->name}}?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </div>
+            </form>
+        @endif
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
-      
+
     </div>
   </div>
 
@@ -126,6 +130,6 @@
            if (!confirm("Do you want to delete")){
             return false;
         }
-        }); 
+        });
 </script>
 @endsection

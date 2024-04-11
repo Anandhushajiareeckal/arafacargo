@@ -44,7 +44,7 @@ class BranchesController extends BaseController
      */
     public function store(Request $request)
     {
-        
+
             // $validator = Validator::make($request->all(), [
             //     'password' => 'required',
             //     'email'    => 'required|unique:users,email'
@@ -53,29 +53,29 @@ class BranchesController extends BaseController
             //     'title.unique' => 'Title unique custom message',
             //     // ...
             // ]);
-            
+
             // if ($validator->fails()) {
             //     return redirect()->back()
             //                 ->withErrors($validator)
             //                 ->withInput();
             // }
 
-            
+
     try {
         \DB::beginTransaction();
 
         $branch = new Branches();
         $branch->name = $request->name;
         $branch->location = $request->location;
-        $branch->branch_code = $request->branch_code;        
+        $branch->branch_code = $request->branch_code;
         $branch->save();
 
-        
-       
+
+
         // $user = new User();
         // $user->name = $branch->name . " Admin";
         // $user->email = $request->email;
-        // $user->password = bcrypt($request->password);       
+        // $user->password = bcrypt($request->password);
         // $user->save();
         // $user->assignRole("admin");
 
@@ -84,8 +84,8 @@ class BranchesController extends BaseController
         // $staff->branch_id = $branch->id;
         // $staff->user_id = $user->id;
         // $staff->full_name = $user->name;
-        // $staff->role = "admin";  
-        // $staff->save(); 
+        // $staff->role = "admin";
+        // $staff->save();
 
         \DB::commit();
     } catch (\Exception $e) {
@@ -97,7 +97,7 @@ class BranchesController extends BaseController
     }
 
         toastr()->success(section_title() . ' Created Successfully');
-        
+
         return redirect()->to(index_url());
 
 
@@ -142,7 +142,7 @@ class BranchesController extends BaseController
         $branch = Branches::findOrFail($id);
         $branch->name = $request->name;
         $branch->location = $request->location;
-        $branch->branch_code = $request->branch_code;        
+        $branch->branch_code = $request->branch_code;
         $branch->save();
         if ($request->admin_id!=null&&$request->admin_id!="") {
             $user = User::findOrFail($request->admin_id);
@@ -193,9 +193,9 @@ class BranchesController extends BaseController
      */
     public function destroy($id)
     {
-      
+
         $staff = Staffs::where('branch_id', $id)->get();
-     
+
         if( count($staff) >  0 ){
             toastr()->error(section_title() . '---  Delete all the Staff in the branch');
             return redirect()->to(index_url());
@@ -206,6 +206,6 @@ class BranchesController extends BaseController
             toastr()->success(section_title() . ' Deleted Successfully');
             return redirect()->to(index_url());
         }
-     
+
     }
 }

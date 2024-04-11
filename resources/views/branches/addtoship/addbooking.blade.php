@@ -39,26 +39,26 @@
                     $tot_sel_temp =0;
                     $totalPieces =0;
 
-                    foreach( $ship_bookingsList as $booking) { 
+                    foreach( $ship_bookingsList as $booking) {
 
                         $tot_temp= $booking->weight;
                         $tot_weight +=$tot_temp;
                         $tot_value += $booking->shipment->grand_total;
-                        $totalPieces += 1; 
-                        // $totalPieces += $booking->shipment->number_of_pcs; 
+                        $totalPieces += 1;
+                        // $totalPieces += $booking->shipment->number_of_pcs;
                         $List = '';
                         $ListValue = '';
                         $boxList = [];
                         $boxListValue = [];
-                        
+
                         $status = '';
                         $lastStatus = '';
                         if(!empty($booking->shipment->bookingNumberStatus)) {
                             $status = collect($booking->shipment->bookingNumberStatus)->last();
-                            
+
                             // $lastStatus = (!empty($status)) ? $status->status->name : $booking->ship->shipmentStatus->name ;
                         }
-                        
+
                     }
                         ?>
                 <!-- <div class="row">
@@ -67,7 +67,7 @@
                             <form action="{{route('branch.ships.createbookingtoship')}}" method="post" enctype="multipart/form-data">
 
                                 @csrf
-                                <div class="col-md-12"> 
+                                <div class="col-md-12">
 
                                     <div class="row">
                                         <div class="col-md-6">
@@ -75,44 +75,44 @@
                                                 <label>Booking No</label>
                                                 <select name="booking_ids[]" id="booking_ids" class="select2 form-control"  multiple>
                                                     @foreach($bookings as $booking)
-                                                    <option value="{{$booking->id}}">{{$booking->booking_number}}</option> 
-                                                    @endforeach 
-                                                </select>  
+                                                    <option value="{{$booking->id}}">{{$booking->booking_number}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">                                     
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Shipment ID</label>
                                                 <input type="text" class="form-control" name="shipment_id" value="{{$ships->shipment_id}}" />
                                             </div>
 
-                                         
-                                        </div> 
-                                    </div> 
-                                </div> 
+
+                                        </div>
+                                    </div>
+                                </div>
 
 
-                                <div class="col-md-12"> 
+                                <div class="col-md-12">
 
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>AWB id</label>
                                                 <input type="text" class="form-control" name="awd_id" value="{{$ships->awd_id}}" />
-                                                
+
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
-                                            <div class="form-group"> 
+                                            <div class="form-group">
                                             <label>Date</label>
                                                     <input type="date" value="{{ isset($ships->created_date) ? date('Y-m-d', strtotime($ships->created_date)) : ''}}" max=""
                                                         class="form-control" id="propertyname" name="created_date"
                                                         placeholder="Enter title">
                                             </div>
                                         </div>
-                                        
-                                        <div class="col-md-4">                                     
+
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                     <label>Shipment Status</label>
                                                     <select name="status_id" class="form-control" id="">
@@ -127,18 +127,18 @@
                                                 </div>
                                         </div>
 
-                                        
+
 
                                         <div class="col-md-4">
-                                            <div class="form-group"> 
+                                            <div class="form-group">
                                             <label>Estimated Delivery</label>
                                                     <input type="date" value="{{ isset($ships->estimated_delivery) ? date('Y-m-d', strtotime($ships->estimated_delivery)) : ''}}" max=""
                                                         class="form-control" id="propertyname" name="estimated_delivery"
                                                         placeholder="Enter title">
                                             </div>
                                         </div>
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
 
                                 <div class="text-center">
                                     <input type="hidden" id="ship_id" name="ship_id" value="{{$ships->id}}" />
@@ -161,12 +161,12 @@
                         <div class="card-box">
                             <form action="{{route('branch.ships.updatebookingtoship')}}" method="post" enctype="multipart/form-data">
 
-                                @csrf 
+                                @csrf
 
-                                <div class="col-md-12"> 
+                                <div class="col-md-12">
 
                                     <div class="row">
-                                        <div class="col-md-4">                                             
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Change Shipment Status</label>
                                                 <select name="status_id" class="form-control" id="">
@@ -179,12 +179,12 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                        </div>                                        
+                                        </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <div class="form-group"> 
+                                            <div class="form-group">
                                             <label>Date</label>
                                                     <input type="date" value="{{ isset($ships->created_date) ? date('Y-m-d', strtotime($ships->created_date)) : ''}}" max=""
                                                         class="form-control" id="propertyname" name="created_date"
@@ -194,38 +194,38 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <div class="form-group"> 
+                                            <div class="form-group">
                                             <label>Tracking Url</label>
                                                     <input type="text" value="" max=""
                                                         class="form-control" id="tracking_url" name="tracking_url"
                                                         placeholder="Enter tracking url">
                                             </div>
                                         </div>
-                                    </div>  
-                                    
+                                    </div>
+
                                     <div class="row">
                                         <div class="col-md-4">
-                                        <div class="form-group"> 
+                                        <div class="form-group">
                                                 <input type="hidden" id="ship_id" name="ship_id" value="{{$ships->id}}" />
                                                 <button type="submit" class="btn btn-success waves-effect waves-light">Update
                                                 </button>
                                                 </div>
-                                            
+
                                         </div>
                                     </div>
 
-                                    </div> 
-                                    
-                                </div> 
+                                    </div>
 
-                               
+                                </div>
+
+
 
                             </form>
 
                         </div>
 
 
-                        
+
                     </div>
                 </div> -->
 
@@ -234,7 +234,7 @@
                 <div class="row clearfix">
                     <div class="col-md-12">
                         <div class="card">
-                            
+
                             <div class="body">
                                 <div class="header">
                                     <!-- <h4>Assigned Shipments</h4> -->
@@ -248,39 +248,42 @@
                                             <h5>&nbsp;</h5>
                                             <h5>FROM: <span class="fontRed">{{$ships->portOfOrigins->name}}</span> To: <span class="fontRed">{{$ships->portOfDestinations->name}}</span></h5>
                                         </div>
-                                </div> 
-                                <div class="col-md-12 text-right ">  
-                                
-                                    <div class="row floatRight" >
-                                        <button type="submit" class="btn btn-success waves-effect waves-light changeStatus"  id="changeStatus">Change Status</button> 
+                                </div>
+                                <div class="col-md-12 text-right ">
 
-                                        <form action="{{route('branch.shipment.printall')}}" method="post" class="m-l-10" target="_blank" > 
-                                            @csrf 
-                                            <?php  foreach( $ship_bookingsList as $booking) {   
-                                                echo '<input type="hidden" name="booking_ids[]" value="'. $booking->shipment->id. '">'; 
+                                    <div class="row floatRight" >
+                                        <a  href="{{route('branch.ships.deliverylistptint', array('ship_id' => $ships->id))}}" class="btn btn-success mr-3 mb-1"> Delivary List</a>
+                                        <a  href="{{route('branch.ships.packinglistptint', array('ship_id' => $ships->id))}}" class="btn btn-success mr-3 mb-1"> Packing List </a>
+                                        <a  href="{{route('branch.ships.customermanifestptint', array('ship_id' => $ships->id))}}" class="btn btn-success mr-3 mb-1"> Customer Manifest</a>
+                                        <button type="submit" class="btn btn-success waves-effect waves-light changeStatus mb-1"  id="changeStatus">Change Status</button>
+
+                                        <form action="{{route('branch.shipment.printall')}}" method="post" class="m-l-10" target="_blank" >
+                                            @csrf
+                                            <?php  foreach( $ship_bookingsList as $booking) {
+                                                echo '<input type="hidden" name="booking_ids[]" value="'. $booking->shipment->id. '">';
                                             }
                                             ?>
                                                 <button type="submit" class="btn btn-success waves-effect waves-light"><i class="fas fa-print"> Print all</i>
                                             </button>
-                                        
-                                        </form> 
+
+                                        </form>
 
                                         <form action="{{route('branch.shipment.loadingExport')}}" class="m-l-10" method="post" target="_blank">
-                                            @csrf 
+                                            @csrf
                                             <input type="hidden" value="" class="hidShipIds" name="shipmentId" />
                                             <input type="hidden" value="" class="hidBoxIds" name="boxId" />
                                             <input type="hidden" value="{{$shipId}}" class="selectedShipIds" name="shipIds" />
 
                                             <button type="submit" class="btn btn-success waves-effect waves-light loadingExport"><i class="fas fa-print"> Export Loading List</i>
-                                            </button> 
+                                            </button>
                                         </form>
-                                                                        
+
                                     </div>
                                 </div>
                                 <div class="table-responsive">
                                     <table id="shipsTable" class="table table-striped table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
-                                        <tr>
+                                        <tr >
                                             <th><input type="checkbox" id="allcb" name="shipBookId[]" class="shipmentIds checkbox-item selectAll" value="{{(!empty($booking->shipment->id))}}" shipId="{{(!empty($booking->ship->id))}}"></th>
                                             <th>Booking No</th>
                                             <th>Shipment name</th>
@@ -301,17 +304,17 @@
                                         $totalPieces =0;
                                         $boxList = [];
 
-                                        foreach( $ship_bookingsList as $booking) { 
- 
+                                        foreach( $ship_bookingsList as $booking) {
+
                                             $tot_temp_exist= $booking->weight;
                                             $tot_weight_exist +=$tot_temp_exist;
                                             $tot_value_exist += $booking->total_value + $booking->box_packing_charge;
-                                            $totalPieces += 1; 
+                                            $totalPieces += 1;
                                             $List = '';
                                             $ListValue = '';
                                             $boxList = [];
                                             $boxListValue = [];
-                                            
+
                                             $status = '';
                                             $lastStatus = '';
                                             if(($booking->boxStatuses != null)) {
@@ -332,11 +335,11 @@
                                                     $newClass = "k-checkbox";
                                                 }
                                             }
-                                                                                 
-                                            ?>                                            
+
+                                            ?>
                                             <tr style="{{ $style }}">
-                                                <td style="text-align:center" ><input {{$disabled}} type="checkbox" name="shipBookId[]" class="shipmentIds {{$newClass}}" value="{{$booking->shipment->id}}" shipId="{{$booking->shipment_id}}" boxId="{{$booking->id}}"></td>  
-                                                <td style="text-align:center" class="detailedBoxView" value="{{$booking->id}}" dateVal="{{date('Y-m-d')}}">{{ $booking->shipment->booking_number}}</td>  
+                                                <td style="text-align:center" ><input {{$disabled}} type="checkbox" name="shipBookId[]" class="shipmentIds {{$newClass}}" value="{{$booking->shipment->id}}" shipId="{{$booking->shipment_id}}" boxId="{{$booking->id}}"></td>
+                                                <td style="text-align:center" class="detailedBoxView" value="{{$booking->id}}" dateVal="{{date('Y-m-d')}}">{{ $booking->shipment->booking_number}}</td>
                                                 <td style="text-align:center">{{$ships->shipment_id}}</td>
                                                 <td style="text-align:center">1</td>
                                                 <td style="text-align:center" class="boxName" boxId="{{$booking->id}}" ids="{{$ListValue}}">{{ $booking->box_name }}</td>
@@ -344,32 +347,32 @@
                                                 <td style="text-align:center">{{ number_format($booking->total_value + $booking->box_packing_charge,2)}}</td>
                                                 <td style="text-align:center">{{$lastStatus}}</td>
                                                 <td style="text-align:center">{{ !empty($booking->created_at) ? date('d-m-Y', strtotime($booking->created_at)) : '' }}</td>
-                                                <td>            
+                                                <td>
                                                     <a href="#" title="View"
                                                     class="btn btn-icon waves-effect waves-light btn-success icons">
                                                         <i class="fas fa-eye"></i>
-                                                    </a>    
+                                                    </a>
                                                     <a href="/branch/shipment/print/{{$booking->shipment->id}}" title="Print" target="_blank"
                                                     class="btn btn-icon waves-effect waves-light btn-success icons">
                                                         <i class="fas fa-print"></i>
-                                                    </a> 
+                                                    </a>
                                                         <a href="{{route('branch.ships.undoaddbooking',$booking->id)}}" title="Remove"
                                                         class="btn btn-icon waves-effect waves-light btn-dark icons">
                                                             <i class="fas fa-undo"></i>
                                                         </a>
                                                 </td>
-                                            </tr>  
-                                        <?php     
+                                            </tr>
+                                        <?php
                                         }
                                         ?>
                                             <tr>
                                                 <td  colspan="3"> </td><td style="text-align:center">{{ $totalPieces}}</td>
                                                 <td  colspan="1"> </td><td style="text-align:center">{{ number_format($tot_weight_exist,2)}}</td>
-                                                <td style="text-align:center" >{{ number_format($tot_value_exist,2) }}</td> 
+                                                <td style="text-align:center" >{{ number_format($tot_value_exist,2) }}</td>
                                                 <td colspan="3"  ></td>
-                                            </tr>   
-                                                    
-                                        
+                                            </tr>
+
+
 
                                             <!-- <tr id="bookingData">
                                                 <td>4545454</td>
@@ -378,7 +381,7 @@
                                                 <td>10</td>
                                                 <td>25</td>
                                                 <td>Shipment Forwarded</td>
-                                                <td> 
+                                                <td>
                                                 @can(permission_edit())
                                                         <a href="#"
                                                            class="btn btn-icon waves-effect waves-light btn-warning">
@@ -400,7 +403,7 @@
                                                         <a href="#"
                                                            class="btn btn-icon waves-effect waves-light btn-success">
                                                             <i class="fas fa-print"></i>
-                                                        </a>                                                        
+                                                        </a>
 
                                                         <a href="#"
                                                            class="btn btn-icon waves-effect waves-light btn-dark">
@@ -410,7 +413,7 @@
 
                                                 </td>
                                             </tr> -->
-                                       
+
 
                                         </tbody>
                                     </table>
@@ -437,8 +440,8 @@
                             </thead>
                             <tbody>
                                 @foreach($boxes as $key=> $boxes)
-                                    <?php 
-                                    
+                                    <?php
+
                                         if(!empty($boxes->shipment->statusVal->name)){
                                             if($boxes->shipment->statusVal->name == "Enquiry collected") {
                                                 $showAddItems = true;
@@ -455,7 +458,7 @@
                                                 $type = "Door To Door";
                                             } elseif($boxes->shipment->delivery_type == "door_to_port"){
                                                 $type ="Door To Port";
-                                            } 
+                                            }
                                             else {
                                                 $type ="";
                                             }
@@ -465,7 +468,7 @@
                                             $tot_sel_amt += number_format(($boxes->total_value + $boxes->box_packing_charge),2);
                                             $tot_sel_weight += $boxes->weight;
                                             $boxList[] = $boxes->id;
-                                            
+
                                         }
                                     ?>
                                     <tr>
@@ -479,7 +482,7 @@
                                                     {{$boxes->shipment->staff?$boxes->shipment->staff->full_name:'-'}}
                                                 @endif
                                         </td>
-                                        <td>{{ $boxes->shipment->receiver->name??""}} <br>{{ $boxes->shipment->receiver->address->country->name??""}}</td>                                        
+                                        <td>{{ $boxes->shipment->receiver->name??""}} <br>{{ $boxes->shipment->receiver->address->country->name??""}}</td>
                                         <td>{{ $boxes->shipment->receiver->address->country->name??""}}</td>
                                         <td>{{ $boxes->shipment->booking_number??""}} <br> {{ $type }}</td>
                                         <td>{{ $boxes->box_name??""}}</td>
@@ -488,47 +491,47 @@
                                         <td class="boxVal">{{ number_format(($boxes->total_value + $boxes->box_packing_charge),2) ?? ""}}</td>
                                     </tr>
                                 @endforeach
-                                <?php 
-                                
+                                <?php
+
                                 $List = implode(', ', $boxList);
                                 ?>
                             </tbody>
-                        </table>   
+                        </table>
                         <div class="row m-t-50">
                             <div class="col-md-12">
                                 <div class="">
                                     <form action="{{route('branch.ships.addMultipleBookingtoshipSubmit')}}" method="post" enctype="multipart/form-data">
                                         @csrf
-                                        <div class="col-md-12"> 
+                                        <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Total Selected Boxes</label>
-                                                        <input type="text" class="form-control" id="total_selected_boxes" value="{{$total_count}}" name="total_selected_boxes"> 
+                                                        <input type="text" class="form-control" id="total_selected_boxes" value="{{$total_count}}" name="total_selected_boxes">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">                                     
+                                                <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Total Weight</label>
                                                         <input type="text" class="form-control" name="total_weight" id="total_weight" value="{{$tot_sel_weight}}" />
                                                     </div>
-                                                </div> 
-                                                <div class="col-md-3">                                     
+                                                </div>
+                                                <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Total Value</label>
                                                         <input type="text" class="form-control" name="total_value" id="total_value" value="{{$tot_sel_amt}}" />
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2" style="margin:30px;">                                     
+                                                <div class="col-md-2" style="margin:30px;">
                                                     <div class="form-group">
                                                         <input type="hidden" class="form-control" name="box_id" value="{{($List) ? $List : ''}}" id="selected_box_id"/>
                                                         <input type="hidden" id="hidSelectList" name="hidSelectList" value="0"/>
                                                         <input type="hidden" id="ship_id" name="ship_id" value="{{$ships->id}}"/>
                                                         <button type="submit" class="btn btn-success waves-effect waves-light">Submit</button>
                                                     </div>
-                                                </div> 
-                                            </div> 
-                                        </div> 
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
 
                                 </div>
@@ -551,13 +554,13 @@
           <h4 class="modal-title"></h4>
         </div>
         <div class="modal-body">
-                <div class="col-md-12"> 
+                <div class="col-md-12">
                 <input type="hidden" value="" class="selectedShipIds" name="shipIds" />
                 <input type="hidden" value="" class="selectedShipmentId" name="shipmentIds" />
                 <input type="hidden" value="" class="selectedBoxId" name="boxIds" />
 
                     <div class="row">
-                        <div class="col-md-12">                                             
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Change Shipment Status</label>
                                 <select name="status_id" class="form-control" id="status_id">
@@ -570,12 +573,12 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>                                        
+                        </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group"> 
+                            <div class="form-group">
                             <label>Date</label>
                                     <input type="date" value="{{ date('Y-m-d') }}" max=""
                                         class="form-control" id="created_date" name="created_date"
@@ -583,18 +586,18 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-4">
-                        <div class="form-group"> 
+                        <div class="form-group">
                                 <input type="hidden" id="ship_id" name="ship_id" value="{{$ships->id}}" />
                                 <button type="submit" class="btn btn-success waves-effect waves-light updateStatus">Update
                                 </button>
                                 </div>
-                            
+
                         </div>
                     </div>
-                </div> 
+                </div>
         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -614,17 +617,17 @@
           <h4 class="modal-title"></h4>
         </div>
         <div class="modal-body">
-            
+
                     <div class="row">
-                        <div class="col-md-12">                                             
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <div class="successMsg">Status Updated Successfully</div>
                             </div>
-                        </div>                                        
+                        </div>
                     </div>
 
-                </div> 
-            </form>     
+                </div>
+            </form>
         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -646,7 +649,7 @@
         <div class="modal-body">
             <form action="{{route('branch.ships.boxStatusUpdatetoship')}}" method="post">
                 @csrf
-                <div class="col-md-12"> 
+                <div class="col-md-12">
                     <div class="row">
                         <table id="shipsTable1" class="table table-striped table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
@@ -658,19 +661,19 @@
                                 <th>Update Status Date</th>
                             </tr>
                             </thead>
-                            <tbody class="fetchData" status="{{status_list_admin() }}">  
-                                
-                            </tbody>
-                        </table>                              
-                    </div>
-                </div> 
+                            <tbody class="fetchData" status="{{status_list_admin() }}">
 
-                <div class="form-group"> 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-group">
                         <input type="hidden" id="ship_id" name="ship_id" value="{{$ships->id}}" />
                         <button type="submit" class="btn btn-success waves-effect waves-light">Update
                         </button>
                 </div>
-            </form>     
+            </form>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -712,12 +715,12 @@
         $('#bookingList').DataTable( {
             "autoWidth": false,
             "scrollX": true,
-            "aaSorting": [ [0,'desc'] ], 
-            "bSort": false, 
+            "aaSorting": [ [0,'desc'] ],
+            "bSort": false,
             "responsive": false
         });
-        
-    }); 
+
+    });
 
         $(function () {
             // validation needs name of the element
@@ -731,10 +734,10 @@
 
             });
 
-            
+
 
             var $checkboxes = $('.checkbox-item');
-            $('#allcb').click(function (e) { 
+            $('#allcb').click(function (e) {
                     var checkboxesLength = $checkboxes.length;
                     var checkedCheckboxesLength = $checkboxes.filter(':checked').length;
                     if(checkboxesLength == checkedCheckboxesLength) {
@@ -743,10 +746,10 @@
                         $('#allcb').prop('checked', false);
                     }
 
-                    // $('#allcb').click(function (e) { 
+                    // $('#allcb').click(function (e) {
                     if( $("#allcb").prop('checked') == true) {
-                        $.each($('td:not(.k-state-disabled) .k-checkbox'), function () {			 
-                            $(this).prop("checked", true)	 
+                        $.each($('td:not(.k-state-disabled) .k-checkbox'), function () {
+                            $(this).prop("checked", true)
                         });
                     }
                     else {
@@ -754,7 +757,7 @@
                     }
                     // $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
                 // });
-            }); 
+            });
 
             $(document).on('click', ".detailedBoxView", function() {
                 var boxId = $(this).attr('value');
@@ -774,7 +777,7 @@
                         cache: false,
                         contentType: false,
                         processData: false,
-                        success: function (result) {  
+                        success: function (result) {
                             var html = [];
                             $('.fetchData').html('');
                             // $.each(result, function (key, value) {
@@ -804,7 +807,7 @@
                                             html +=  '<td>'+selectOptionhtml+'</td>';
                                             html +=  '<td>'+newDate+'</td>';
                                         }
-                                        
+
                                         html += '</tr>';
                             // });
                             $('.fetchData').html(html);
@@ -845,7 +848,7 @@
                         cache: false,
                         contentType: false,
                         processData: false,
-                        success: function (result) {  
+                        success: function (result) {
                             if(result.success == 'Status Updated Successfully') {
                                 $("#statusModalSucess").modal('show');
                             }
@@ -866,8 +869,8 @@
                 $(':checkbox:checked').each(function(i){
                     val[i] = $(this).val();
                     valshipId[i] = $(this).attr('shipId');
-                    boxesName[i] = $(this).closest('tr').find('.boxName').text(); 
-                    boxesVal[i] = $(this).closest('tr').find('.boxName').attr('boxId'); 
+                    boxesName[i] = $(this).closest('tr').find('.boxName').text();
+                    boxesVal[i] = $(this).closest('tr').find('.boxName').attr('boxId');
                 });
                 $(".hidShipIds").val(val);
                 $(".hidBoxIds").val(boxesVal);
@@ -881,7 +884,7 @@
             var arr = [];
             var alreadyExist = [];
             var removeItem = [];
-            
+
             $("input:checkbox.bookingSelection").click(function() {
                 var ischecked= $(this).is(':checked');
                 if(ischecked){
@@ -894,7 +897,7 @@
                 removeItem.push($(this).val());
                 $("#hidSelectList").val(removeItem);
                 }
-            }); 
+            });
 
 
             $(document).on('click',".bookingSelection", function() {
@@ -938,7 +941,7 @@
                         cache: false,
                         contentType: false,
                         processData: false,
-                        success: function (result) {  
+                        success: function (result) {
                             console.log(result);
                             var html = [];
                             html = result.boxes
@@ -951,7 +954,7 @@
                 alreadyExist = [];
                 arr = [];
             });
-            
+
         });
 
 </script>

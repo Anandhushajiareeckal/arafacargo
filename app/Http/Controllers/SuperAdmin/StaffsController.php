@@ -9,7 +9,7 @@ use App\Models\Staffs;
 use App\Models\User;
 use App\Models\VisaTypes;
 use App\Models\DocumentTypes;
-use Illuminate\Http\Request; 
+use Illuminate\Http\Request;
 use App\Exports\AttendenceExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +25,7 @@ class StaffsController extends BaseController
      */
     public function index(Request $request)
     {
-        $selected_status =  $request->status ?  $request->status : '';  
+        $selected_status =  $request->status ?  $request->status : '';
 
         if( $request->status){
             $staffs = Staffs::notadmin()->whereHas("branch")->where('staff_status',  $request->status )->orderBy('full_name')->get();
@@ -45,17 +45,17 @@ class StaffsController extends BaseController
     public function create()
     {
         $staff = Staffs::select('id')->orderBy('created_at', 'desc')->first();
-        
+
         if (isset($staff->id)) {
-           $staff_id =  "BE".sprintf("%04d", $staff->id);
+           $staff_id =  "AR".sprintf("%04d", $staff->id);
         } else {
             $id = 1;
-            $staff_id =  "BE".sprintf("%04d", $id);           
+            $staff_id =  "AR".sprintf("%04d", $id);
         }
         $visaTypes = VisaTypes::where('status',1)->get();
         $documentTypes = DocumentTypes::where('status',1)->get();
 
-        
+
         return view('superadmin.staffs.create', compact('staff_id', 'visaTypes','documentTypes'));
     }
 
@@ -85,9 +85,9 @@ class StaffsController extends BaseController
                 $staff->full_name = $user->name;
                 $staff->staff_id = $request->staff_id;
                 $staff->staff_status = $request->staff_status;
-                
+
                 $staff->role = $request->role;
-                $staff->fingerprint_mandatory = $request->fingerprint_mandatory;        
+                $staff->fingerprint_mandatory = $request->fingerprint_mandatory;
                 $staff->fingerprint = $request->txtIsoTemplate;
                 $staff->visa_status = $request->visa_status;
                 $staff->visa_type_id = $request->visa_type;
@@ -101,24 +101,24 @@ class StaffsController extends BaseController
                     $fileName = auth()->id() . '_' . time() . '.'. $request->document_path->extension();
                     $type = $request->document_path->getClientMimeType();
                     $size = $request->document_path->getSize();
-        
+
                     $request->document_path->move(public_path('uploads/staff_document'), $fileName);
                     $fileName = 'uploads/staff_document/'.$fileName;
-                    $staff->document_path = $fileName; 
-                  
+                    $staff->document_path = $fileName;
+
                 }
 
                 if ($request->file('profile_photo')) {
                     $fileName = auth()->id() . '_' . time() . '.'. $request->profile_photo->extension();
                     $type = $request->profile_photo->getClientMimeType();
                     $size = $request->profile_photo->getSize();
-        
+
                     $request->profile_photo->move(public_path('uploads/staff_profile_photo'), $fileName);
                     $fileName = 'uploads/staff_profile_photo/'.$fileName;
-                    $staff->profile_photo = $fileName; 
-                  
-                }                
-                
+                    $staff->profile_photo = $fileName;
+
+                }
+
                 $staff->save();
                 $user->assignRole($request->role);
             \DB::commit();
@@ -158,7 +158,7 @@ class StaffsController extends BaseController
     {
         $staff = Staffs::findOrFail($id);
         if( $staff->staff_id == null ){
-            $staff->staff_id =  "BE".sprintf("%04d", $staff->id);
+            $staff->staff_id =  "AR".sprintf("%04d", $staff->id);
         }
         $visaTypes = VisaTypes::where('status',1)->get();
         $documentTypes = DocumentTypes::where('status',1)->get();
@@ -179,8 +179,8 @@ class StaffsController extends BaseController
             \DB::beginTransaction();
 
             $user = User::findOrFail($request->user_id);
-            $messages = [                
-                'email.unique' => 'Email already exists',                
+            $messages = [
+                'email.unique' => 'Email already exists',
             ];
 
             $request->validate([
@@ -196,7 +196,7 @@ class StaffsController extends BaseController
                 $staff->role = $request->role;
                 $staff->branch_id = $request->branch_id;
                 $staff->fingerprint_mandatory = $request->fingerprint_mandatory;
-                $staff->fingerprint = $request->txtIsoTemplate; 
+                $staff->fingerprint = $request->txtIsoTemplate;
                 $staff->visa_status = $request->visa_status;
                 $staff->visa_type_id = $request->visa_type;
                 $staff->appointment_date = $request->appointment_date;
@@ -210,22 +210,22 @@ class StaffsController extends BaseController
                     $fileName = auth()->id() . '_' . time() . '.'. $request->document_path->extension();
                     $type = $request->document_path->getClientMimeType();
                     $size = $request->document_path->getSize();
-        
+
                     $request->document_path->move(public_path('uploads/staff_document'), $fileName);
                     $fileName = 'uploads/staff_document/'.$fileName;
-                    $staff->document_path = $fileName; 
+                    $staff->document_path = $fileName;
                 }
 
                 if ($request->file('profile_photo')) {
                     $fileName = auth()->id() . '_' . time() . '.'. $request->profile_photo->extension();
                     $type = $request->profile_photo->getClientMimeType();
                     $size = $request->profile_photo->getSize();
-        
+
                     $request->profile_photo->move(public_path('uploads/staff_profile_photo'), $fileName);
                     $fileName = 'uploads/staff_profile_photo/'.$fileName;
-                    $staff->profile_photo = $fileName;                   
+                    $staff->profile_photo = $fileName;
                 }
-                                
+
                 $staff->save();
                 $user = User::findOrFail($staff->user_id);
                 $user->email = $request->email;
@@ -237,7 +237,7 @@ class StaffsController extends BaseController
 
                 \DB::commit();
             } catch (\Exception $e) {
-        
+
                 \DB::rollBack();
                 Log::error($e->getMessage());
                 toastr()->error($e->getMessage());

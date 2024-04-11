@@ -18,16 +18,16 @@
                             <h4 class="page-title">Staff List</h4>
                             <div class="fa-pull-right pb-3">
                                 <a href="{{create_url()}}" class="btn btn-success">Add New</a>
-                            </div> 
+                            </div>
                             <div class="fa-pull-left pb-3">
-                                <a href="{{route('super-admin.staffs.index')}}" class="btn btn-primary">Staff List</a>&nbsp;&nbsp;&nbsp;
+                                {{-- <a href="{{route('super-admin.staffs.index')}}" class="btn btn-primary">Staff List</a>&nbsp;&nbsp;&nbsp;
                                 <a href="{{route('super-admin.attendence.index')}}" class="btn btn-primary">Attendence List</a>&nbsp;&nbsp;&nbsp;
                                 <a href="{{route('super-admin.attendence.markAttendence')}}" class="btn btn-primary">Mark Attendence</a>&nbsp;&nbsp;&nbsp;
                                 <a href="{{route('super-admin.attendence.report')}}" class="btn btn-primary">Attendence Report</a>&nbsp;&nbsp;&nbsp;
-                                <a href="{{route('super-admin.attendence.time')}}" class="btn btn-primary">Attendence Time</a>&nbsp;&nbsp;&nbsp;
+                                <a href="{{route('super-admin.attendence.time')}}" class="btn btn-primary">Attendence Time</a>&nbsp;&nbsp;&nbsp; --}}
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
 
                 <div class="row">
@@ -44,12 +44,12 @@
                                 <div class="col-sm-2">Select Status</div>
 
                                 <div class="col-sm-4"></div>
-                            </div>  
+                            </div>
                             <div class="row">
                                     <div class="col-sm-2"></div>
                                     <?php /*
                                     <div class="col-sm-2">
-                                        <div class="form-group"> 
+                                        <div class="form-group">
                                                 <input type="date" value="{{ isset($date_from) ? $date_from : ''}}" max="{{date('Y-m-d')}}"
                                                     class="form-control" id="propertyname" name="date_from"
                                                     placeholder="Enter title">
@@ -64,12 +64,12 @@
                                     </div>
                                     */ ?>
                                     <div class="col-md-2">
-                                        <div class="form-group"> 
+                                        <div class="form-group">
                                             <select name="status" id="status" class="form-control">
                                                     <option   {{ ($selected_status == "" ) ? "selected" : "" }}  value="">All</option>
                                                     <option   {{ ($selected_status == "active" ) ? "selected" : "" }}  value="active">Active</option>
-                                                    <option  {{ ($selected_status == "inactive" ) ? "selected" : "" }}   value="inactive">Inactive</option> 
-                                                    <option  {{ ($selected_status == "cancel" ) ? "selected" : "" }}   value="cancel">Cancel</option> 
+                                                    <option  {{ ($selected_status == "inactive" ) ? "selected" : "" }}   value="inactive">Inactive</option>
+                                                    <option  {{ ($selected_status == "cancel" ) ? "selected" : "" }}   value="cancel">Cancel</option>
                                             </select>
                                         </div>
                                     </div>
@@ -77,9 +77,9 @@
                                         <button type="submit" class="btn btn-success waves-effect waves-light">Submit
                                         </button>
                                     </div>
-                            </div>  
+                            </div>
 
-                              
+
                             </form>
 
 
@@ -125,7 +125,7 @@
 
                                                 <button type="submit" class="btn btn-danger delete-user del">
                                                     <i class="fas fa-trash-alt"></i>
-                                                </button>  
+                                                </button>
 
 
                                                 <a href="{{show_url($staff->id)}}"
@@ -133,7 +133,7 @@
                                                 <i class="fas fa-eye"></i>
                                                 </a>
 
-<!-- 
+<!--
                                                 <a href="{{url('super-admin/staff_attendence_export/'.$staff->id)}}"
                                                         class="btn btn-icon waves-effect waves-light btn-primary">
                                                     <i class="fas fa-file-export"></i>
@@ -200,8 +200,8 @@ $('#datatable').DataTable( {
 
     </script>
 
-<script> 
-$(document).on('click','.del',function(){ 
+<script>
+$(document).on('click','.del',function(){
         if (!confirm("Do you want to delete")){
         return false;
     }

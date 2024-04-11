@@ -111,12 +111,12 @@
                     </a>
                 </li> --}}
 
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                     <a href="{{route('super-admin.agency.index')}}" class="nav-link  {{ (request()->is('super-admin/agency*')) ? 'menu-active' :'' }}">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Agency</p>
                     </a>
-                </li> --}}
+                </li>
 
                 <li class="nav-item">
                     <a href="{{route('super-admin.driver.index')}}" class="nav-link  {{ (request()->is('super-admin/driver*')) ? 'menu-active' :'' }}">

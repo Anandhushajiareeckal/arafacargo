@@ -65,9 +65,9 @@
                                                 </select>
                                                 @error('port_of_origin')
                                                 <span class="text-danger">{{ $message }}</span>
-                                                @enderror 
+                                                @enderror
                                             </div>
-                                        </div> 
+                                        </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Port Of Destination</label>
@@ -79,9 +79,9 @@
                                                 </select>
                                                 @error('port_of_destination')
                                                 <span class="text-danger">{{ $message }}</span>
-                                                @enderror 
+                                                @enderror
                                             </div>
-                                        </div> 
+                                        </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Shipping Method</label>
@@ -93,7 +93,7 @@
                                                 </select>
                                                 @error('shipment_type')
                                                 <span class="text-danger">{{ $message }}</span>
-                                                @enderror 
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -106,55 +106,55 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                        </div> 
+                                        </div>
                                         <div class="col-md-3">
-                                            <div class="form-group"> 
+                                            <div class="form-group">
                                             <label>Created On</label>
                                                     <input type="date" value="{{ isset($ships->created_date) ? date('Y-m-d', strtotime($ships->created_date)) :  date('Y-m-d') }}" max=""
                                                         class="form-control" id="propertyname" name="created_date"
                                                         placeholder="Enter title">
                                             </div>
-                                             
+
                                         </div>
                                         <!-- <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="propertyname">Time</label>
                                                 <input type="time" name="created_time" value="{{isset($ships->created_date) ? $ships->created_time:'' }}" class="  form-control"
                                                     required
-                                                    placeholder="Select Time" autocomplete="off" id="setTimeExample"> 
-                                            </div> 
+                                                    placeholder="Select Time" autocomplete="off" id="setTimeExample">
+                                            </div>
                                         </div> -->
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Clearing Agent</label>
                                                 <select name="clearing_agent" id="clearing_agent" class="form-control" required>
                                                     @foreach($agents as $agent)
-                                                    <option value="{{$agent->id}}">{{$agent->name}}</option> 
-                                                    @endforeach 
-                                                </select>  
+                                                    <option value="{{$agent->id}}">{{$agent->name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        </div>  
+                                        </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Created by</label>
                                                 <select name="created_by" id="created_by" class="form-control" required>
                                                     @foreach($staffs as $staff)
-                                                    <option value="{{$staff->id}}">{{$staff->full_name}}</option> 
-                                                    @endforeach 
-                                                </select>  
+                                                    <option value="{{$staff->id}}">{{$staff->full_name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        </div>  
+                                        </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Shipment Status</label>
                                                 <select name="status" id="status" class="form-control" required>
                                                     <option value="">Select</option>
                                                     @foreach($statuses as $status)
-                                                    <option value="{{$status->id}}">{{$status->name}}</option> 
-                                                    @endforeach 
-                                                </select>  
+                                                    <option value="{{$status->id}}">{{$status->name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        </div>  
+                                        </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>License Details</label>
@@ -169,9 +169,9 @@
                                                        value= "" class="form-control">
                                             </div>
                                         </div>
-                                    </div> 
-                                </div> 
- 
+                                    </div>
+                                </div>
+
 
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success waves-effect waves-light">Submit
@@ -207,16 +207,16 @@
                                     <th>Port of Origin</th>
                                     <th>Port of Destination</th>
                                     <th>Clearing Agent</th>
-                                    <th>Shipment Status</th>                                    
-                                    <th>Created by</th> 
-                                    <th>Created On</th>                                    
-                                    <th>Total Box</th>                                    
-                                    <th>Total Weight</th>                                    
+                                    <th>Shipment Status</th>
+                                    <th>Created by</th>
+                                    <th>Created On</th>
+                                    <th>Total Box</th>
+                                    <th>Total Weight</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     @foreach( $ships as $ship)
-                                    <?php 
+                                    <?php
                                         $boxDetails = \App\Models\Boxes::with('shipment.driver','boxStatuses.status','shipment.shipmentStatus')->whereHas('shipment',function ($query) {
                                             $query->where('branch_id', branch()->id);
                                         })->where('ship_id',$ship->id)->where('is_shipment',1)->get();
@@ -228,24 +228,24 @@
                                         $lastStatus = '';
                                         $hrefTag = "#";
                                         $statusList = [];
-                                        foreach( $boxDetails as $key => $booking) { 
+                                        foreach( $boxDetails as $key => $booking) {
                                             $lastStatus = collect($booking->boxStatuses)->last();
                                             $boxDetails[$key]["last_status"] = $lastStatus->status->name;
 
                                             $tot_temp_exist= $booking->weight;
                                             $tot_weight_exist +=$tot_temp_exist;
                                             $tot_value_exist += $booking->total_value + $booking->box_packing_charge;
-                                            $totalPieces += 1; 
+                                            $totalPieces += 1;
 
                                             if(($lastStatus != null)) {
                                                 $statusList[] = $booking->last_status;
-                                                
+
                                                 $delete_item = 'Pending';
                                                 $delete_item1 = 'Shipment on hold';
                                                 $statusListNew = array_diff($statusList, array($delete_item,$delete_item1));
                                                 $count1 = array_count_values($statusListNew);
                                                 $count = count($statusListNew);
-                                                $getNum = $count - 1; 
+                                                $getNum = $count - 1;
                                                 // $status = implode(', ', $statusListNew);
                                                 $shipmentStatus = collect($booking->shipment->shipmentStatus)->last();
                                                 if($count <= 0) {
@@ -262,21 +262,21 @@
                                     ?>
                                     <tr>
                                         <td style="display:none;">{{$ship->id}}</td>
-                                        <td>  
+                                        <td>
                                             <a href="{{route('branch.ships.editShip', [$ship->id])}}"
                                                 class="btn btn-icon waves-effect waves-light btn-warning icons" title="Edit Shipment">
                                                 <i class="fas fa-pencil-alt"></i>
-                                            </a> 
+                                            </a>
                                             <a href="{{route('branch.ships.detailedView', [$ship->id])}}" class="btn btn-icon waves-effect waves-light btn-warning icons" title="Shipment Detailed View">
                                                 <i class="fas  fa-lg fa-eye"></i>
                                             </a>
                                             <a @if($hrefTag != 'transfer') href="{{route('branch.ships.addbookingtoship', array('ship_id' => $ship->id))}}" @endif  class="btn btn-icon waves-effect waves-light btn-warning icons" title="View">
                                                 <i class="fas  fa-lg fa-cog"></i>
-                                            </a> 
-                                            <a href="{{route('branch.ships.addMoreBookingtoship', array('ship_id' => $ship->id))}}" class="btn btn-icon waves-effect waves-light btn-warning icons" title="Add Booking">
+                                            </a>
+                                            {{-- <a href="{{route('branch.ships.addMoreBookingtoship', array('ship_id' => $ship->id))}}" class="btn btn-icon waves-effect waves-light btn-warning icons" title="Add Booking">
                                                 <i class="fas  fa-lg fa-plus"></i>
-                                            </a>                                      
-                                        </td>  
+                                            </a>                                       --}}
+                                        </td>
                                         <td>{{$ship->shipment_id}}</td>
                                         <td>{{$ship->shipmentMethodTypes->name}}</td>
                                         <td>{{$ship->portOfOrigins->name??''}}</td>
@@ -286,12 +286,12 @@
                                         <td>{{$ship->createdBy->full_name}}</td>
                                         <td>{{ !empty($ship->created_date) ? date('Y-m-d',strtotime($ship->created_date)) : '' }}</td>
                                         <td>{{($totalPieces == 0) ? '' : $totalPieces}}</td>
-                                        <td>{{($tot_weight_exist == 0 ? '' : $tot_weight_exist)}}</td>                                     
+                                        <td>{{($tot_weight_exist == 0 ? '' : $tot_weight_exist)}}</td>
                                     </tr>
-                                    @endforeach 
-                               
+                                    @endforeach
+
                                 </tbody>
-                            </table> 
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -323,7 +323,7 @@
                 //hide the second & fourth column
                 { 'visible': false, 'targets': [0] }
             ]
-        }); 
-    }); 
+        });
+    });
 </script>
 @endsection

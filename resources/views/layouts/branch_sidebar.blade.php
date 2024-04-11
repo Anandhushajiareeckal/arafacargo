@@ -18,14 +18,14 @@
                 </li> --}}
 
                 <li class="nav-item {{ (request()->is('branch/shipment*')) ||  (request()->is('branch/moving*')) ||  (request()->is('branch/courier*')) ? 'menu-is-opening menu-open' : '' }} ">
-                    <a href="#" class="nav-link active">
+                    {{-- <a href="#" class="nav-link active">
                     <i class="mdi mdi-book-multiple"></i>
                     <p>
                         Invoice
                         <i class="fas fa-angle-left right"></i>
                     </p>
-                    </a>
-                    <ul class="nav nav-treeview"    >
+                    </a> --}}
+                    <ul class="nav "    >
                         <li class="nav-item">
                             <a href="{{route('branch.shipment.index')}}" class="nav-link   {{ (request()->is('branch/shipment')) || (request()->is('branch/shipment/create')) || (request()->is('branch/shipment/*/edit')) ? 'menu-active' :'' }}">
                             <i class="far fa-circle nav-icon"></i>
@@ -66,14 +66,14 @@
 
 
 
-                    <a href="#" class="nav-link active">
+                    {{-- <a href="#" class="nav-link active">
                         <i class="mdi mdi-book-multiple"></i>
                         <p>
                             Shipment
                             <i class="fas fa-angle-left right"></i>
                         </p>
-                    </a>
-                    <ul class="nav nav-treeview">
+                    </a> --}}
+                    <ul class="nav ">
                         <li class="nav-item">
                             <a href="{{route('branch.ship.create')}}" class="nav-link   {{ (request()->is('branch/ship/create*')) ? 'menu-active' :'' }}">
                             <i class="far fa-circle nav-icon"></i>

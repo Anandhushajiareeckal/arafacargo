@@ -1,419 +1,411 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Invoice</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Print View</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+
+        }
+
+
+
+        .container {
+            width: 100%;
+
+
+        }
+        .main_div{
+            border: solid;
+        }
+        .ml-4{
+            margin-left: 30px;
+        }
+        .ml-3{
+            margin-left: 15px;
+        }
+        .inv_no{
+            background: black;
+            color: #fff;
+            width: 100px;
+            width: 155px;
+            padding: 5px;
+        }
+        .table_head th{
+            border-bottom: solid;
+            border-top: solid;
+        }
+        input[type="checkbox"] {
+            transform: scale(1.5); /* Change the scale value to adjust the size */
+        }
+        input[type="checkbox"] {
+            border-width: 3px; /* Change the border-width value to adjust the width */
+        }
+        .pacling_list td{
+            border-right: solid;
+            border-bottom: solid;
+        }
+
+        .pacling_list th{
+            border-right: solid;
+            border-top: solid;
+            background: #d9d9d9;
+        }
+        .pacling_list .sno{
+            background: #d9d9d9;
+        }
+
+        .adress_table td{
+            padding: 1px;
+        }
+        .item_table td, th{
+            padding: 1px;
+        }
+
+        .footer b, p {
+            margin:1px;
+            text-align: justify;
+        }
+
+
+        @media print {
+            .indented-paragraph {
+                /* Adjust print styles as needed */
+                padding-left: 20px !important;
+            }
+
+            .bottom-space {
+                /* Adjust print styles as needed */
+                margin-bottom: 20px !important;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .shipment-info {
+            text-align: left;
+            }
+        }
+
+
+    </style>
 </head>
-<style type="text/css">
-    @media print {
-      @page {
-        margin: 0;
-      }
-      /* .printxxxx {
-        page-break-after: always;
-      } */
-      tbody td {
-        font-size: 14px !important;
-      }
-      p {
-        font-size: 14px !important;
 
-      }
-      td{
-        padding:0px !important;
-      }
-        h4{
-            padding:0px !important;
-            margin:0px !important;
-        }
-        #print_button button{
-            display:none;
-        }
-        .address {
-            font-size: 14px !important;
-        }
-
-    }
-
-    h4{
-        padding:0px !important;
-        margin:0px !important;
-      }
-    tbody td {
-      font-size: 20px !important;
-    }
-    table {
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 20px;
-        height: 100%;
-        table-layout: fixed;
-    }
-    .no-margin{
-      margin:0px !important;
-    }
-    .tab td {
-      border:none !important;
-    }
-
-    #print_button button{
-    position: fixed;
-    top: 20px;
-    right:1050px;
-    padding: 10px;
-    font-size: 18px;
-    background-color: #00ffee;
-}
-
-  </style>
 <body>
-
-    @php
-        $countryname = false;
-        $sender_countryname = false;
-        if($shipment->receiver && $shipment->receiver->address && $shipment->receiver->address->country)
-        {
-            $countryname = true;
-        }
-        if($shipment->sender && $shipment->sender->address && $shipment->sender->address->country)
-        {
-            $sender_countryname = true;
-        }
-    @endphp
-
-
-<div class="container">
-    <div class="table-section bill-tbl w-100 mt-10">
-        <div class="printxxxx">
-            <div class="block-content "> 
-                <div class="row"> 
-                    <div class="col-6 ml-3" style="float:left;">  
-                    <img src="{{asset($shipment->agency->logo) }}" alt="Bestexpress" style="height:60px;" class="img-responsive logo" >
+    <div class="container pt-3">
+        <div class="main_div">
+            <div class="row">
+                <div class="col-5 mt-4 ml-4">
+                    <div  style="float:left;">
+                        <img src="{{asset($shipment->agency->logo) }}" alt="Bestexpress" style="height:60px;" class="img-responsive logo" >
                     </div>
-                    <div class="col-6 ml-3 address" style="float:right; text-align:left;"> 
-                    {{ $shipment->agency->name }}<br>
-                    {{ $shipment->agency->address }}<br>
-                    {{ $shipment->agency->contact_no }}<br>
-                    {{ $shipment->agency->email }}<br>
-                    </div>
+                        <h6>DIVISION OF MAZYOONA MUSCUT TRADING
+                        DATE REF NO. PKG WGHT ORIGIN DESTINATION AWB NO:
+                       ROOM NO I/462 , 1ST FLOOR , COCHIN , KERALA , INDIA</h6>
                 </div>
-            </div>  
-        </div>
+                <div class="col-3 d-flex align-items-center justify-content-center" >
+                    <h1 class="inv_no">INV NO </h1>
+                </div>
+                <div class="col-3 d-flex align-items-center justify-content-center" >
+                    <svg id="barcode"></svg>
 
-        <div class="row text-center table table-hover mb-0">
+                    {{-- <h1 class="inv_no">{{ $shipment->booking_number }} </h1> --}}
+                </div>
+            </div>
             <div class="col-12">
-                <div class="block" style="margin-bottom:0px !important;">
-                    <div class="block-content">
-                        <table style="width: 100%;border-collapse: collapse;">
-                            <tr style=" border: 1px solid black; ">
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;"></td>
-                            <td colspan="3" style="text-align: right;    padding: 3px !important;"><h4 class="no-margin" style="text-align:right;" >TRN:+{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }}</h4></td>
-                            </tr>  
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;"> 
-                            <h4 class="no-margin" style=""> Airway Bill NO: {{ $shipment->booking_number }} </h4>
-                            <h4 class="no-margin" style=""> Cargo Type: @if($shipment->delivery_type == 'door_to_door') Door to Door @else Door to Port @endif</h4>
-                            </td>
-                            <td colspan="3" style="text-align: left;    padding: 3px !important;"> 
-                            <h4 class="no-margin" style="text-align:right;" >Colletion Date: {{ date('d-m-Y', strtotime($shipment->created_date))}}</h4>
-                            <h4 class="no-margin" style="text-align:right;" >Office: {{ $shipment->branch->name}}</h4>
-                            <h4 class="no-margin" style="text-align:right;" >Staff:{{ $shipment->staff?$shipment->staff->name :$shipment->driver->name}}</h4>
-                            </td>
-                            </tr>  
+                <table class="table">
+                    <thead  class="table_head">
+                        <tr>
+                            <th>DATE</th>
+                            <th>REF NO. </th>
+                            <th>PKG</th>
+                            <th>WGHT</th>
+                            <th>ORIGIN</th>
+                            <th>DESTINATION</th>
+                            <th>AWB NO:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ $shipment->branch->name}}</td>
+                            <td>{{ $shipment->booking_number }} </td>
+                            <td>{{ $shipment->number_of_pcs }}</td>
+                            <td>{{ round($shipment->normal_weight, 2) }}</td>
+                            <td>UAE</td>
+                            <td>COK</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table">
+                        <thead class="table_head">
+                            <tr>
+                                <th class="col-4 text-center"style="padding-left:100px;" > FROM ADDRESS</th>
+                                <th class="col-4 text-center" style="padding-left:200px;">TO ADDRESS</th>
+                                <th class="col-4 text-center" style="padding-left:200px;">SERVICE</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+
+                </div>
+                <div class="row adress_table" style="margin-left: 3px;">
+                    <div class="col-2" style="margin-top: -16px; border-right: solid; border-bottom: solid; border-width: 3px;">
+                        <table class="table">
+                            <tbody>
+                                    <tr><td>ADDRESS</td></tr>
+                                    <tr><td>ZIP/ POST CODE</td></tr>
+                                    <tr><td>STATE/ PROVINCE</td></tr>
+                                    <tr><td>COUNTRY</td></tr>
+                                    <tr><td>TEL:</td></tr>
+                                    <tr><td>MOBILE:</td></tr>
+                                    <tr><td> E-MAIL:</td></tr>
+                            </tbody>
                         </table>
-                        <hr style="margin:0px;padding:0px;">
-
-                        <div >
-                            <table style="width: 50%; float:left;" class="tab">
-                                <tr style="">
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;"><h4 class="no-margin" style="color:grey;">Customer</h4></td>
-                                <td colspan="3" style="text-align: left;    padding: 3px !important;"><h4 class="no-margin" style="text-align:right;" ></h4></td>
-                                </tr> 
-
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Customer  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important; color:black;"> 
-                                {{ Str::title($shipment->sender->name) }}  
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important; color:black;"> 
-                                Mobile  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                +{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }}   
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Sender  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                {{ Str::title($shipment->sender->name) }}    
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Phone  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                +{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }}     
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Emirates/State  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                {{$shipment->sender->address->state->name}}  
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Doc Type  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                {{$shipment->sender->identification_type}}     
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Doc No.  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                {{$shipment->sender->identification_number}}  
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Address  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                {{ Str::title($shipment->sender->address->address)}}
-                                </td>                           
-                                </tr>  
-                            </table>
-
-                            <table style="width: 50%;border-collapse: collapse;" class="tab">
-                                <tr style="">
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;"><h4 class="no-margin" style="color:grey;">Delivery/Receiver</h4></td>
-                                <td colspan="3" style="text-align: left;    padding: 3px !important;"><h4 class="no-margin" style="text-align:right;" ></h4></td>
-                                </tr>  
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Receiver  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important; color:black;"> 
-                                {{ $shipment->receiver->name }}  
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important; color:black;"> 
-                                Mobile  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                +{{ $shipment->receiver->country_code_phone}} {{ $shipment->receiver->phone }}   
-                                </td>                           
-                                </tr>                                 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Phone  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                +{{ $shipment->receiver->country_code_whatsapp}} {{ $shipment->receiver->whatsapp_number }}     
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Emirates/State  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                {{$shipment->receiver->address->state->name}}  
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Doc Type  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                {{$shipment->receiver->identification_type}}     
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Doc No.  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                {{$shipment->receiver->identification_number}}  
-                                </td>                           
-                                </tr> 
-                                <tr> 
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                Address  
-                                </td>
-                                <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                {{$shipment->receiver->address->address}}
-                                </td>                           
-                                </tr> 
-
-                            </table>  
-                        </div>
-
-
-                    <div style="  clear:both">
-                        <table style="width: 50%; float:left; " class="tab">
-                            <tr style="">
-                            <td colspan="3" style="text-align: left;   "><h4 class="no-margin" style="color:grey;">Cargo Details</h4></td>
-                            <td colspan="3" style="text-align: left;    "><h4 class="no-margin" style="text-align:right;" ></h4></td>
-                            </tr> 
-
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            Total Weight  
-                            </td>
-                            <td colspan="3" style="text-align: left;   padding: 3px !important; color:black;"> 
-                            {{ round($shipment->normal_weight, 2) }}
-                            </td>                           
-                            </tr> 
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important; color:black;"> 
-                            Cargo Value  
-                            </td>
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                                
-                            </td>                           
-                            </tr> 
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            No.Of Boxes  
-                            </td>
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            {{ $shipment->number_of_pcs }}
-                            </td>                           
-                            </tr> 
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            Box No  
-                            </td>
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            {{$shipment->booking_number}}
-                            </td>                           
-                            </tr>                        
+                    </div>
+                    <div class="col-3 mt-5 pt-3 " style="border-bottom:solid; border-width: 3px;margin-top: -16px;">
+                        <h6 class="align-items-center justify-content-center shipment-info">
+                            {{ $shipment->sender->name }} ,
+                            {{ $shipment->sender->address->address }},
+                            <br> MOB:
+                            +{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }},
+                            <br> ID
+                        </h6>
+                    </div>
+                    <div class="col-2" style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
+                        <table class="table">
+                            <tbody>
+                                    <tr><td>ADDRESS</td></tr>
+                                    <tr><td>ZIP/ POST CODE</td></tr>
+                                    <tr><td>STATE/ PROVINCE</td></tr>
+                                    <tr><td>COUNTRY</td></tr>
+                                    <tr><td>TEL:</td></tr>
+                                    <tr><td>MOBILE:</td></tr>
+                                    <tr><td> E-MAIL:</td></tr>
+                            </tbody>
                         </table>
-
-                        <table style="width: 50%;border-collapse: collapse;" class="tab">
-                            <tr style="">
-                            <td colspan="3" style="text-align: left; "><h4 class="no-margin" style="color:grey;">Charges&Payments</h4></td>
-                            <td colspan="3" style="text-align: left;  "><h4 class="no-margin" style="text-align:right;" ></h4></td>
-                            </tr> 
-
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            Normal  
-                            </td>
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            30.10 kg * Dh. {{$shipment->rate_normal_weight}} = Dh. {{ 30 *$shipment->rate_normal_weight }} 
-                            </td>                           
-                            </tr> 
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            Discount  
-                            </td>
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            Dh.{{$shipment->discount}}
-                            </td>                           
-                            </tr>  
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            Subtotal  
-                            </td>
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            Dh. {{$shipment->total_freight}} 
-                            </td>                           
-                            </tr> 
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            Tax  
-                            </td>
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            VAT (0.00%)-Dh. 0.00
-                            </td>                           
-                            </tr> 
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            <b>Total</b>
-                            </td>
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            <b>Dh. {{$shipment->amount_grand_total}}  </b>
-                            </td>                           
-                            </tr> 
-
-                            <tr> 
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            Paid  
-                            </td>
-                            <td colspan="3" style="text-align: left;   padding: 3px !important;color:black;"> 
-                            Dh. {{$shipment->amount_grand_total}} 
-                            </td>                           
-                            </tr> 
+                    </div>
+                    <div class="col-3 mt-5 pt-3" style="border-bottom:solid; border-width: 3px; margin-top: -16px;">
+                        <h6 class="align-items-center justify-content-center shipment-info">
+                            {{ $shipment->receiver->name }} ,
+                            {{Log::info($shipment->receiver->address->address)}}
+                            {{ $shipment->receiver->address->address }},<br> MOB:
+                            +{{ $shipment->receiver->country_code_phone}} {{ $shipment->receiver->phone }},
+                            <br> ID
+                        </h6>
+                    </div>
+                    <div class="col-2" style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
+                        <table class="table" >
+                            <tbody  class="tb_checkbox">
+                                <tr><td>DOCUMENTS <input type="checkbox" class="ml-3"></td></tr>
+                                <tr><td>INSURANCE <input type="checkbox" class="ml-3"></td></tr>
+                                <tr><td>EXPRESS<input type="checkbox" class="ml-3"></td></tr>
+                                <tr><td>PARCEL<input type="checkbox" class="ml-3"></td></tr>
+                            </tbody>
                         </table>
-                    </div> 
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="col-12 text-center">
+                <div class="mt-1"><b>PACKING LIST</b></h5>
+            </div>
+            <div class="row item_table">
+                <div class="col-6">
+                    <table class="table text-center pacling_list">
+                        <thead >
+                            <tr>
+                                <th>SI NO.</th>
+                                <th>TEM DESCRIPTION</th>
+                                <th>QTY</th>
+                                <th>PRICE($)</th>
+                                <th>TOTAL VALUE</th>
+                            </tr>
+                        </thead>
+                       <tbody>
+                        @php
+                            $total_value1 = 0;
+                            $total_item = count($shipment->packages);
+                            if (gettype($total_item/2) == 'integer') {
+                                $left_count = $total_item/2;
+                                $right_count = $left_count;
+                            }
+                            else {
+                                $left_count = intval($total_item/2) + 1;
+                                $right_count = $total_item - $left_count;
+                            }
+                            $left_data = $shipment->packages->take($left_count);
+                            $right_data = $shipment->packages->slice($right_count );
 
 
-        <hr style="margin:0px;padding:0px;">
-        <div class="row   ">
-            <div class="col-12" style="margin-left:20px">
-                <b>Item Details:</b> 
-                @foreach($shipment->packages as $k => $package )  
-                {{ $package->description}} -  {{ $package->quantity}},                                       
-                @endforeach
-            </div> 
-            </div>  
+                        @endphp
 
-            <div class="row  ">
-            <div class="col-12" style="margin-left:20px">
-            <h4 class="content-heading mb-0" style="padding:10px 10px 0 10px; font-weight: 600;color:grey; font-weight: 600;"><b>CUSTOMER DECLARATION</b></h4> 
-            </div> 
-            </div>  
+                        @for ($i = 0; $i< $left_count; $i++)
+                            @php
+                                $item = $left_data[$i];
+                            @endphp
+                            <tr>
+                                <td class="sno">{{$i + 1}}</td>
+                                <td>{{$item->description}}</td>
+                                <td>{{$item->quantity}}</td>
+                                <td>{{$item->unit_price}}</td>
+                                <td>{{$item->subtotal}}</td>
 
-            <div class="row  ">
-                <div class="col-12" style="margin-left:20px; color:black">
-                    <p class="mb-0">
-                        <b>Note:</b> Any complaints arising against this consignment should be reported within seven days. Complaints will not be entertained after 7 days of delivery date.
-                            Maximum payback for total lost will be Dhs.20/- per Kilogram. Total cargo value should not exceed Rs.20,000/-. BEST EXPRESS CARGO LLC is not responsible for any damages of 
-                            fragile (glass etc.) items and shipment delay occurring due to the formalities of Government/Air/Sea authorities. We request our customers to cooperate with us.
-                    </p>     
-                    <p>I, {{ Str::title($shipment->sender->name) }} holder of {{$shipment->receiver->identification_type}}  number: {{$shipment->receiver->identification_number}} hereby declare that all the above said items are my personal effects/home appliances sending  to {{ Str::title($shipment->receiver->name) }}
-                        through BEST EXPRESS CARGO LLC, P O BOX.69190, Dubai, United Arab Emirates vide their waybill number : 5000 which is sent as the unaccompanied baggage of an international passenger.
+                            </tr>
+                            @php
+                               $total_value1 += $item->subtotal
+                            @endphp
+                        @endfor
+
+
+
+
+                       </tbody>
+                    </table>
+                </div>
+                <div class="col-6"  style="margin-left: -24px;">
+                    <table class="table text-center pacling_list" style="border-left: solid">
+                        <thead >
+                            <tr>
+                                <th>SI NO.</th>
+                                <th>TEM DESCRIPTION</th>
+                                <th>QTY</th>
+                                <th>PRICE($)</th>
+                                <th>TOTAL VALUE</th>
+                            </tr>
+                        </thead>
+                       <tbody>
+                        @php
+                            $total_value2 = 0;
+                            $total_item = count($shipment->packages);
+                            if (gettype($total_item/2) == 'integer') {
+                                $left_count = $total_item/2;
+                                $right_count = $left_count;
+                            }
+                            else {
+                                $left_count = intval($total_item/2) + 1;
+                                $right_count = $total_item - $left_count;
+                            }
+                            $left_data = $shipment->packages->take($left_count);
+                            $right_data = $shipment->packages->slice($right_count );
+
+
+                        @endphp
+                            @for ($i = $left_count; $i< $total_item; $i++)
+                            @php
+                                $item = $right_data[$i];
+                            @endphp
+                            <tr>
+                                <td class="sno">{{$i + 1}}</td>
+                                <td>{{$item->description}}</td>
+                                <td>{{$item->quantity}}</td>
+                                <td>{{$item->unit_price}}</td>
+                                <td>{{$item->subtotal}}</td>
+
+                            </tr>
+                            @php
+                               $total_value2 += $item->subtotal
+                            @endphp
+                        @endfor
+
+
+
+                            <tr>
+                                <td colspan="4" class="text-center"><b>TOTAL CIF VALUE IN USD </b></td>
+                                <td ><b>${{$total_value1 + $total_value2}}</b></td>
+                            </tr>
+                       </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 text-center" style="height: 30px; " >
+                    <b >Total Values are Customs purpose only, not for commercial purpose REASON : GIFT</b>
+                    <hr style="height: 3px;background-color: black; 0;opacity: inherit;">
+                </div>
+
+            </div>
+            <div class="row mt-5 footer">
+                <div class="col-8">
+                    <div class="col-10 ml-4" style="margin-top: -25px;">
+                        <p><b>CONSIGNOR DECLARATION AND AUTHORISATION</b></p>
+                        I <b>MOHAMED BINU ASHIM , AL AIN , UAE , MOB: 0558893088 , ID 784-1991872532</b>
+                        <p>
+                            hereby declare that the Courier gift parcel being sent by me through ARAFA CARGO LLC / DIVISION OF
+                            MAZYOONA MUSCAT TRADING does not contain any Dangerous / Hazardous goods as per IATA
+                            regulations and does not carry cash/ currency
                         </p>
-                </div>  
-            </div>
-            <div class="row  ">
-            <div class="col-12" style="margin-right:20px; color:black;text-align:right;"> Goods received in good condition</div>
+                        <p>
+                            I do here by declare that the goods sending by me include only Bonafide commercial samples prototypes /
+                            documents and bonafide gift articles for personal use which are not subject to any prohibition or restriction on
+                            their import to India.
+                        </p>
+                        <p>
+                            I do here by declare that the particulars of contain are in regulation with the International courier laws of the
+                            land at the consignee point also.
+                        </p>
+                        <p>
+                            I do here by declare that the food items contained in the consignment are within the period of validity
+                            prescribed under low.
+                        </p>
+                        <p>
+                            I do here by appointed and authorize M/s Mazyoona Muscut Trading as my authorized courier agent to do the
+                            courier baggage clearance at India on behalf of me.
+                        </p>
+                        <b>SIGNATURE:</b>
+                    </div>
+                </div>
+                <div class="col-1 mb-4 d-flex align-items-center justify-content-center" style="background: gray; color:#fff; height:300px;">
+                    <h1>POD</h1>
+                </div>
+                <div class="col-3 mb-4 " >
+                    <table class="table">
+                        <tr>
+                            <td><p>
+                                I’the undersigned, on behalf of the above sender/shipper
+                                acknowledge the receipt of the goods in good condition.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>RECEIVER’S NAME</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>DATE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TIME:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AM / PM:</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>SIGNATURE</b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
             </div>
 
-        
-
-            <div class="row " style="margin-top:50px;margin-bottom:50px;">
-            <div class="col-6"style=" padding-left: 50px;color:black; float:left;">Signature of the shipper/sender<br><b> {{ Str::title($shipment->sender->name) }}</b></div>
-            <div class="col-6" style=" text-align:right;color:black;">Signature of the consignee/receiver<br><b> {{ Str::title($shipment->receiver->name) }}</b></div>
-            </div>
-            <hr style="margin:0px;padding:0px;">
-            <p style="text-align:center; color:black;margin:0px;padding:0px;">For Online Tracking https://bestexpressonline.com<p> 
-
-            </div> 
-        </div> 
-         
+        </div>
     </div>
-            <div class="text-center" id="print_button" >
-                <button type="button" onclick="window.print()" class="print">Print</button>
-            </div>
-     
+    <script>
+        JsBarcode("#barcode", "<?php echo $shipment->booking_number ?>",{
+            width: 2,
+            height: 70
+        });
 
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
-
 </html>

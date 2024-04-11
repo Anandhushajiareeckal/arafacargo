@@ -14,7 +14,7 @@ use App\Models\Statuses;
 use App\Models\Staffs;
 use App\Models\Boxes;
 use App\Models\Ships;
-use App\Models\ShipsBookings; 
+use App\Models\ShipsBookings;
 use App\Models\ShipmentsStatuses;
 use App\Models\StatusesBookingNumber;
 use App\Models\BoxesStatuses;
@@ -23,17 +23,17 @@ use Illuminate\Support\Facades\Log;
 
 class AddToShipController extends BaseController
 {
-     
+
     public function addbookingToShip(Request $request) {
-        
-        $ships = Ships::with('createdBy')->with('shipmentStatus')->findOrFail($request->ship_id); 
+
+        $ships = Ships::with('createdBy')->with('shipmentStatus')->findOrFail($request->ship_id);
         $bookings = Shipments::where('branch_id', branch()->id)->where('ship_id',  NULL)->get();
-        
+
         $ship_bookingsList =  Boxes::with('shipment.shipmentStatus','boxStatuses.status')->whereHas('shipment',function ($query) {
                                         $query->where('branch_id', branch()->id);
                                     })->where('is_transfer',0)->where('is_shipment',1)
                                     ->where('ship_id',$request->ship_id)->get();
-        
+
         // ShipsBookings::with('shipment','shipment.boxes')->with('ship')
         //                         ->where('ship_id', $request->ship_id)
         //                         ->whereHas('shipment.shipmentStatus', function ($q) {
@@ -46,7 +46,7 @@ class AddToShipController extends BaseController
                                 $query->where('branch_id', branch()->id);
                                 $query->where('ship_id', NULL);
                             })->where('is_transfer',0)->where('is_shipment',0);
-    
+
         $boxes = $querys->get();
         return view('branches.addtoship.addbooking', compact('bookings','ships', 'ship_bookingsList','shipId','shipments','boxes'));
     }
@@ -60,7 +60,7 @@ class AddToShipController extends BaseController
         $ships->shipment_status = $request->status_id;
         $ships->estimated_delivery = $request->estimated_delivery;
         $ships->created_date = $request->created_date;
-        
+
         $ships->save();
 
         $booking_ids = $request->booking_ids;
@@ -70,28 +70,129 @@ class AddToShipController extends BaseController
                 $shipsbooking->ship_id = $request->ship_id;
                 $shipsbooking->booking_id =  $booking_id;
                 $shipsbooking->save();
-                Shipments::where('id', $booking_id)->update(['ship_id' => $request->ship_id, 'status_id'=> $request->status_id]);           
+                Shipments::where('id', $booking_id)->update(['ship_id' => $request->ship_id, 'status_id'=> $request->status_id]);
             }
-        }        
+        }
         toastr()->success(section_title() . ' Updated Successfully');
         return route('branch.ships.addbookingtoship', array('ship_id' => $request->ship_id));
 
     }
 
+    public function customermanifestprint(Request $request){
+
+        $ships = Ships::with('createdBy')->with('shipmentStatus')->findOrFail($request->ship_id);
+        $bookings = Shipments::where('branch_id', branch()->id)->where('ship_id',  NULL)->get();
+
+        $ship_bookingsList =  Boxes::with('shipment.shipmentStatus','boxStatuses.status')->whereHas('shipment',function ($query) {
+                                        $query->where('branch_id', branch()->id);
+                                    })->where('is_transfer',0)->where('is_shipment',1)
+                                    ->where('ship_id',$request->ship_id)->get();
+
+        // ShipsBookings::with('shipment','shipment.boxes')->with('ship')
+        //                         ->where('ship_id', $request->ship_id)
+        //                         ->whereHas('shipment.shipmentStatus', function ($q) {
+        //                             $q->where('shipments.branch_id',branch()->id);
+        //                         })
+        //                         ->get();
+        // dd($ship_bookingsList[0]);
+        $shipId = $request->ship_id;
+        $shipments = Shipments::with('driver')->where('branch_id',branch()->id)->latest()->orderBy('created_at', 'desc')->get();
+        $querys =Boxes::with('shipment.driver','shipment.boxes')->whereHas('shipment',function ($query) {
+                                $query->where('branch_id', branch()->id);
+                                $query->where('ship_id', NULL);
+                            })->where('is_transfer',0)->where('is_shipment',0);
+
+        $boxes = $querys->get();
+        return view('branches.addtoship.customermanifestprint', compact('bookings','ships', 'ship_bookingsList','shipId','shipments','boxes'));
+    }
+
+    public function deliverylistptint(Request $request){
+
+        $ships = Ships::with('createdBy')->with('shipmentStatus')->findOrFail($request->ship_id);
+        $bookings = Shipments::where('branch_id', branch()->id)->where('ship_id',  NULL)->get();
+        $ship_bookingsList =  Boxes::with('shipment.shipmentStatus','boxStatuses.status')->whereHas('shipment',function ($query) {
+                                        $query->where('branch_id', branch()->id);
+                                    })->where('is_transfer',0)->where('is_shipment',1)
+                                    ->where('ship_id',$request->ship_id)->get();
+
+        // ShipsBookings::with('shipment','shipment.boxes')->with('ship')
+        //                         ->where('ship_id', $request->ship_id)
+        //                         ->whereHas('shipment.shipmentStatus', function ($q) {
+        //                             $q->where('shipments.branch_id',branch()->id);
+        //                         })
+        //                         ->get();
+        // dd($ship_bookingsList[0]);
+        $shipId = $request->ship_id;
+        $shipments = Shipments::with('driver')->where('branch_id',branch()->id)->latest()->orderBy('created_at', 'desc')->get();
+        $querys =Boxes::with('shipment.driver','shipment.boxes')->whereHas('shipment',function ($query) {
+                                $query->where('branch_id', branch()->id);
+                                $query->where('ship_id', NULL);
+                            })->where('is_transfer',0)->where('is_shipment',0);
+
+        $boxes = $querys->get();
+        $idsss = [];
+        foreach ($ship_bookingsList as $box) {
+            foreach ($bookings as $bookin) {
+                if($box->shipment->booking_number == $bookin->booking_number ) {
+                    $idsss[] = $bookin->id;
+                }
+            }
+        }
+        $delivery_list = [];
+        $z = array_values(array_unique($idsss));
+        foreach ($z as $zz) {
+            $shipment = Shipments::find($zz);
+            if ($shipment) {
+                $delivery_list[] = $shipment;
+            }
+        }
+
+        $shipmentsCollection = collect($delivery_list);
+        return view('branches.addtoship.deliverylistptint', compact('bookings','ships', 'ship_bookingsList','shipId','shipments','boxes', 'delivery_list'));
+    }
+
+    public function packinglistptint(Request $request){
+        $ships = Ships::with('createdBy')->with('shipmentStatus')->findOrFail($request->ship_id);
+        $bookings = Shipments::where('branch_id', branch()->id)->where('ship_id',  NULL)->get();
+
+        $ship_bookingsList =  Boxes::with('shipment.shipmentStatus','boxStatuses.status')->whereHas('shipment',function ($query) {
+                                        $query->where('branch_id', branch()->id);
+                                    })->where('is_transfer',0)->where('is_shipment',1)
+                                    ->where('ship_id',$request->ship_id)->get();
+
+        // ShipsBookings::with('shipment','shipment.boxes')->with('ship')
+        //                         ->where('ship_id', $request->ship_id)
+        //                         ->whereHas('shipment.shipmentStatus', function ($q) {
+        //                             $q->where('shipments.branch_id',branch()->id);
+        //                         })
+        //                         ->get();
+        // dd($ship_bookingsList[0]);
+
+        $shipId = $request->ship_id;
+        $shipments = Shipments::with('driver')->where('branch_id',branch()->id)->latest()->orderBy('created_at', 'desc')->get();
+        $querys =Boxes::with('shipment.driver','shipment.boxes')->whereHas('shipment',function ($query) {
+                                $query->where('branch_id', branch()->id);
+                                $query->where('ship_id', NULL);
+                            })->where('is_transfer',0)->where('is_shipment',0);
+
+        $boxes = $querys->get();
+        return view('branches.addtoship.packinglistptint', compact('bookings','ships', 'ship_bookingsList','shipId','shipments','boxes'));
+    }
+
     public function updatebookingtoship(Request $request) {
         $ships = Ships::findOrFail($request->ship_id);
         $ships->tracking_url = $request->tracking_url;
-        $ships->shipment_status = $request->status_id; 
-        $ships->created_date = $request->created_date; 
+        $ships->shipment_status = $request->status_id;
+        $ships->created_date = $request->created_date;
         $ships->save();
         toastr()->success(section_title() . ' Updated Successfully');
- 
+
         return  redirect()->route('branch.ships.addbookingtoship', array('ship_id' => $request->ship_id));
-        
+
     }
 
     public function multiUpdatebookingtoship(Request $request) {
-        
+
         $shipsIds = explode(",",$request->shipIds);
         $shipmentIds = explode(",",$request->shipmentIds);
         $boxesvals = explode(",",trim($request->selectedBoxId,","));
@@ -106,24 +207,24 @@ class AddToShipController extends BaseController
         //     $checkTranssfered = StatusesBookingNumber::where('status_id',17)->where('booking_id',$shipmentId)->first();
         //     if(empty($checkTranssfered)) {
         //         $ships = new StatusesBookingNumber();
-        //         $ships->status_id = $request->status_id; 
-        //         $ships->booking_id = $shipmentId; 
-        //         $ships->created_at = $request->created_date; 
+        //         $ships->status_id = $request->status_id;
+        //         $ships->booking_id = $shipmentId;
+        //         $ships->created_at = $request->created_date;
         //         $ships->save();
 
         //         $shipments = Shipments::findOrFail($shipmentId);
-        //         $shipments->status_id = $request->status_id; 
-        //         $shipments->created_date = $request->created_date; 
+        //         $shipments->status_id = $request->status_id;
+        //         $shipments->created_date = $request->created_date;
         //         $shipments->save();
         //     } else {
         //         return response()->json(['success'=>'Already Transferred Item.']);
         //     }
         // }
-        
+
         // toastr()->success(section_title() . ' Updated Successfully');
-    
+
         // return response()->json(['success'=>'Status Updated Successfully']);
-        
+
     }
 
     public function boxStatusUpdatetoship(Request $request) {
@@ -137,7 +238,7 @@ class AddToShipController extends BaseController
             }
         }
         toastr()->success('Status Updated Successfully');
-    
+
         return redirect()->route('branch.ships.addbookingtoship', array('ship_id' => $request->ship_id));
     }
 
@@ -155,7 +256,7 @@ class AddToShipController extends BaseController
     }
 
     public function addMoreBookingtoship(Request $request) {
-        $ships = Ships::with('createdBy')->with('shipmentStatus')->findOrFail($request->ship_id); 
+        $ships = Ships::with('createdBy')->with('shipmentStatus')->findOrFail($request->ship_id);
         $bookings = Shipments::where('branch_id', branch()->id)->where('ship_id',  NULL)->get();
         $ship_bookingsList =  Boxes::with('shipment.shipmentStatus','boxStatuses.status')->whereHas('shipment',function ($query) {
                                             $query->where('branch_id', branch()->id);
@@ -169,7 +270,7 @@ class AddToShipController extends BaseController
         $shipsbooking->ship_id = $request->ship_id;
         $shipsbooking->booking_id =  $request->booking_id;
         $shipsbooking->save();
-        Shipments::where('id', $request->booking_id)->update(['ship_id' => $request->ship_id, 'status_id'=> $request->ship_status]);        
+        Shipments::where('id', $request->booking_id)->update(['ship_id' => $request->ship_id, 'status_id'=> $request->ship_status]);
         toastr()->success('Booking Added Successfully to the Shipment.');
         return  redirect()->route('branch.ships.addMoreBookingtoship', array('ship_id' => $request->ship_id));
     }
@@ -199,7 +300,7 @@ class AddToShipController extends BaseController
         $hidSelectLists = explode(",",$request->hidSelectList);
         Boxes::where('is_shipment',0)->whereIn('id',$hidSelectLists)->update(['is_select'=>0]);
         $boxes = Boxes::whereIn('id',$boxIds)->where('is_shipment',0)->update(['is_select'=>1]);
-        
+
         $querys =Boxes::with('shipment.driver','shipment.boxes')->whereHas('shipment',function ($query) {
             $query->where('branch_id', branch()->id);
             $query->where('ship_id', NULL);
@@ -305,5 +406,5 @@ class AddToShipController extends BaseController
 
     }
 
-    
+
 }

@@ -92,7 +92,7 @@ body{
                                         <h4>Basic Info</h4>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" id="bookingNumberSection">
                                             <div class="form-group">
                                                 <label>Booking No.</label>
                                                 <input type="text" name="booking_number"
@@ -676,7 +676,7 @@ body{
 
                                                                 <div class="row pt-2">
 
-                                                                <?php
+                                                                    <?php
                                                                      $normal_weight = $shipment->normal_weight - ( ($shipment->msic_weight) + ($shipment->electronics_weight) + ($shipment->other_weight));
                                                                     ?>
 
@@ -685,8 +685,8 @@ body{
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <div class="">
-                                                                            <!-- <input type="text" name="normal_weight" value="{{$shipment->normal_weight}}" class="form-control tot_wgt1"> -->
-                                                                            <input type="text" name="grand_total_weight" value="{{ $normal_weight }}" class="form-control grand_total_weight" >
+                                                                            {{-- <input type="text" name="normal_weight" value="{{$shipment->normal_weight}}" class="form-control "> --}}
+                                                                            <input type="text" name="grand_total_weight" value="{{ $shipment->grand_total_weight }}" class="form-control " >
 
                                                                         </div>
                                                                     </div>
@@ -747,6 +747,117 @@ body{
                                                                     </div>
 
                                                                 </div>
+
+
+
+
+
+
+
+
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Insurance </label>
+                                                                    </div>
+                                                                    <div class="col-md-2"">
+                                                                        <div class="">
+                                                                            <input type="text" name="insurance"
+                                                                            value="{{$shipment->insurance}}" class="form-control insurance_weight tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_insurance" value="{{$shipment->rate_insurance}}" class="form-control rate_insurance_weight tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_insurance" value="{{$shipment->amount_insurance}}" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>AWB Fee</label>
+                                                                    </div>
+                                                                    <div class="col-md-2"">
+                                                                        <div class="">
+                                                                            <input type="text" name="awbfee"
+                                                                            value="{{$shipment->awbfee}}" class="form-control awbfee tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_awbfee" value="{{$shipment->rate_awbfee}}" class="form-control rate_awbfee tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_awbfee" value="{{$shipment->amount_awbfee}}" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>VAT Amount</label>
+                                                                    </div>
+                                                                    <div class="col-md-2"">
+                                                                        <div class="">
+                                                                            <input type="text" name="vat_amount"
+                                                                            value="{{$shipment->vat_amount}}" class="form-control vat_amount tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_vat_amount" value="{{$shipment->rate_vat_amount}}" class="form-control rate_vat_amount tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_vat_amount" value="{{$shipment->amount_vat_amount}}" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Volume weight</label>
+                                                                    </div>
+                                                                    <div class="col-md-2"">
+                                                                        <div class="">
+                                                                            <input type="text" name="volume_weight"
+                                                                            value="{{$shipment->volume_weight}}" class="form-control volume_weight tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_volume_weight" value="{{$shipment->rate_volume_weight}}" class="form-control rate_volume_weight tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_volume_weight" value="{{$shipment->amount_volume_weight}}" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+
+
+
+
+
+
 
                                                                 {{-- <div class="row pt-2">
                                                                         <div class="col-md-6"  style="text-align:right;">
@@ -1150,6 +1261,155 @@ body{
 @section('scripts')
 
 <script>
+    $(document).ready(function() {
+    // Check if "driver" is already selected initially
+    if ($('#collected_by').val() === 'driver') {
+        toggleBookingNumberInput(true);
+    }
+
+    // Bind change event handler
+    $('#collected_by').change(function() {
+        if ($(this).val() === 'driver') {
+            toggleBookingNumberInput(true);
+        } else {
+            toggleBookingNumberInput(false);
+        }
+    });
+
+    // Function to toggle input readonly property
+    function toggleBookingNumberInput(enable) {
+        $('#bookingNumberSection input[name="booking_number"]').prop('readonly', !enable);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const insurance = document.querySelector('input[name="insurance"]');
+    const rate_insurance = document.querySelector('input[name="rate_insurance"]');
+    const amount_insurance = document.querySelector('input[name="amount_insurance"]');
+
+    const awbfee = document.querySelector('input[name="awbfee"]');
+    const rate_awbfee = document.querySelector('input[name="rate_awbfee"]');
+    const amount_awbfee = document.querySelector('input[name="amount_awbfee"]');
+
+    const vat_amount = document.querySelector('input[name="vat_amount"]');
+    const rate_vat_amount = document.querySelector('input[name="rate_vat_amount"]');
+    const amount_vat_amount = document.querySelector('input[name="amount_vat_amount"]');
+
+    const volume_weight = document.querySelector('input[name="volume_weight"]');
+    const rate_volume_weight = document.querySelector('input[name="rate_volume_weight"]');
+    const amount_volume_weight = document.querySelector('input[name="amount_volume_weight"]');
+
+    const normal_weight = document.querySelector('input[name="normal_weight"]');
+
+    const grand_total_weight = document.querySelector('input[name="grand_total_weight"]');
+    const electronics_weight = document.querySelector('input[name="electronics_weight"]');
+    const msic_weight = document.querySelector('input[name="msic_weight"]');
+
+
+
+    function multiplyInsurance() {
+        const val1 = parseFloat(insurance.value);
+        const val2 = parseFloat(rate_insurance.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_insurance.value =result.toFixed(0);
+            }
+            else{
+                amount_insurance.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
+    function multiplyVolume() {
+        const val1 = parseFloat(volume_weight.value);
+        const val2 = parseFloat(rate_volume_weight.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_volume_weight.value =result.toFixed(0);
+            }
+            else{
+                amount_volume_weight.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
+    function multiplyAwbFee() {
+        const val1 = parseFloat(awbfee.value);
+        const val2 = parseFloat(rate_awbfee.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_awbfee.value =result.toFixed(0);
+            }
+            else{
+                amount_awbfee.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
+    function multiplyVatAmount() {
+        const val1 = parseFloat(vat_amount.value);
+        const val2 = parseFloat(rate_vat_amount.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_vat_amount.value =result.toFixed(0);
+            }
+            else{
+                amount_vat_amount.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
+    function totalQuantity() {
+        const val1 = parseFloat(insurance.value) || 0;
+        const val2 = parseFloat(volume_weight.value) || 0;
+        const val3 = parseFloat(awbfee.value) || 0;
+        const val4 = parseFloat(vat_amount.value) || 0;
+        const val5 = parseFloat(grand_total_weight.value) || 0;
+        const val6 = parseFloat(electronics_weight.value) || 0;
+        const val7 = parseFloat(msic_weight.value) || 0;
+
+        if ([val1, val2, val3, val4, val5, val6, val7].every(val => !isNaN(val))) {
+            var result = val1 + val2 + val3 + val4 + val5 + val6 + val7;
+            normal_weight.value = result.toFixed(2);
+        }
+
+
+    }
+
+    insurance.addEventListener('input', multiplyInsurance);
+    rate_insurance.addEventListener('input', multiplyInsurance);
+
+    volume_weight.addEventListener('input', multiplyVolume);
+    rate_volume_weight.addEventListener('input', multiplyVolume);
+
+    awbfee.addEventListener('input', multiplyAwbFee);
+    rate_awbfee.addEventListener('input', multiplyAwbFee);
+
+    vat_amount.addEventListener('input', multiplyVatAmount);
+    rate_vat_amount.addEventListener('input', multiplyVatAmount);
+
+    insurance.addEventListener('input', totalQuantity);
+    volume_weight.addEventListener('input', totalQuantity);
+    awbfee.addEventListener('input', totalQuantity);
+    vat_amount.addEventListener('input', totalQuantity);
+    grand_total_weight.addEventListener('input', totalQuantity);
+    electronics_weight.addEventListener('input', totalQuantity);
+    msic_weight.addEventListener('input', totalQuantity);
+});
+
+
 $(document).ready(function() {
     $(window).keydown(function(event){
         if(event.keyCode == 13) {
@@ -1613,28 +1873,51 @@ $("#saveDraft").on('click',function(e){
                     var other_weight = 0;
                     var electronics_weight = 0;
                     var amount_other_weight =0;
+                    // var insurance = 0;
+                    // var awbfee = 0;
+                    // var vat_amount = 0;
+                    // var volume_weight = 0;
+
 
                     normal_weight = isNaN(parseFloat($("input[name='normal_weight_temp']").val())) ? 0 : parseFloat($("input[name='normal_weight_temp']").val());
                     msic_weight = isNaN(parseFloat($("input[name='msic_weight']").val())) ? 0 : parseFloat($("input[name='msic_weight']").val());
                     electronics_weight = isNaN(parseFloat($("input[name='electronics_weight']").val()))? 0: parseFloat($("input[name='electronics_weight']").val());
                     other_weight = isNaN(parseFloat($("input[name='other_weight']").val()))? 0: parseFloat($("input[name='other_weight']").val());
+                    // insurance = isNaN(parseFloat($("input[name='insurance']").val())) ? 0 : parseFloat($("input[name='insurance']").val());
+                    // awbfee = isNaN(parseFloat($("input[name='awbfee']").val())) ? 0 : parseFloat($("input[name='awbfee']").val());
+                    // vat_amount = isNaN(parseFloat($("input[name='vat_amount']").val())) ? 0 : parseFloat($("input[name='vat_amount']").val());
+                    // volume_weight = isNaN(parseFloat($("input[name='volume_weight']").val())) ? 0 : parseFloat($("input[name='volume_weight']").val());
+
 
                     rate_normal_weight = isNaN(parseFloat($("input[name='rate_normal_weight']").val())) ? 0 : parseFloat($("input[name='rate_normal_weight']").val());
                     rate_msic_weight = isNaN(parseFloat($("input[name='rate_msic_weight']").val())) ? 0 : parseFloat($("input[name='rate_msic_weight']").val());
                     rate_electronics_weight = isNaN(parseFloat($("input[name='rate_electronics_weight']").val())) ? 0 : parseFloat($("input[name='rate_electronics_weight']").val());
                     rate_other_weight = isNaN(parseFloat($("input[name='rate_other_weight']").val())) ? 0 : parseFloat($("input[name='rate_other_weight']").val());
+                    // rate_insurance = isNaN(parseFloat($("input[name='rate_insurance']").val())) ? 0 : parseFloat($("input[name='rate_insurance']").val());
+                    // rate_awbfee = isNaN(parseFloat($("input[name='rate_awbfee']").val())) ? 0 : parseFloat($("input[name='rate_awbfee']").val());
+                    // rate_vat_amount = isNaN(parseFloat($("input[name='rate_vat_amount']").val())) ? 0 : parseFloat($("input[name='rate_vat_amount']").val());
+                    // rate_volume_weight = isNaN(parseFloat($("input[name='rate_volume_weight']").val())) ? 0 : parseFloat($("input[name='rate_volume_weight']").val());
 
 
                     amount_normal_weight =  isNaN(normal_weight * rate_normal_weight) ? 0 : normal_weight * rate_normal_weight;
                     amount_msic_weight =  isNaN(msic_weight * rate_msic_weight) ? 0 : msic_weight * rate_msic_weight;
                     amount_electronics_weight =  isNaN(electronics_weight * rate_electronics_weight)? 0 : electronics_weight * rate_electronics_weight;
                     amount_other_weight =  isNaN(other_weight * rate_other_weight)? 0 : other_weight * rate_other_weight;
-                    var elec_mis_oth_wgt =  parseFloat(msic_weight)   + parseFloat(electronics_weight);
+                    // amount_insurance =  isNaN(insurance * rate_insurance) ? 0 : insurance * rate_insurance;
+                    // amount_awbfee =  isNaN(awbfee * rate_awbfee) ? 0 : awbfee * rate_awbfee;
+                    // amount_vat_amount =  isNaN(vat_amount * rate_vat_amount) ? 0 : vat_amount * rate_vat_amount;
+                    // amount_volume_weight =  isNaN(volume_weight * rate_volume_weight) ? 0 : volume_weight * rate_volume_weight;
+                    // var elec_mis_oth_wgt =  parseFloat(msic_weight)   + parseFloat(electronics_weight);
 
                     $("input[name='amount_msic_weight']").val(amount_msic_weight);
                     $("input[name='amount_electronics_weight']").val(amount_electronics_weight);
-                    // $("input[name='grand_total_weight']").val( parseFloat(normal_weight) - parseFloat(elec_mis_oth_wgt));
-                    $("input[name='amount_grand_total']").val( amount_normal_weight + amount_msic_weight + amount_other_weight + amount_electronics_weight);
+
+                    // $("input[name='amount_insurance']").val(amount_insurance);
+                    // $("input[name='amount_awbfee']").val(amount_awbfee);
+                    // $("input[name='amount_vat_amount']").val(amount_vat_amount);
+                    // $("input[name='amount_volume_weight']").val(amount_volume_weight);
+
+                    //$("input[name='amount_grand_total']").val( amount_normal_weight + amount_msic_weight + amount_other_weight + amount_electronics_weight);
                     $("input[name='total_freight']").val( amount_normal_weight + amount_msic_weight + amount_other_weight + amount_electronics_weight);
 
                     $(".grand_total_weight").trigger("keyup");
@@ -1655,32 +1938,48 @@ $("#saveDraft").on('click',function(e){
                 var other_weight = 0;
                 var electronics_weight = 0;
                 var amount_other_weight =0;
+                // var insurance = 0;
+                // var awbfee = 0;
+                // var vat_amount = 0;
+                // var volume_weight = 0;
 
                 normal_weight =  isNaN(parseFloat($("input[name='normal_weight']").val()))? 0 : parseFloat($("input[name='normal_weight']").val());
                 msic_weight = isNaN(parseFloat($("input[name='msic_weight']").val())) ? 0 : parseFloat($("input[name='msic_weight']").val());
                 electronics_weight = isNaN(parseFloat($("input[name='electronics_weight']").val()))? 0: parseFloat($("input[name='electronics_weight']").val());
                 other_weight = isNaN(parseFloat($("input[name='other_weight']").val()))? 0: parseFloat($("input[name='other_weight']").val());
-
+                // insurance = isNaN(parseFloat($("input[name='insurance']").val())) ? 0 : parseFloat($("input[name='insurance']").val());
+                // awbfee = isNaN(parseFloat($("input[name='awbfee']").val())) ? 0 : parseFloat($("input[name='awbfee']").val());
+                // vat_amount = isNaN(parseFloat($("input[name='vat_amount']").val())) ? 0 : parseFloat($("input[name='vat_amount']").val());
+                // volume_weight = isNaN(parseFloat($("input[name='volume_weight']").val())) ? 0 : parseFloat($("input[name='volume_weight']").val());
 
 
                 rate_normal_weight = isNaN(parseFloat($("input[name='rate_normal_weight']").val())) ? 0 : parseFloat($("input[name='rate_normal_weight']").val());
                 rate_msic_weight = isNaN(parseFloat($("input[name='rate_msic_weight']").val())) ? 0 : parseFloat($("input[name='rate_msic_weight']").val());
                 rate_electronics_weight = isNaN(parseFloat($("input[name='rate_electronics_weight']").val())) ? 0 : parseFloat($("input[name='rate_electronics_weight']").val());
                 rate_other_weight = isNaN(parseFloat($("input[name='rate_other_weight']").val())) ? 0 : parseFloat($("input[name='rate_other_weight']").val());
-
+                // rate_insurance = isNaN(parseFloat($("input[name='rate_insurance']").val())) ? 0 : parseFloat($("input[name='rate_insurance']").val());
+                // rate_awbfee = isNaN(parseFloat($("input[name='rate_awbfee']").val())) ? 0 : parseFloat($("input[name='rate_awbfee']").val());
+                // rate_vat_amount = isNaN(parseFloat($("input[name='rate_vat_amount']").val())) ? 0 : parseFloat($("input[name='rate_vat_amount']").val());
+                // rate_volume_weight = isNaN(parseFloat($("input[name='rate_volume_weight']").val())) ? 0 : parseFloat($("input[name='rate_volume_weight']").val());
 
                 amount_normal_weight =  isNaN(normal_weight * rate_normal_weight) ? 0 : normal_weight * rate_normal_weight;
                 amount_msic_weight =  isNaN(msic_weight * rate_msic_weight) ? 0 : msic_weight * rate_msic_weight;
                 amount_electronics_weight =  isNaN(electronics_weight * rate_electronics_weight)? 0 : electronics_weight * rate_electronics_weight;
                 amount_other_weight =  isNaN(other_weight * rate_other_weight)? 0 : other_weight * rate_other_weight;
-
+                // amount_insurance =  isNaN(insurance * rate_insurance) ? 0 : insurance * rate_insurance;
+                // amount_awbfee =  isNaN(awbfee * rate_awbfee) ? 0 : awbfee * rate_awbfee;
+                // amount_vat_amount =  isNaN(vat_amount * rate_vat_amount) ? 0 : vat_amount * rate_vat_amount;
+                // amount_volume_weight =  isNaN(volume_weight * rate_volume_weight) ? 0 : volume_weight * rate_volume_weight;
 
 
                 var elec_mis_oth_wgt =  parseFloat(msic_weight)  + parseFloat(electronics_weight)
 
                 $("input[name='amount_msic_weight']").val(amount_msic_weight);
                 $("input[name='amount_electronics_weight']").val(amount_electronics_weight);
-
+                // $("input[name='amount_insurance']").val(amount_insurance);
+                // $("input[name='amount_awbfee']").val(amount_awbfee);
+                // $("input[name='amount_vat_amount']").val(amount_vat_amount);
+                // $("input[name='amount_volume_weight']").val(amount_volume_weight);
                 // $("input[name='grand_total_weight']").val( parseFloat(normal_weight) - parseFloat(elec_mis_oth_wgt));
 
 

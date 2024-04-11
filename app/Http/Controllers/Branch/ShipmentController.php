@@ -481,7 +481,6 @@ class ShipmentController extends BaseController
                     $shipments->discount = $request->discount;
                     $shipments->normal_weight = $request->normal_weight;
 
-
                     $shipments->rate_normal_weight = $request->rate_normal_weight;
                     $shipments->amount_normal_weight = $request->amount_normal_weight;
                     $shipments->electronics_weight = $request->electronics_weight;
@@ -495,6 +494,19 @@ class ShipmentController extends BaseController
                     $shipments->grand_total_weight = $request->grand_total_weight;
                     $shipments->rate_grand_total = $request->rate_grand_total;
                     $shipments->amount_grand_total = $request->amount_grand_total;
+
+                    $shipments->insurance = $request->insurance;
+                    $shipments->rate_insurance = $request->rate_insurance;
+                    $shipments->amount_insurance = $request->amount_insurance;
+                    $shipments->awbfee = $request->awbfee;
+                    $shipments->rate_awbfee = $request->rate_awbfee;
+                    $shipments->amount_awbfee = $request->amount_awbfee;
+                    $shipments->vat_amount = $request->vat_amount;
+                    $shipments->rate_vat_amount = $request->rate_vat_amount;
+                    $shipments->amount_vat_amount = $request->amount_vat_amount;
+                    $shipments->volume_weight = $request->volume_weight;
+                    $shipments->rate_volume_weight = $request->rate_volume_weight;
+                    $shipments->amount_volume_weight = $request->amount_volume_weight;
 
 
 
@@ -839,8 +851,10 @@ class ShipmentController extends BaseController
             $datas[$key]['boxes'] = (!empty($ship->box_name) ) ? $ship->box_name : '';
 
             if(!empty($ship->boxStatuses)) {
-
-                $collectedType = collect($ship->shipment->shipmentStatus)->where('statuses_id', 15)->last();
+                // dd(collect($ship->shipment->shipmentStatus)->where('statuses_id', 15)->last());
+                if($ship->shipment ){
+                    $collectedType = collect($ship->shipment->shipmentStatus)->where('statuses_id', 15)->last();
+                }
                 $receivedType = collect($ship->boxStatuses)->where('status_id', 1)->last();
                 $bookedType = collect($ship->boxStatuses)->where('status_id', 2)->last();
                 $forwardedType = collect($ship->boxStatuses)->where('status_id', 3)->last();
@@ -879,7 +893,9 @@ class ShipmentController extends BaseController
                 $datas[$key]['shortDate'] = (!empty($shortType)) ?  date('d-m-Y',strtotime($shortType->created_at)) : '' ;
 
                 $status = collect($ship->boxStatuses)->last();
-                $shipmentStatus = collect($ship->shipment->shipmentStatus)->last();
+                if($ship->shipment){
+                    $shipmentStatus = collect($ship->shipment->shipmentStatus)->last();
+                }
                 $datas[$key]['lastStatus'] = (!empty($status)) ? $status->status->name : $shipmentStatus->status->name ;
 
                 if($datas[$key]['lastStatus'] == "Shipment on hold") {
@@ -889,7 +905,12 @@ class ShipmentController extends BaseController
                 } else {
                     $datas[$key]['style'] = 'background-color:none;';
                 }
-                $datas[$key]['booking_number'] = $ship->shipment->booking_number;
+                if($ship->shipment){
+                    $datas[$key]['booking_number'] = $ship->shipment->booking_number;
+                }
+                else{
+                    $datas[$key]['booking_number'] = 'null';
+                }
                 $datas[$key]['shipment_id'] = $getShip->shipment_id;
                 $datas[$key]['full_name'] = $getShip->createdBy->full_name;
                 $datas[$key]['view'] = '<a href="javascript:void(0)" class="edit btn btn-secondary btn-sm detailedView">View</a>';

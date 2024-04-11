@@ -64,7 +64,7 @@
                                                 <option value="active"  @if($staff->staff_status=='active') selected @endif>Active</option>
                                                     <option value="inactive"  @if($staff->branch_id=='inactive') selected @endif>Inactive</option>
                                                     <option value="cancel"  @if($staff->branch_id=='cancel') selected @endif>Cancel</option>
-                                         
+
                                             </select>
                                         </div>
 
@@ -74,30 +74,33 @@
                                                    placeholder="Enter Visa Expiry Date" value="{{old('visa_expiry_date',$staff->visa_expiry_date)}}">
                                         </div>
 
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label for="propertyname">Finger capture</label><br>
-                                            <input type="submit" id="btnCapture" value="Capture" class=" capturebuttonpadding btn btn-primary btn-sm submit_buttom_padding" onclick="return Capture()" />                                           
+                                            <input type="submit" id="btnCapture" value="Capture" class=" capturebuttonpadding btn btn-primary btn-sm submit_buttom_padding" onclick="return Capture()" />
 
                                             <img id="imgFinger" width="145px" height="188px" Falt="Finger Image" class="padd_top" />
 
-                                        </div>
+                                        </div> --}}
 
 
                                         <div class="form-group">
-                                            <label for="propertyname">Document Type</label> 
-                                            <select class="form-control" name="document_type_id" required> 
-                                                <option value="0">Select</option> 
+                                            <label for="propertyname">Document Type</label>
+                                            <select class="form-control" name="document_type_id" required>
+                                                <option value="0">Select</option>
                                                     @foreach($documentTypes as $documentType)
-                                                        <option value="{{$documentType->id}}" @if($staff->document_type_id == $documentType->id) selected @endif>{{$documentType->name}}</option> 
+                                                        <option value="{{$documentType->id}}" @if($staff->document_type_id == $documentType->id) selected @endif>{{$documentType->name}}</option>
                                                     @endforeach
                                             </select>
-                                        </div> 
+                                        </div>
                                         <div class="form-group">
                                         <label for="">Upload Document</label>
                                         <input type="file" class="form-control" name="document_path" id="document_path" placeholder="document">
-                                        </div> 
+                                        </div>
 
-
+                                        <div class="form-group">
+                                            <label for="propertyname">Dcoument ID</label>
+                                            <input type="text" class="form-control" name="document_number"  value="{{old('document_number',$staff->document_number)}}" required>
+                                        </div>
 
 
 
@@ -107,7 +110,7 @@
                                         <div class="form-group">
                                             <label for="">Upload Photo</label>
                                             <input type="file" class="form-control" name="profile_photo" id="profile_photo" placeholder="document">
-                                        </div> 
+                                        </div>
 
                                         <div class="form-group">
                                             <label for="propertyname">Staff ID</label>
@@ -142,47 +145,44 @@
                                             </select>
                                         </div>
 
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label for="propertyname">FingerPrint Mandatory</label>
-                                            <select class="form-control" name="fingerprint_mandatory" required> 
-                                                    <option value="yes"  @if($staff->fingerprint_mandatory=='yes') selected @endif>yes</option> 
-                                                    <option value="no" @if($staff->fingerprint_mandatory=='no') selected @endif>No</option> 
+                                            <select class="form-control" name="fingerprint_mandatory" required>
+                                                    <option value="yes"  @if($staff->fingerprint_mandatory=='yes') selected @endif>yes</option>
+                                                    <option value="no" @if($staff->fingerprint_mandatory=='no') selected @endif>No</option>
                                             </select>
-                                        </div> 
-                                     
+                                        </div> --}}
+
                                         <div class="form-group">
                                             <label for="propertyname">Date of Appointment</label>
                                             <input type="date" class="form-control" name="appointment_date" value="{{old('appointment_date',$staff->appointment_date)}}" required>
-                                        </div> 
+                                        </div>
 
 
                                         <div class="form-group">
                                             <label for="propertyname">Type of Visa</label>
-                                            <select class="form-control" name="visa_type" required> 
-                                                <option value="0">Select</option> 
+                                            <select class="form-control" name="visa_type" required>
+                                                <option value="0">Select</option>
                                                     @foreach($visaTypes as $visaType)
-                                                        <option value="{{$visaType->id}}" @if($staff->visa_type_id == $visaType->id) selected @endif>{{$visaType->name}}</option> 
+                                                        <option value="{{$visaType->id}}" @if($staff->visa_type_id == $visaType->id) selected @endif>{{$visaType->name}}</option>
                                                     @endforeach
                                             </select>
-                                        </div> 
+                                        </div>
 
                                         <div class="form-group">
                                             <label for="propertyname">Visa Status</label>
-                                            <select class="form-control" name="visa_status" required> 
-                                                    <option value="1" @if($staff->visa_status == "1") selected @endif>Active</option> 
-                                                    <option value="0" @if($staff->visa_status == "0") selected @endif>Inactive</option> 
+                                            <select class="form-control" name="visa_status" required>
+                                                    <option value="1" @if($staff->visa_status == "1") selected @endif>Active</option>
+                                                    <option value="0" @if($staff->visa_status == "0") selected @endif>Inactive</option>
                                             </select>
-                                        </div> 
+                                        </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group" style="display: none">
                                             <label for="propertyname">Daily Wage</label>
                                             <input type="text" class="form-control" name="daily_wage" value="{{old('daily_wage',$staff->daily_wage)}}" required>
-                                        </div> 
-
-                                        <div class="form-group">
-                                            <label for="propertyname">Dcoument ID</label>
-                                            <input type="text" class="form-control" name="document_number"  value="{{old('document_number',$staff->document_number)}}" required>
                                         </div>
+
+
 
 
 
@@ -208,7 +208,7 @@
                                                         <input type="text" value="" id="txtImageInfo" class="form-control" />
                                                     </td>
                                                 </tr>
-                                                
+
                                                 <tr class="hide">
                                                     <td>
                                                         Base64Encoded ISO Template
@@ -290,7 +290,7 @@
                                                         <input type="text" value="" id="txtPidTs" class="form-control" />
                                                     </td>
                                                 </tr>
-                                            </table>                   
+                                            </table>
                                         </div>
 
 

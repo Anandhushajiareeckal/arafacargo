@@ -56,7 +56,7 @@ body{
                                         </div> --}}
 
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" id="bookingNumberSection">
                                             <div class="form-group">
                                                 <label>Booking No.</label>
                                                 <input type="text" name="booking_number"
@@ -706,6 +706,16 @@ body{
 
 @section('scripts')
     <script>
+        $(document).ready(function() {
+            $('#collected_by').change(function() {
+                if ($(this).val() === 'driver') {
+                    $('#bookingNumberSection input[name="booking_number"]').prop('readonly', false);
+                } else {
+                    $('#bookingNumberSection input[name="booking_number"]').prop('readonly', true);
+                }
+            });
+        });
+
         $(function () {
             // validation needs name of the element
             // initialize after multiselect
@@ -837,7 +847,7 @@ body{
 
 
 
-                 
+
 
 
 

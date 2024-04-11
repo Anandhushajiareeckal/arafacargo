@@ -43,7 +43,7 @@ class ShipmentController extends BaseController
             $shipments = $shipments->orWhere('booking_number', 'like', '%' . $keyword . '%');
 
             $shipments = $shipments->orderBy('created_at', 'desc')->get();
-            
+
         } else {
             $shipments = Shipments::with('driver')->latest()->orderBy('created_at', 'desc')->get();
         }
@@ -59,7 +59,7 @@ class ShipmentController extends BaseController
      */
     public function create()
     {
-       
+
 
     }
 
@@ -71,7 +71,7 @@ class ShipmentController extends BaseController
      */
     public function store(Request $request)
     {
-        
+
     }
 
     /**
@@ -90,8 +90,8 @@ class ShipmentController extends BaseController
         $origin_offices = Branches::all();
         $countries = Countries::all();
         $drivers = Drivers::whereActive(true)->get();
-        return view('superadmin.shipments.show', compact('shipment','boxes', 'agencies', 'origin_offices', 'countries','drivers')); 
-        
+        return view('superadmin.shipments.show', compact('shipment','boxes', 'agencies', 'origin_offices', 'countries','drivers'));
+
     }
 
     /**
@@ -102,7 +102,7 @@ class ShipmentController extends BaseController
      */
     public function edit($id)
     {
-        
+
 
     }
 
@@ -115,7 +115,7 @@ class ShipmentController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        
+
     }
 
 
@@ -128,8 +128,8 @@ class ShipmentController extends BaseController
 
     public function additemsstore(Request $request)
     {
- 
-         
+
+
     }
 
 
@@ -142,12 +142,12 @@ class ShipmentController extends BaseController
     public function destroy($id)
     {
         //
-    } 
-    
+    }
+
     public function reportList(Request $request) {
         $statuses = Statuses::where('status',1)->get();
         $branches = Branches::get();
-        
+
         $query = Boxes::with('shipment.driver','shipment.boxes','shipment.shipmentStatus','shipment.sender','shipment.receiver.address','shipment.receiver.address.state','boxStatuses.status','shipment.boxes.boxStatuses','shipment.boxes.boxStatuses.status','shipment.agency','shipment.branch')->where('is_shipment',1);
         $ships = $query->orderBy('id','desc')->get();
         $datas = [];
@@ -160,7 +160,7 @@ class ShipmentController extends BaseController
             $datas[$key]['awb_number'] = (!empty($getShip->awb_number) ) ? $getShip->awb_number : '';
             $datas[$key]['createdBy'] = (!empty($getShip->awb_number) ) ? $getShip->awb_number : '';
             $datas[$key]['boxes'] = (!empty($ship->box_name) ) ? $ship->box_name : '';
-            
+
             if(!empty($ship->shipment->bookingNumberStatus)) {
                 $collectedType = collect($ship->shipment->shipmentStatus)->where('statuses_id', 15)->first();
                 $receivedType = collect($ship->boxStatuses)->where('status_id', 1)->last();
@@ -193,12 +193,12 @@ class ShipmentController extends BaseController
                     $datas[$key]['pendingDate'] = (!empty($pendingType)) ?  date('d-m-Y',strtotime($pendingType->created_at)) : '' ;
                     $datas[$key]['moreTrackingDate'] = (!empty($moreTrackingType)) ?  date('d-m-Y',strtotime($moreTrackingType->created_at)) : '' ;
                     $datas[$key]['transferDate'] = (!empty($transferType)) ?  date('d-m-Y',strtotime($transferType->created_at)) : '' ;
-    
+
                     $status = collect($ship->boxStatuses)->last();
                     $shipmentStatus = collect($ship->shipment->shipmentStatus)->last();
                     $datas[$key]['lastStatus'] = (!empty($status)) ? $status->status->name : $shipmentStatus->status->name ;
-    
-                    if($datas[$key]['lastStatus'] == "Shipment on hold") { 
+
+                    if($datas[$key]['lastStatus'] == "Shipment on hold") {
                         $datas[$key]['style'] = 'background-color:#ffdb00;';
                     } else if($datas[$key]['lastStatus'] == "Pending") {
                         $datas[$key]['style'] = 'background-color:#ec1616e6;';
@@ -231,7 +231,7 @@ class ShipmentController extends BaseController
                 $datas[$key]['awb_number'] = (!empty($getShip->awb_number) ) ? $getShip->awb_number : '';
                 $datas[$key]['createdBy'] = (!empty($getShip->awb_number) ) ? $getShip->awb_number : '';
                 $datas[$key]['boxes'] = (!empty($ship->box_name) ) ? $ship->box_name : '';
-                
+
                 if(!empty($ship->shipment->bookingNumberStatus)) {
                     $collectedType = collect($ship->shipment->shipmentStatus)->where('statuses_id', 15)->last();
                     $receivedType = collect($ship->boxStatuses)->where('status_id', 1)->last();
@@ -264,12 +264,12 @@ class ShipmentController extends BaseController
                     $datas[$key]['pendingDate'] = (!empty($pendingType)) ?  date('d-m-Y',strtotime($pendingType->created_at)) : '' ;
                     $datas[$key]['moreTrackingDate'] = (!empty($moreTrackingType)) ?  date('d-m-Y',strtotime($moreTrackingType->created_at)) : '' ;
                     $datas[$key]['transferDate'] = (!empty($transferType)) ?  date('d-m-Y',strtotime($transferType->created_at)) : '' ;
-                    
+
                     $status = collect($ship->boxStatuses)->last();
                     $shipmentStatus = collect($ship->shipment->shipmentStatus)->last();
                     $datas[$key]['lastStatus'] = (!empty($status)) ? $status->status->name : $shipmentStatus->status->name ;
 
-                    if($datas[$key]['lastStatus'] == "Shipment on hold") { 
+                    if($datas[$key]['lastStatus'] == "Shipment on hold") {
                         $datas[$key]['style'] = 'background-color:#ffdb00;';
                     } else if($datas[$key]['lastStatus'] == "Pending") {
                         $datas[$key]['style'] = 'background-color:#ec1616e6;';
@@ -302,7 +302,7 @@ class ShipmentController extends BaseController
                 $datas[$key]['awb_number'] = (!empty($getShip->awb_number) ) ? $getShip->awb_number : '';
                 $datas[$key]['createdBy'] = (!empty($getShip->awb_number) ) ? $getShip->awb_number : '';
                 $datas[$key]['boxes'] = (!empty($ship->box_name) ) ? $ship->box_name : '';
-    
+
                 if(!empty($ship->boxStatuses)) {
                     $collectedType = collect($ship->shipment->shipmentStatus)->where('statuses_id', 15)->last();
                     $receivedType = collect($ship->boxStatuses)->where('status_id', 1)->last();
@@ -335,12 +335,12 @@ class ShipmentController extends BaseController
                     $datas[$key]['pendingDate'] = (!empty($pendingType)) ?  date('d-m-Y',strtotime($pendingType->created_at)) : '' ;
                     $datas[$key]['moreTrackingDate'] = (!empty($moreTrackingType)) ?  date('d-m-Y',strtotime($moreTrackingType->created_at)) : '' ;
                     $datas[$key]['transferDate'] = (!empty($transferType)) ?  date('d-m-Y',strtotime($transferType->created_at)) : '' ;
-    
+
                     $status = collect($ship->boxStatuses)->last();
                     $shipmentStatus = collect($ship->shipment->shipmentStatus)->last();
                     $datas[$key]['lastStatus'] = (!empty($status)) ? $status->status->name : $shipmentStatus->status->name ;
 
-                    if($datas[$key]['lastStatus'] == "Shipment on hold") { 
+                    if($datas[$key]['lastStatus'] == "Shipment on hold") {
                         $datas[$key]['style'] = 'background-color:#ffdb00;';
                     } else if($datas[$key]['lastStatus'] == "Pending") {
                         $datas[$key]['style'] = 'background-color:#ec1616e6;';

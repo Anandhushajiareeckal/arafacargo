@@ -1,6 +1,6 @@
 <?php
 
-
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Branch\AttendanceController;
 use App\Http\Controllers\Branch\CustomersController;
 use App\Http\Controllers\Branch\DashboardController;
@@ -41,7 +41,7 @@ Route::group(['prefix' => 'branch', 'as' => 'branch.', "middleware" => ["branch"
     Route::get('shipment/pendingGoods', [ShipmentController::class, 'pendingGoods'])->name('shipment.pendingGoods');
     Route::post('shipment/transferConfirm', [ShipmentController::class, 'transferConfirm'])->name('shipment.transferConfirm');
 
-    
+
 
 
     Route::post('shipment/printall',[ShipmentController::class,'printall'])->name('shipment.printall');
@@ -49,7 +49,7 @@ Route::group(['prefix' => 'branch', 'as' => 'branch.', "middleware" => ["branch"
     Route::get('shipment/item/{id}',[ShipmentController::class,'createadditems'])->name('shipment.item');
     Route::put('shipment/additemsstore',[ShipmentController::class,'additemsstore'])->name('shipment.additemsstore');
     Route::get('shipment/saveAsDraft',[ShipmentController::class,'saveAsDraft'])->name('shipment.saveAsDraft');
- 
+
 
     Route::resource('shipment', ShipmentController::class);
     Route::resource('ship', ShipController::class);
@@ -71,21 +71,26 @@ Route::group(['prefix' => 'branch', 'as' => 'branch.', "middleware" => ["branch"
     Route::post('ships/updatebookingtoship', [AddToShipController::class, 'updatebookingtoship'])->name('ships.updatebookingtoship');
     Route::post('ships/multiUpdatebookingtoship', [AddToShipController::class, 'multiUpdatebookingtoship'])->name('ships.multiUpdatebookingtoship');
     Route::post('ships/boxStatusUpdatetoship', [AddToShipController::class, 'boxStatusUpdatetoship'])->name('ships.boxStatusUpdatetoship');
-    
+
+    Route::get('ships/delivery-list-ptintt', [AddToShipController::class, 'deliverylistptint'])->name('ships.deliverylistptint');
+    Route::get('ships/packing-list-print', [AddToShipController::class, 'packinglistptint'])->name('ships.packinglistptint');
+    Route::get('ships/customer-manifest-print', [AddToShipController::class, 'customermanifestprint'])->name('ships.customermanifestptint');
+
+
     Route::get('ships/undoaddbooking/{id}', [AddToShipController::class, 'undoaddbooking'])->name('ships.undoaddbooking');
     // Route::get('shipment/item', [ShipmentController::class, 'item'])->name('shipment.item');
     // Route::get('shipment/item', [ShipmentController::class, 'item'])->name('shipment.item');
     Route::resource('courier', CourierController::class);
 
 
-    
-    Route::get('/collectedBy', [ShipmentController::class, 'collectedBy'])->name('collectedBy');    
-    Route::get('/booking_code', [ShipmentController::class, 'booking_code'])->name('booking_code');    
+
+    Route::get('/collectedBy', [ShipmentController::class, 'collectedBy'])->name('collectedBy');
+    Route::get('/booking_code', [ShipmentController::class, 'booking_code'])->name('booking_code');
     Route::resource('customers', CustomersController::class);
     Route::resource('moving', MovingController::class);
     Route::resource('sales', SalesController::class);
-    Route::get('/reports/{productId?}/{dateFrom?}/{dateTo?}', [ReportsController::class, 'index'])->name('reports.view');    
-    Route::get('/reportsData/{productId?}/{dateFrom?}/{dateTo?}', [ReportsController::class, 'viewData'])->name('reports.viewData');    
+    Route::get('/reports/{productId?}/{dateFrom?}/{dateTo?}', [ReportsController::class, 'index'])->name('reports.view');
+    Route::get('/reportsData/{productId?}/{dateFrom?}/{dateTo?}', [ReportsController::class, 'viewData'])->name('reports.viewData');
 
     // Route::get('moving/saveAsDraft',[MovingController::class,'saveAsDraft'])->name('moving.saveAsDraft');
     Route::get('shipment/shipmentlist/report/{dateFrom?}/{dateTo?}', [ShipmentController::class, 'shipmentlistReport'])->name('shipment.shipmentlist.report');
@@ -93,7 +98,7 @@ Route::group(['prefix' => 'branch', 'as' => 'branch.', "middleware" => ["branch"
     Route::get('shipment/list/reportData/{dateFrom?}/{dateTo?}', [ShipmentController::class, 'viewDataReport'])->name('shipment.list.reportData');
     Route::get('shipment/list/reportStatusData/{status?}', [ShipmentController::class, 'viewStatusDataReport'])->name('shipment.list.reportStatusData');
     Route::post('shipment/list/report/detailed', [ShipmentController::class, 'detailed'])->name('shipment.report.detailed');
-    
+
     Route::get('shipment/list/viewManifesto/{shipmentId?}', [ShipController::class, 'viewManifesto'])->name('shipment.viewManifesto');
     Route::get('shipment/list/manifestoExportView/{shipmentId?}', [ShipController::class, 'manifestoExportView'])->name('shipment.manifestoExportView');
 
@@ -101,43 +106,43 @@ Route::group(['prefix' => 'branch', 'as' => 'branch.', "middleware" => ["branch"
     Route::get('driver/getVechileDetailsById', [DriverController::class, 'getVechileDetailsById'])->name('driver.getVechileDetailsById');
 
     Route::get('vendor/getVendorDetailsById', [VendorController::class, 'getVendorDetailsById'])->name('vendor.getVendorDetailsById');
-    
+
 
     Route::resource('tripsheet', TripsheetController::class);
     Route::get('tripsheet/cargos/{tripsheet_id?}',[TripsheetController::class,'cargos'])->name('tripsheet.cargos');
-    Route::post('tripsheet/updateStatus/',[TripsheetController::class,'updateStatus'])->name('tripsheet.updateStatus'); 
-    Route::post('tripsheet/updateStatusSingle/',[TripsheetController::class,'updateStatusSingle'])->name('tripsheet.updateStatusSingle');  
-    Route::post('tripsheet/ajaxLoadupdate_lrNo/',[TripsheetController::class,'ajaxLoadupdate_lrNo'])->name('tripsheet.ajaxLoadupdate_lrNo');  
-    Route::post('tripsheet/ajaxUpdateLrNo/',[TripsheetController::class,'ajaxUpdateLrNo'])->name('tripsheet.ajaxUpdateLrNo');  
+    Route::post('tripsheet/updateStatus/',[TripsheetController::class,'updateStatus'])->name('tripsheet.updateStatus');
+    Route::post('tripsheet/updateStatusSingle/',[TripsheetController::class,'updateStatusSingle'])->name('tripsheet.updateStatusSingle');
+    Route::post('tripsheet/ajaxLoadupdate_lrNo/',[TripsheetController::class,'ajaxLoadupdate_lrNo'])->name('tripsheet.ajaxLoadupdate_lrNo');
+    Route::post('tripsheet/ajaxUpdateLrNo/',[TripsheetController::class,'ajaxUpdateLrNo'])->name('tripsheet.ajaxUpdateLrNo');
 
-    
-    
- 
 
-    Route::get('/reports/{productId?}/{dateFrom?}/{dateTo?}', [ReportsController::class, 'index'])->name('reports.view');    
+
+
+
+    Route::get('/reports/{productId?}/{dateFrom?}/{dateTo?}', [ReportsController::class, 'index'])->name('reports.view');
 
     Route::get('driver/getDriverDetails/', [DriverController::class, 'getDriverDetails'])->name('getDriverDetails');
 
-    
-    
+
+
     Route::get('goodsdetails/index', [GoodsDetailsController::class, 'index'])->name('goodsdetails.index');
     Route::post('goodsdetails/updateSortOrder',[GoodsDetailsController::class,'updateSortOrder'])->name('goodsdetails.updateSortOrder');
-    Route::post('goodsdetails/updateMultipleSortOrder',[GoodsDetailsController::class,'updateMultipleSortOrder'])->name('goodsdetails.updateMultipleSortOrder');    
+    Route::post('goodsdetails/updateMultipleSortOrder',[GoodsDetailsController::class,'updateMultipleSortOrder'])->name('goodsdetails.updateMultipleSortOrder');
     Route::post('goodsdetails/resetSortOrder',[GoodsDetailsController::class,'resetSortOrder'])->name('goodsdetails.resetSortOrder');
     Route::post('goodsdetails/addCargos',[GoodsDetailsController::class,'addCargos'])->name('goodsdetails.addCargos');
     Route::get('goodsdetails/inTripsheet',[GoodsDetailsController::class,'inTripsheet'])->name('goodsdetails.inTripsheet');
     Route::get('goodsdetails/notInTripsheet',[GoodsDetailsController::class,'notInTripsheet'])->name('goodsdetails.notInTripsheet');
     Route::post('goodsdetails/getByID', [GoodsDetailsController::class, 'getByID'])->name('goodsdetails.getByID');
     Route::post('goodsdetails/ajaxUpdate', [GoodsDetailsController::class, 'ajaxUpdate'])->name('goodsdetails.ajaxUpdate');
-    Route::get('goodsdetails/autocomplete', [GoodsDetailsController::class, 'autocomplete'])->name('goodsdetails.autocomplete'); 
+    Route::get('goodsdetails/autocomplete', [GoodsDetailsController::class, 'autocomplete'])->name('goodsdetails.autocomplete');
 
-    Route::post('goodsdetails/getVehicleDetails', [GoodsDetailsController::class, 'getVehicleDetails'])->name('goodsdetails.getVehicleDetails'); 
-    Route::post('goodsdetails/branchTransfer', [GoodsDetailsController::class, 'branchTransfer'])->name('goodsdetails.branchTransfer'); 
+    Route::post('goodsdetails/getVehicleDetails', [GoodsDetailsController::class, 'getVehicleDetails'])->name('goodsdetails.getVehicleDetails');
+    Route::post('goodsdetails/branchTransfer', [GoodsDetailsController::class, 'branchTransfer'])->name('goodsdetails.branchTransfer');
 
     Route::resource('enquiry', EnquiryController::class);
-    Route::post('enquiry/updateStatus/',[EnquiryController::class,'updateStatus'])->name('enquiry.updateStatus'); 
- 
+    Route::post('enquiry/updateStatus/',[EnquiryController::class,'updateStatus'])->name('enquiry.updateStatus');
 
-    
+
+
 
 });

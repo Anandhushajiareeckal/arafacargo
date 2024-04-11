@@ -1,4 +1,4 @@
-@extends('layouts.app')
+    @extends('layouts.app')
 
 @section('content')
 <style>
@@ -27,10 +27,10 @@
                                 </ol>
                             </div>
                             <h4 class="page-title">View Manifesto</h4>
-                            <div class="fa-pull-left pb-3"> 
-                                <button type="button" id="transferGoods" class="btn btn-primary">Ready to Transfer</button>&nbsp;&nbsp;&nbsp;
-<!-- 
-                                <button type="button" id="addCargos" class="btn btn-primary">Add Cargos</button>&nbsp;&nbsp;&nbsp;  
+                            <div class="fa-pull-left pb-3">
+                                <button type="button" id="transferGoods" class="btn btn-primary">Export to Excel</button>&nbsp;&nbsp;&nbsp;
+<!--
+                                <button type="button" id="addCargos" class="btn btn-primary">Add Cargos</button>&nbsp;&nbsp;&nbsp;
                                 <a href="{{route('super-admin.attendence.report')}}" class="btn btn-primary">Print All</a>&nbsp;&nbsp;&nbsp;
                                 <a href="{{route('super-admin.attendence.report')}}" class="btn btn-primary">New Print</a>&nbsp;&nbsp;&nbsp;
                                 <a href="{{route('super-admin.attendence.time')}}" class="btn btn-primary">Print Selected</a>&nbsp;&nbsp;&nbsp;
@@ -41,7 +41,7 @@
                 </div>
                 <!-- end page title -->
                 <div class="row">
-                <div class="col-md-8"> 
+                <div class="col-md-8">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
@@ -54,7 +54,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-4 textDiv hidden">
                                                 <div class="form-group">
                                                     <label>Search Field</label>
@@ -78,17 +78,17 @@
                                                 <button class="btn btn-success waves-effect waves-light m-t-32 clearClass"> Clear</button>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
-                                            
+
                                     </div>
                     <div class="col-sm-12 m-t-50"  style="overflow-x: auto">
                       <div class="">
-                        <div class=" ">   
-                        
-                            
+                        <div class=" ">
+
+
                         </div>
-                        
+
                             <table id="datatable1"
                                    class="table table-striped table-bordered nowrap" >
                                 <thead><input type="hidden" id="shipName" value="{{ $getShips->shipment_id}}">
@@ -97,26 +97,26 @@
                                         <th>Courier Company</th>
                                         <th>Shipment Number</th>
                                         <th>Destination</th>
-                                        <th># Number</th> 
-                                        <th>Tracking No:</th>   
-                                        <th>Box No:</th>                                  
-                                        <th>Number of Pieces</th>                                    
-                                        <th>Weight</th>                                    
-                                        <th>Re weight</th>                                    
-                                        <th>Recieved Pieces</th>                                    
-                                        <th>Sender address </th>                                    
-                                        <th>Receiver address </th>                                    
-                                        <th>Receiver Phone </th>                                    
-                                        <th>State </th>                                    
-                                        <th>District </th>                                    
-                                        <th>Pincode </th>                                    
-                                        <th>Goods Details </th>                                    
-                                        <th>Shipment started Date </th>                                    
-                                        <th>Received at Hub </th>                                    
-                                        <th>Connecting Date</th>                                    
-                                        <th>LR Number</th>                                    
-                                        <th>Good Status hgh</th>                                    
-                                        <th>Remarks</th>                                    
+                                        <th># Number</th>
+                                        <th>Tracking No:</th>
+                                        <th>Box No:</th>
+                                        <th>Number of Pieces</th>
+                                        <th>Weight</th>
+                                        <th>Re weight</th>
+                                        <th>Recieved Pieces</th>
+                                        <th>Sender address </th>
+                                        <th>Receiver address </th>
+                                        <th>Receiver Phone </th>
+                                        <th>State </th>
+                                        <th>District </th>
+                                        <th>Pincode </th>
+                                        <th>Goods Details </th>
+                                        <th>Shipment started Date </th>
+                                        <th>Received at Hub </th>
+                                        <th>Connecting Date</th>
+                                        <th>LR Number</th>
+                                        <th>Good Status hgh</th>
+                                        <th>Remarks</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bookingData">
@@ -179,10 +179,10 @@
                                         <td></td>
                                         <td>{{$box->shipment->lrl_tracking_code}}</td>
                                         <td> {{ $lastStatus }} </td>
-                                        <td></td> 
+                                        <td></td>
 
 
-                                       
+
                                      <?php /*
                                         <!--  <td>{{$box->shipment->receiver->address->country->name}}</td>
                                         <td>{{$ship->shipment->id}}</td>
@@ -211,7 +211,7 @@
 
                                 @endforeach
                                 </tbody>
-                            </table> 
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -247,8 +247,8 @@
 <script>
     $(document).ready(function () {
 
- 
- 
+
+
         $('#datatable1').DataTable({
             searching: true, paging: false, info: false,filter: true, "aaSorting":true,
             scrollX: true,
@@ -259,13 +259,13 @@
                     extend: 'excel',
                     title: '',
                 }]
-            }); 
+            });
 
 
-    $('#allcb').click(function (e) { 
+    $('#allcb').click(function (e) {
         if( $("#allcb").prop('checked') == true) {
-            $.each($('td:not(.k-state-disabled) .k-checkbox'), function () {			 
-                $(this).prop("checked", true)	 
+            $.each($('td:not(.k-state-disabled) .k-checkbox'), function () {
+                $(this).prop("checked", true)
             });
         }
         else {
@@ -274,24 +274,24 @@
             // $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
     });
 
-        $('#transferGoods').click(function () { 
-            if ($(".k-checkbox").prop('checked')==true){ 
+        $('#transferGoods').click(function () {
+            if ($(".k-checkbox").prop('checked')==true){
                 var checkValues = $('td:not(.k-state-disabled) .k-checkbox:checked').map(function(){
                             return $(this).val();
                         }).get();
                     } else {
                         return false;
-                    }     
-                        $("#sel_goods_id").val(checkValues); 
-                        $('#transfer').modal('show'); 
-            
-                });  
-        
+                    }
+                        $("#sel_goods_id").val(checkValues);
+                        $('#transfer').modal('show');
 
-        }); 
+                });
 
 
-            $("#transfer_shipment").submit(function (e) { 
+        });
+
+
+            $("#transfer_shipment").submit(function (e) {
                 e.preventDefault();
                 $('.valid-err').hide()
                 $('#loader').removeClass('d-none');
@@ -320,7 +320,7 @@
                             $('#msg').html(message)
                             // $('#' + result.data.type + '_id').append(`<option value="` + result.data.id + `" selected>` + result.data.name + `<option>`);
                             toastr.info(result.message);
-                           
+
                             // setTimeout(() => {
                             //     $('.modal').modal('hide');
                             //     $('.alert').hide();
@@ -342,7 +342,7 @@
                     }
                 }); // ajax call closing
 
-            });   
+            });
 
             $(".clearClass").on('click', function() {
                 location.reload();
@@ -359,7 +359,7 @@
                 } else if(type == 'bookingNumber') {
                     $(".statusDiv").addClass('hidden');
                     $(".textDiv").removeClass('hidden');
-                } 
+                }
             });
             $(document).on('keypress',function(e) {
                 if(e.which == 13) {
@@ -390,7 +390,7 @@
                     var url = "{{route('branch.ships.viewManifestoFilterData')}}/"+ship_id+"/"+type+"/"+search;;
                     viewData(url);
                 }
-                
+
             });
 
             function viewData(url){
@@ -436,12 +436,12 @@
                                     '<td></td>'+
                                 '</tr>';
                     });
-                            
+
                         }
-                        
+
                         $('.bookingData').html(html);
-                        
-                    } 
+
+                    }
                 });
             }
 

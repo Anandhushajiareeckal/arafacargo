@@ -17,7 +17,7 @@ class Boxes extends Model
         parent::boot();
 
         static::addGlobalScope(new BranchScope());
-    }     
+    }
 
     public function shipment(): BelongsTo
     {
@@ -32,8 +32,8 @@ class Boxes extends Model
     public function boxDimension(): BelongsTo
     {
         return $this->belongsTo(BoxDimensions::class,'box_dimension_id','id');
-    }  
-    
+    }
+
     public function shipmentStatuses()
     {
         return $this->hasMany(ShipmentsStatuses::class,'box_id');
@@ -52,5 +52,14 @@ class Boxes extends Model
     {
         return $this->hasOne(Ships::class,'ship_id');
     }
-    
+
+    public function shipments()
+    {
+        return $this->belongsTo(Shipments::class);
+    }
+
+    public function customer()
+    {
+        return $this->shipments->customer();
+    }
 }
