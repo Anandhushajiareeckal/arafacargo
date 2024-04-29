@@ -44,11 +44,11 @@
                                                     placeholder="Enter Email id">
                                             </div>
                                         </div>
-                                        
+
 
                                 </div>
-                                
-                                <div class="row"> 
+
+                                <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="propertyname">Contact number</label>
@@ -59,15 +59,24 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="vehicle_number">Vehicle no </label>
-                                                <input type="text" name="vehicle_number" value="{{old('vehicle_number')}}" class="form-control"
-                                                    id="vehicle_number" required
-                                                    placeholder="Enter Vehicle number"> 
-                                            </div> 
+                                                <label for="password">Password </label>
+                                                <input type="password" name="password" value="" class="form-control"
+                                                    id="" required
+                                                    placeholder="**********">
+                                            </div>
                                         </div>
                                 </div>
                                 <div class="row">
                                         <div class="col-lg-6">
+                                            <div class="">
+                                                <div class="form-group">
+                                                    <label for="vehicle_number">Vehicle no </label>
+                                                    <input type="text" name="vehicle_number" value="{{old('vehicle_number')}}" class="form-control"
+                                                        id="vehicle_number" required
+                                                        placeholder="Enter Vehicle number">
+                                                </div>
+                                            </div>
+
                                             <div class="form-group">
                                                 <label for="logo">Selct Branch</label>
                                                 <select class="form-control" name="branch_id" required>
@@ -77,14 +86,17 @@
                                                 @endforeach
                                             </select>
                                             </div>
+
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="location">Location </label> 
-                                                <textarea rows="3" class="form-control" name="location" id="location" placeholder="Location"> {{old('location')}}</textarea>
-                                            </div> 
+                                                <label for="location">Location </label>
+                                                <textarea rows="4" class="form-control" name="location"  id="location" placeholder="Location"> {{old('location')}}</textarea>
+                                            </div>
                                         </div>
-                                </div>                                       
+
+                                </div>
+
 
 
                                 <!-- end row -->

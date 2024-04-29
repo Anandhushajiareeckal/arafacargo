@@ -86,6 +86,12 @@
                             <p>Shipment Report</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('branch.customer.index')}}" class="nav-link  {{ (request()->is('branch/customer*')) ? 'menu-active' :'' }}">
+                            <i class="mdi mdi-account-multiple-check"></i>
+                                <p>Sender/Receiver</p>
+                            </a>
+                        </li>
                         <!-- <li class="nav-item">
                             <a href="{{route('branch.shipment.shipmentlist.report')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>

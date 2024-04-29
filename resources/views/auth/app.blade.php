@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Login | Best Express - Cargo Management System</title>
+    <title>Login |{{ config('app.name', 'Arafa Cargo') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Best express cargo" name="description" />
     <meta content="aju" name="author" />

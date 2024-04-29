@@ -177,6 +177,38 @@ class ShipmentController extends BaseController
             $shipments->origin_id = $request->branch_id;
 
 
+            $shipments->grand_total_weight = $request->grand_total_weight;
+            $shipments->rate_normal_weight = $request->rate_normal_weight;
+            $shipments->amount_normal_weight = $request->amount_normal_weight;
+
+            $shipments->electronics_weight = $request->electronics_weight;
+            $shipments->rate_electronics_weight = $request->rate_electronics_weight;
+            $shipments->amount_electronics_weight = $request->amount_electronics_weight;
+
+            $shipments->msic_weight = $request->msic_weight;
+            $shipments->rate_msic_weight = $request->rate_msic_weight;
+            $shipments->amount_msic_weight = $request->amount_msic_weight;
+
+            $shipments->insurance = $request->insurance;
+            $shipments->rate_insurance = $request->rate_insurance;
+            $shipments->amount_insurance = $request->amount_insurance;
+
+            $shipments->awbfee = $request->awbfee;
+            $shipments->rate_awbfee = $request->rate_awbfee;
+            $shipments->amount_awbfee = $request->amount_awbfee;
+
+            $shipments->vat_amount = $request->vat_amount;
+            $shipments->rate_vat_amount = $request->rate_vat_amount;
+            $shipments->amount_vat_amount = $request->amount_vat_amount;
+
+            $shipments->volume_weight = $request->volume_weight;
+            $shipments->rate_volume_weight = $request->rate_volume_weight;
+            $shipments->amount_volume_weight = $request->amount_volume_weight;
+
+            $shipments->amount_grand_total = $request->amount_grand_total;
+            $shipments->number_of_pcs = $request->number_of_pcs;
+
+
             $shipments->save();
             $status = Statuses::find($request->status_id);
             $shipments->status()->attach($status);
@@ -384,6 +416,10 @@ class ShipmentController extends BaseController
 
                     $box->unit_value = $request->input("unit_value".$j);
                     $box->total_value = $request->input("total_value".$j);
+
+                    $box->sender_id = $request->input('box_sender_id'.$j);
+                    $box->receiver_id = $request->input('box_receiver_id'.$j);
+
                     $box->save();
                 }
 
@@ -528,6 +564,7 @@ class ShipmentController extends BaseController
 
                     for ($i = 0; $i < $request->number_of_pcs; $i++) {
                         $j= $i+1;
+
                         $box = new Boxes();
                         $box->shipment_id = $shipments->id;
                         $box->box_name	 = $request->input("box_name".$j);
@@ -546,6 +583,8 @@ class ShipmentController extends BaseController
                         $box->box_packing_charge = $request->input("box_packing_charge".$j);
                         $box->unit_value = $request->input("unit_value".$j);
                         $box->total_value = $request->input("total_value".$j);
+                        $box->sender_id = $request->input("box_sender_id".$j);
+                        $box->receiver_id = $request->input("box_receiver_id".$j);
                         $box->save();
                     }
 
@@ -677,6 +716,11 @@ class ShipmentController extends BaseController
                 $box->volume = $request->input("volume".$j);
                 $box->unit_value = $request->input("unit_value".$j);
                 $box->total_value = $request->input("total_value".$j);
+                $box->sender_id = $request->input('box_sender_id');
+                $box->receiver_id = $request->input('box_receiver_id');
+
+                $box->sender_id = $request->input('box_sender_id'.$j);
+                $box->receiver_id = $request->input('box_receiver_id'.$j);
                 $box->save();
             }
 
@@ -756,6 +800,23 @@ class ShipmentController extends BaseController
         return view('branches.shipments.printview', compact('shipment'));
     }
 
+    public function exportImage(Request $request)
+    {
+        $imageData = $request->input('imageData');
+
+        // Extract base64 image data
+        list($type, $data) = explode(';', $imageData);
+        list(, $data)      = explode(',', $data);
+        $imageData = base64_decode($data);
+
+        // Generate unique filename
+        $filename = 'exported_image_' . time() . '.png';
+
+        // Save image on server
+        file_put_contents(public_path('images/' . $filename), $imageData);
+
+        return response()->json(['filename' => $filename]);
+    }
 
     public function printCustomer($id){
         $shipment = Shipments::with('boxes')->with('packages')->with('agency')->with('receiver')->with('sender')->findOrFail($id);
@@ -764,9 +825,10 @@ class ShipmentController extends BaseController
 
 
     public function printall(Request $request){
-
             $shipments = Shipments::with('boxes')->with('packages')->with('agency')->with('receiver')->with('sender')->whereIn('id', $request->booking_ids)->get();
-            return view('branches.shipments.printviewall', compact('shipments'));
+            $agency = Agencies::find($request->agency);
+            $awb_no = $request->input('awb_no');
+            return view('branches.shipments.printviewall', compact('shipments','agency','awb_no'));
 
 
     }

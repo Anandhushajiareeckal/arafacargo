@@ -12,7 +12,7 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Http\UploadedFile;
 use App\Http\Requests\StoreFileRequest;
 
- 
+
 use DB;
 
 class DriverController extends BaseController
@@ -24,7 +24,7 @@ class DriverController extends BaseController
      */
     function __construct()
     {
-    
+
     }
 
     /**
@@ -58,7 +58,7 @@ class DriverController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    { 
+    {
         $driver = new Drivers();
         if (Drivers::where('vehicle_number', '=', $request->vehicle_number)->first() != null) {
             toastr()->error('vehicle number already exists');
@@ -68,7 +68,7 @@ class DriverController extends BaseController
             toastr()->error('Email already exists');
             return redirect()->back();
         }
-        
+
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -81,10 +81,10 @@ class DriverController extends BaseController
         // $driver->email = $request->email;
         $driver->location = $request->location;
         $driver->vehicle_number = $request->vehicle_number;
-        $driver->branch_id = $request->branch_id; 
-        $driver->created_by = $request->user()->id; 
+        $driver->branch_id = $request->branch_id;
+        $driver->created_by = $request->user()->id;
         $driver->save();
-        
+
         toastr()->success(section_title() . ' Created Successfully');
         return redirect()->to(index_url());
     }
@@ -113,7 +113,7 @@ class DriverController extends BaseController
      */
     public function edit($id)
     {
-        $driver = Drivers::find($id);         
+        $driver = Drivers::find($id);
         return view('superadmin.driver.edit', compact('driver'));
     }
 
@@ -135,7 +135,7 @@ class DriverController extends BaseController
             toastr()->error('Email already exists');
             return redirect()->back();
         }
-       
+
         $user = User::find($request->user_id);
         $user->name = $request->name;
         $user->email = $request->email;
@@ -149,8 +149,8 @@ class DriverController extends BaseController
         $driver->mobile = $request->mobile;
         $driver->location = $request->location;
         $driver->vehicle_number = $request->vehicle_number;
-        $driver->branch_id = $request->branch_id; 
-        $driver->created_by = $request->user()->id; 
+        $driver->branch_id = $request->branch_id;
+        $driver->created_by = $request->user()->id;
         $driver->save();
 
         toastr()->success(section_title() . ' Updated Successfully');
@@ -170,5 +170,5 @@ class DriverController extends BaseController
         return redirect()->to(index_url());
     }
 
-   
+
 }

@@ -59,11 +59,10 @@
                                                    class="btn btn-icon waves-effect waves-light btn-warning">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </a>
-                                                @method('DELETE')
                                                 @csrf
-                                                <a href="/branch/customers/delete/{{$customer->id}}" class="btn btn-danger delete-user del">
+                                                <button type="submit" class="btn btn-danger delete-user del">
                                                     <i class="fas fa-trash-alt"></i>
-                                                </a>
+                                                </button>
                                             </td>
                                         </form>
                                         @endif

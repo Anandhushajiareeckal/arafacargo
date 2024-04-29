@@ -257,16 +257,42 @@
                                         <a  href="{{route('branch.ships.customermanifestptint', array('ship_id' => $ships->id))}}" class="btn btn-success mr-3 mb-1"> Customer Manifest</a>
                                         <button type="submit" class="btn btn-success waves-effect waves-light changeStatus mb-1"  id="changeStatus">Change Status</button>
 
-                                        <form action="{{route('branch.shipment.printall')}}" method="post" class="m-l-10" target="_blank" >
-                                            @csrf
-                                            <?php  foreach( $ship_bookingsList as $booking) {
-                                                echo '<input type="hidden" name="booking_ids[]" value="'. $booking->shipment->id. '">';
-                                            }
-                                            ?>
-                                                <button type="submit" class="btn btn-success waves-effect waves-light"><i class="fas fa-print"> Print all</i>
-                                            </button>
+                                        <div class="modal fade" id="printAllModal" tabindex="-1" aria-labelledby="printAllModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content w-75">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="printAllModalLabel">Print All Shipments</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{{ route('branch.shipment.printall') }}" method="post" target="_blank">
+                                                            @csrf
+                                                            @foreach ($ship_bookingsList as $booking)
+                                                                <input type="hidden" name="booking_ids[]" value="{{ $booking->shipment->id }}">
+                                                            @endforeach
+                                                            <div class="row">
+                                                                <label class="ml-3">Select Courier Company</label>
+                                                                <div class="form-group col-md-12">
+                                                                    <input type="text" name="awb_no" value="{{$ships->awb_number}}" class="d-none">
+                                                                    <select name="agency" id="sender_id" class="form-control" required>
+                                                                        @foreach ($agencies as $agency)
+                                                                            <option value="{{$agency->id}}">{{$agency->name}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 text-center mt-2" >
+                                                                <button type="submit" class="btn btn-success p-2">Print all</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                        </form>
+                                        <button type="submit" class="btn btn-success waves-effect waves-light ml-2 mb-1" data-bs-toggle="modal" data-bs-target="#printAllModal">
+                                            <i class="fas fa-print"> Print all</i>
+                                        </button>
 
                                         <form action="{{route('branch.shipment.loadingExport')}}" class="m-l-10" method="post" target="_blank">
                                             @csrf
@@ -421,13 +447,24 @@
 
                             </div>
                         </div>
+                        <div class="col-md-12 text-left ">
 
+                            <div class="floatLeft" >
+                                <select name="" id="shipmentTypeSelect" class="p-2 pb-0">
+                                    <option value="">All</option>
+                                    @foreach ($ship_types as $ship_types_data )
+                                        <option value="{{$ship_types_data->id}}">{{$ship_types_data->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <table id="bookingList" class="table table-striped table-bordered dt-responsive nowrap"
                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead style="font-size:14px;">
-                            <tr>
-                                    <th></th>
+                            <tr >
+                                    <th><input type="checkbox" id="bookingList_checkbox"></th>
                                     <th>Collection Date <br> Collection Office</th>
+                                    <th>ship metho</th>
                                     <th>Collection Staff<br> Collection Agent</th>
                                     <th>Customer<br>Sender/Receiver</th>
                                     <th>State/Emirates<br>Country</th>
@@ -471,11 +508,13 @@
 
                                         }
                                     ?>
-                                    <tr>
+                                    <tr data-shipment-type-id="{{ $boxes->shipment->shipping_method_id }}">
                                         <td><input type="checkbox" name="bookingSelection[]" class="bookingSelection" id="bookingSelection" selectBoxId="{{$boxes->id}}" value="{{$boxes->id}}" boxWt="{{$boxes->weight}}" boxVal="{{number_format(($boxes->total_value + $boxes->box_packing_charge),2)}}" @if($boxes->is_select == 1) checked @endif ></td>
                                         <td>{{ !empty($boxes->shipment->created_date)? date('d-m-Y', strtotime($boxes->shipment->created_date)):''  }}
                                             <br> {{ $boxes->shipment->agency?$boxes->shipment->agency->name:'-' }}
                                         </td>
+                                        <td>{{$boxes->shipment->shipping_method_id}}</td>
+
                                         <td> @if($boxes->shipment->collected_by == 'driver')
                                                     {{ $boxes->shipment->driver?$boxes->shipment->driver->name:'-'}}
                                                 @else
@@ -708,9 +747,55 @@
 @endsection
 
 @section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     @include('layouts.datatables_js')
 
     <script>
+        $(document).ready(function() {
+
+            $('#bookingList_checkbox').click(function() {
+                $('.bookingSelection').prop('checked', $(this).prop('checked')).change();
+            });
+
+
+            $(document).ready(function() {
+                // Check if any .bookingSelection checkboxes are checked on page load
+                if ($('.bookingSelection:checked').length > 0) {
+                    $('#bookingList_checkbox').prop('checked', true);
+                } else {
+                    $('#bookingList_checkbox').prop('checked', false);
+                }
+
+                // Handle changes in .bookingSelection checkboxes
+                $('.bookingSelection').change(function() {
+                    if ($('.bookingSelection:checked').length > 0) {
+                        $('#bookingList_checkbox').prop('checked', true);
+                    } else {
+                        $('#bookingList_checkbox').prop('checked', false);
+                    }
+                });
+
+
+                $('#bookingList_checkbox').change(function() {
+                    if (!$(this).prop('checked')) {
+                        window.location.reload();
+                    }
+                });
+            });
+
+
+            $('#shipmentTypeSelect').change(function() {
+                var selectedType = $(this).val();
+                $('#bookingList tbody tr').hide().find('input.bookingSelection').removeClass('bookingSelection'); // Hide all rows and remove class from all td elements
+                if (selectedType === "") { // Show all if "All" is selected
+                    $('#bookingList tbody tr').show().find('input#bookingSelection').addClass('bookingSelection');
+                } else if (selectedType) {
+                    $('#bookingList tbody tr[data-shipment-type-id="' + selectedType + '"]').show().find('input#bookingSelection').addClass('bookingSelection');
+                }
+            });
+
+        });
+
     $(document).ready(function () {
         $('#bookingList').DataTable( {
             "autoWidth": false,
@@ -885,7 +970,7 @@
             var alreadyExist = [];
             var removeItem = [];
 
-            $("input:checkbox.bookingSelection").click(function() {
+            $("input:checkbox.bookingSelection").change(function() {
                 var ischecked= $(this).is(':checked');
                 if(ischecked){
                 // alert('checkd ' + $(this).val());
@@ -900,7 +985,7 @@
             });
 
 
-            $(document).on('click',".bookingSelection", function() {
+            $(document).on('change',".bookingSelection", function() {
                 var checked = $(this).is(":checked");
                 var total_selected_boxes = $("#total_selected_boxes").val();
                 var total_weight = $("#total_weight").val();

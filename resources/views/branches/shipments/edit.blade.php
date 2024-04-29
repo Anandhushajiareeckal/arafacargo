@@ -413,13 +413,13 @@ body{
                                                 <?php
                                                         $total_qty = 0;
                                                         $total_amount =0;
-                                                        $box_total_value += $box->total_value;
+                                                        $box_total_value = $box->total_value;
 
                                                 ?>
 
                                                 <div id="newBoxContainer{{$ik}}" class="boxcount">
                                                 <div class="package col-md-12"  id="package_ID" >
-                                                    <div class="header">
+                                                    <div class="header row">
                                                         <div class="col-md-6"  style="float:left">
                                                         <h5 class="packageinfo-head"  data-myattri="{{$ik}}">Box - {{$shipment->number_of_pcs}}{{$ik}}{{branch()->branch_code?branch()->branch_code:''}}{{$bookingNum}}</h5>
 
@@ -429,6 +429,48 @@ body{
                                                         <button type="button" id="addpackage{{$ik}}" data-myattri="{{$ik}}"  class="btn btn-success addpackage">Add Items</button>
                                                         <button type="button" id="removeBox{{$ik}}" data-myattri="{{$ik}}"  class="btn btn-danger removeBox">Delete Box</button>
 
+                                                        </div>
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="col-6">
+                                                            <div class="row">
+                                                                <div class="form-group col-md-10">
+                                                                    <label>Sender/Customer</label>
+                                                                    <select name="box_sender_id{{$ik}}" id="sender_id" class="form-control select2">
+                                                                        <option value="">Select</option>
+                                                                        @foreach (get_customers('sender') as $sender)
+                                                                            <option value="{{ $sender->id }}"
+                                                                                {{ ($box->sender_id == $sender->id) ? 'selected' : "" }}
+                                                                                >{{ $sender->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('sender_id')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                    @enderror
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="row">
+                                                                <div class="form-group col-md-10">
+                                                                    <label>Receiver/Customer</label>
+                                                                    <select name="box_receiver_id{{$ik}}" id="receiver_id"
+                                                                            class="form-control select2">
+                                                                            <option value="">Select</option>
+                                                                        @foreach (get_customers('receiver') as $receiver)
+                                                                            <option value="{{ $receiver->id }}"
+                                                                            {{ ($box->receiver_id == $receiver->id) ? 'selected' : "" }}
+                                                                            >{{ $receiver->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('receiver_id')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="body" id="packageinfo{{$ik}}">
@@ -891,7 +933,7 @@ body{
                                                                         </div>
                                                                         <div class="col-md-2 pt-2" style="border-top:1px solid;">
                                                                             <div class="">
-                                                                            <input type="text" name="normal_weight" value="{{$shipment->normal_weight}}" class="form-control tot_wgt1">
+                                                                            {{-- <input type="text" name="normal_weight" value="{{$shipment->normal_weight}}" class="form-control tot_wgt1"> --}}
 
                                                                             <!-- THIS VALUE IS USED FOR CALCULATION  normal_weight_temp-->
                                                                             {{-- <input type="hidden" name="normal_weight_temp" value="{{$shipment->normal_weight}}" class="form-control tot_wgt1" readonly> --}}
@@ -1041,6 +1083,46 @@ body{
                                                     <div class="col-md-6 text-right pb-2" style="float:left">
                                                     <button type="button" id="addpackage" class="btn btn-success addpackage">Add Items</button>
                                                     <button type="button" id="removeBox" class="btn btn-danger removeBox">Delete Box</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row ">
+                                                    <div class="col-6">
+                                                        <div class="row">
+                                                            <div class="form-group col-md-10">
+                                                                <label>Sender/Customer</label>
+                                                                <select name="box_sender_id" id="box_sender_id" class="form-control select2">
+                                                                    <option value="">Select</option>
+                                                                    @foreach (get_customers('sender') as $sender)
+                                                                        <option value="{{ $sender->id }}"
+                                                                            >{{ $sender->name }} </option>
+                                                                    @endforeach
+                                                                </select>
+                                                                @error('sender_id')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="row">
+                                                            <div class="form-group col-md-10">
+                                                                <label>Receiver/Customer</label>
+                                                                <select name="box_receiver_id" id="box_receiver_id"
+                                                                        class="form-control select2">
+                                                                        <option value="">Select</option>
+                                                                    @foreach (get_customers('receiver') as $receiver)
+                                                                        <option value="{{ $receiver->id }}"
+                                                                        >{{ $receiver->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                @error('receiver_id')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
+                                                            </div>
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="body" id="packageinfo">
@@ -1520,6 +1602,9 @@ $("#saveDraft").on('click',function(e){
                         myClone.find('.box-weight1').attr('data-weight', k);
                         myClone.find('.box-weight1').attr('name','weight'+ k);
                         myClone.find('.box-weight1').attr('class', 'form-control box-weight');
+
+                        myClone.find('#box_sender_id').attr('name','box_sender_id'+ k);
+                        myClone.find('#box_receiver_id').attr('name','box_receiver_id'+ k);
 
                         myClone.find('.box-rate1').attr('data-rate', k);
                         myClone.find('.box-rate1').attr('name','rate'+ k);

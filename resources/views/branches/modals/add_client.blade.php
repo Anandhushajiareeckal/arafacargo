@@ -36,7 +36,7 @@
 
                     </div>
 
-                   
+
 
                     <div class="row">
                         <div class="col-md-4">
@@ -79,10 +79,13 @@
                             <div class="form-group">
                                 <label>Country</label>
                                 <select style="width: 100% !important;" class="select form-control" name="country_id" id="country_id">
-                                    
-                                    @foreach ($countries as $item)
-                                        <option {{ ($item->id==14) ? 'selected' : "" }} value="{{ $item->id }}">{{ $item->name }}</option>
+
+                                        @foreach ($countries as $item)
+                                        <option value="{{ $item->id }}" {{ $item->name === "India" ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
                                     @endforeach
+
                                 </select>
 
                             </div>
@@ -98,7 +101,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group">
                                 <label class="">District</label>
                                 <select style="width: 100% !important;" class="select form-control" id="district_id" name="district_id">
@@ -106,13 +109,13 @@
                                 </select>
 
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="">City</label>
                                 <select style="width: 100% !important;" class="select form-control" id="city_id" name="city_id">
-                                     
+
                                 </select>
 
                             </div>
@@ -121,7 +124,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="">Po</label>
-                                <input type="text" class="form-control" name="post" id="post" placeholder="post code">
+                                <input type="text" class="form-control" name="post" id="post" placeholder="post">
                                 <div id="post_error" class="text-danger"></div>
                             </div>
                         </div>
@@ -135,7 +138,7 @@
                                 </select> --}}
                             </div>
                         </div>
-                        
+
 
 
                         </div>
@@ -144,7 +147,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="">Code</label>
-                                <select style="width: 100% !important;" class="select form-control country_code" name="country_code_whatsapp" id="country_code_whatsapp">                                
+                                <select style="width: 100% !important;" class="select form-control country_code" name="country_code_whatsapp" id="country_code_whatsapp">
                                 @foreach (get_country_code() as $code)
                                     <option value="{{ $code }}" data-address="{{$code }}">{{ $code }}</option>
                                 @endforeach
@@ -163,7 +166,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="">Code</label>
-                                <select style="width: 100% !important;" class="select form-control country_code" name="country_code_phone" id="country_code_phone">                                
+                                <select style="width: 100% !important;" class="select form-control country_code" name="country_code_phone" id="country_code_phone">
                                 @foreach (get_country_code() as $code)
                                     <option value="{{ $code }}" data-address="{{$code }}">{{ $code }}</option>
                                 @endforeach
@@ -180,7 +183,7 @@
                         </div>
                     </div>
                     <div class="row">
-                       
+
 
                         <div class="col-md-12">
                             <div class="form-group">
@@ -204,33 +207,33 @@
     </div>
 </div>
 
-<script> 
+<script>
 
 function validate(event) {
     var maxlength =  $("#phone").attr("maxlength");
     var text = $("#phone").val();
-    if( (text.length+1) == maxlength ) { 
-        $("#phone").val(text.substr(0, maxlength)); 
+    if( (text.length+1) == maxlength ) {
+        $("#phone").val(text.substr(0, maxlength));
         $("#phone_error").text("Number not more than " + maxlength);
-        setTimeout(function(){ 
-	            $("#phone_error").hide(); 
-            },1000);            
+        setTimeout(function(){
+	            $("#phone_error").hide();
+            },1000);
     }
     else if( (text.length+1) <  maxlength ) {
         $("#phone_error").text("Number should be " + maxlength);
-        setTimeout(function(){ 
-	            $("#phone_error").show(); 
-            },1000); 
+        setTimeout(function(){
+	            $("#phone_error").show();
+            },1000);
     }
 
     var number = $("#phone").val();
-    var code = $("#country_code_phone").val(); 
-    const url = "{{route('checkPhoneNumberExists')}}?number=" + number+"&code="+code;       
+    var code = $("#country_code_phone").val();
+    const url = "{{route('checkPhoneNumberExists')}}?number=" + number+"&code="+code;
     $.ajax({
         url: url,
         type: "GET",
         dataType: "json",
-        success: function (result) {            
+        success: function (result) {
             if(result.status == "exist"){
                 $("#phone_error").text("Already Exist for " + result.data.name );
                 $("#phone_error").show();
@@ -238,36 +241,36 @@ function validate(event) {
         }, error: function (er) {
             console.log(er);
         }
-    }); // ajax call closing    
+    }); // ajax call closing
 }
 
 
 function validateWhatsapp(event) {
     var maxlength =  $("#whatsapp_number").attr("maxlength");
-    var text = $("#whatsapp_number").val();       
+    var text = $("#whatsapp_number").val();
     if( (text.length+1) ==  maxlength ) {
-        $("#whatsapp_number").val(text.substr(0, maxlength)); 
+        $("#whatsapp_number").val(text.substr(0, maxlength));
         $("#whatsapp_number_error").text("Number not more than " + maxlength);
-        setTimeout(function(){ 
-	            $("#whatsapp_number_error").hide(); 
-            },1000);            
+        setTimeout(function(){
+	            $("#whatsapp_number_error").hide();
+            },1000);
     }
     else if( (text.length+1) <  maxlength )  {
         $("#whatsapp_number_error").text("Number should be " + maxlength);
-        setTimeout(function(){ 
-	            $("#whatsapp_number_error").show(); 
-            },1000); 
+        setTimeout(function(){
+	            $("#whatsapp_number_error").show();
+            },1000);
     }
 
     var number = $("#whatsapp_number").val();
     var code = $("#country_code_whatsapp").val();
     $('#loader').removeClass('d-none');
-    const url = "{{route('checkNumberExists')}}?number=" + number+"&code="+code;    
+    const url = "{{route('checkNumberExists')}}?number=" + number+"&code="+code;
     $.ajax({
         url: url,
         type: "GET",
         dataType: "json",
-        success: function (result) {            
+        success: function (result) {
             if(result.status == "exist"){
                 $("#whatsapp_number_error").text("Already Exist for " + result.data.name );
                 $("#whatsapp_number_error").show();
@@ -283,45 +286,45 @@ function validateAadhar(event) {
     var maxlength =  12;
     var text = $("#client_identification_type").val();
     var country_id = $("#country_id").val();
-    var doc=  $("#client_identification_number").val();     
+    var doc=  $("#client_identification_number").val();
         if(text == "aadhar") {
             if( (doc.length) > maxlength ) {
-                    $("#client_identification_number").val(doc.substr(0, maxlength)); 
+                    $("#client_identification_number").val(doc.substr(0, maxlength));
                     $("#client_identification_number_error").text("Number not more than " + maxlength);
-                    setTimeout(function(){ 
-                            $("#client_identification_number_error").show(); 
-                        },1000);                        
+                    setTimeout(function(){
+                            $("#client_identification_number_error").show();
+                        },1000);
                 }
                 else if( (doc.length) < maxlength )  {
                     $("#client_identification_number_error").text("Number should be " + maxlength);
-                    setTimeout(function(){ 
-                           
-                            $("#client_identification_number_error").hide(); 
-                        },1000); 
+                    setTimeout(function(){
+
+                            $("#client_identification_number_error").hide();
+                        },1000);
                 }
-        }    
+        }
 }
 
 function validatePincode(event) {
-    var maxlength =  6; 
+    var maxlength =  6;
     var country_id = $("#country_id").val();
     var doc=  $("#zip_code").val();
-    if(country_id == '101') { 
+    if(country_id == '101') {
             if( (doc.length) >  maxlength ) {
-                $("#zip_code").val(doc.substr(0, maxlength)); 
+                $("#zip_code").val(doc.substr(0, maxlength));
                 $("#zip_code_error").text("Number not more than " + maxlength);
-                setTimeout(function(){ 
-                        $("#zip_code_error").show(); 
-                    },1000);                        
+                setTimeout(function(){
+                        $("#zip_code_error").show();
+                    },1000);
             }
             else if( (doc.length) <  maxlength )  {
                 $("#zip_code_error").text("Number should be " + maxlength);
-                setTimeout(function(){                           
-                        $("#zip_code_error").hide(); 
-                    },1000); 
+                setTimeout(function(){
+                        $("#zip_code_error").hide();
+                    },1000);
             }
-        
-    }    
+
+    }
 }
 
 </script>

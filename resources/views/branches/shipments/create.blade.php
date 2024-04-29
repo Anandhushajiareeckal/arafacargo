@@ -474,130 +474,10 @@ body{
 
                                     </div>
 
-                                    <div class="col-md-12"  id="TotalDiv" style="display:none;">
-                                        <div class="body">
-                                            <table class="table table-bordered">
-                                                <tr>
 
-                                                    <td width="60%">
-                                                        <div class="row">
-                                                            <div class="col-md-6 pt-2"  style="text-align:right;">
-                                                                <label>Weight</label>
-                                                            </div>
-                                                            <div class="col-md-6 pt-2">
-                                                                <div class="">
-                                                                    <input type="text" name="total_weight" value="" class="form-control" readonly>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                                <div class="col-md-6"  style="text-align:right;">
-                                                                    <label>Misc weight</label>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="">
-                                                                        <input type="number" name="msic_weight" value="" class="form-control msic_weight">
-                                                                    </div>
-                                                                </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                                <div class="col-md-6"  style="text-align:right;">
-                                                                    <label>Total weight</label>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="">
-                                                                        <input type="text" name="grand_total_weight" value="" class="form-control" readonly>
-                                                                    </div>
-                                                                </div>
-
-                                                        </div>
-
-                                                    </td>
-
-                                                    <td width="40%">
-                                                        <div class="row">
-                                                                <div class="col-md-6 pt-2"  style="text-align:right;">
-                                                                    <label>Total Value</label>
-                                                                </div>
-                                                                <div class="col-md-6 pt-2">
-                                                                    <div class="">
-                                                                        <input type="number" name="grand_total_box_value" value="" class="form-control" readonly>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-6 "  style="text-align:right;">
-                                                                    <label>Total Freight</label>
-                                                                </div>
-                                                                <div class="col-md-6 ">
-                                                                    <div class="">
-                                                                        <input type="number" name="total_freight" value="" class="form-control total">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-6"  style="text-align:right;">
-                                                                    <label>Misc Freight</label>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="">
-                                                                        <input type="number" name="misc_freight" value="" class="form-control total">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-6"  style="text-align:right;">
-                                                                    <label>Packing Charge</label>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="">
-                                                                        <input type="number" name="packing_charge" value="" class="form-control total">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6"  style="text-align:right;">
-                                                                    <label>Other Charge</label>
-                                                                </div>
-                                                                <div class="col-md-6 ">
-                                                                    <div class="">
-                                                                        <input type="number" name="other_charges" value="" class="form-control total">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-6"  style="text-align:right;">
-                                                                    <label>Document Charge</label>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="">
-                                                                        <input type="number" name="document_charge" value="" class="form-control  total">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-6"  style="text-align:right;">
-                                                                    <label>Discount</label>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="">
-                                                                    <input type="number" value=""
-                                                                    id="discount" name="discount" class="form-control discount">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-6"  style="text-align:right;">
-                                                                    <label>Grand Total</label>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="">
-                                                                        <input type="text" name="grand_total" value="" class="form-control" readonly>
-                                                                    </div>
-                                                                </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
                                 </div>
 
-                                <div class="col-md-12"" style="display:none;">
+                                <div class="col-md-12" style="display:none;">
                                     <div class="body" id="boxDimension1">
                                         <div class="row">
                                             <div class="col-md-2 box-title">
@@ -671,6 +551,347 @@ body{
 
                                 </div>
                                 </div>
+                                        <hr>
+                                            <div class="col-md-8"  id="TotalDiv" >
+                                                <div class="body">
+                                                    <table class="table " >
+                                                        <tr>
+                                                            <td style="border:none;">
+
+                                                            <div class="row pt-2">
+                                                                    <div class="col-md-6"  >
+
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                    <label>Quantity</label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                    <label>Unit Rate</label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                    <label>Amount</label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row pt-2">
+                                                                    <div class="col-md-6" style="text-align:right;" >
+                                                                        <label>Total Weight</label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            {{-- <input type="text" name="normal_weight" value="{{$shipment->normal_weight}}" class="form-control "> --}}
+                                                                            <input type="text" name="grand_total_weight" value="" class="form-control " >
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_normal_weight" value="" class="form-control rate_normal_weight tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_normal_weight" value="" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row pt-2">
+                                                                        <div class="col-md-6"  style="text-align:right;">
+                                                                            <label>Duty</label>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <div class="">
+                                                                                <input type="text" name="electronics_weight"
+                                                                                value="" class="form-control electronics_weight tot_wgt">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <div class="">
+                                                                                <input type="text" name="rate_electronics_weight" value="" class="form-control rate_electronics_weight tot_rate">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_electronics_weight" value="" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row  pt-2">
+                                                                        <div class="col-md-6"  style="text-align:right;">
+                                                                            <label>Packing charge</label>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <div class="">
+                                                                                <input type="text" name="msic_weight"
+                                                                                value="" class="form-control msic_weight tot_wgt">
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-2">
+                                                                            <div class="">
+                                                                                <input type="text" name="rate_msic_weight" value="" class="form-control rate_msic_weight tot_rate">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_msic_weight" value="" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+
+
+
+
+
+
+
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Insurance </label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="insurance"
+                                                                            value="" class="form-control insurance_weight tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_insurance" value="" class="form-control rate_insurance_weight tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_insurance" value="" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>AWB Fee</label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="awbfee"
+                                                                            value="" class="form-control awbfee tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_awbfee" value="" class="form-control rate_awbfee tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_awbfee" value="" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>VAT Amount</label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="vat_amount"
+                                                                            value="" class="form-control vat_amount tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_vat_amount" value="" class="form-control rate_vat_amount tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_vat_amount" value="" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Volume weight</label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="volume_weight"
+                                                                            value="" class="form-control volume_weight tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_volume_weight" value="" class="form-control rate_volume_weight tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_volume_weight" value="" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+
+
+
+
+
+
+
+                                                                {{-- <div class="row pt-2">
+                                                                        <div class="col-md-6"  style="text-align:right;">
+                                                                            <label>Other weight</label>
+                                                                        </div>
+                                                                        <div class="col-md-2" >
+                                                                            <div class="">
+                                                                                <input type="text" name="other_weight"
+                                                                                value="{{$shipment->other_weight}}" class="form-control other_weight tot_wgt">
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-2">
+                                                                            <div class="">
+                                                                                <input type="text" name="rate_other_weight" value="{{$shipment->rate_other_weight}}" class="form-control rate_other_weight tot_rate">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_other_weight" value="{{ $shipment->amount_other_weight }}" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div> --}}
+
+                                                                <div class="row">
+
+
+                                                                        <div class="col-md-6 pt-2"  style="text-align:right;font-size:18px;font-weight:bold;">
+
+                                                                        </div>
+                                                                        <div class="col-md-2 pt-2" style="border-top:1px solid;">
+                                                                            <div class="">
+                                                                            {{-- <input type="text" name="normal_weight" value="{{$shipment->normal_weight}}" class="form-control tot_wgt1"> --}}
+
+                                                                            <!-- THIS VALUE IS USED FOR CALCULATION  normal_weight_temp-->
+                                                                            {{-- <input type="hidden" name="normal_weight_temp" value="{{$shipment->normal_weight}}" class="form-control tot_wgt1" readonly> --}}
+
+                                                                                <!-- <input type="text" name="grand_total_weight" value="" class="form-control" readonly> -->
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-2 pt-2"  style="border-top:1px solid;">
+                                                                            <div class="">
+                                                                                <!-- <input type="text" name="rate_grand_total" value="" class="form-control"> -->
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-2 pt-2"  style="border-top:1px solid;">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_grand_total" value="" class="form-control">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="row  pt-2">
+
+                                                                     <div class="col-md-6"  style="text-align:right;">
+                                                                            <label>No.of Pcs</label>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="">
+                                                                                <input value="" type="text" name="number_of_pcs"
+                                                                                class="form-control" id="number_of_pcs">
+
+                                                                            </div>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="row mt-5">
+                                                                        <div class="col-md-12"  style="text-align:left;">
+                                                                            <!-- <h3>Declared value = Total Weight x 20 </h3> -->
+                                                                        </div>
+                                                                </div>
+
+                                                            </td>
+                                                            {{-- <td width="40%">
+                                                                <div class="row">
+
+
+                                                                    <div class="col-md-6 "  style="text-align:right;">
+                                                                        <label>Total Freight</label>
+                                                                    </div>
+                                                                    <div class="col-md-6 ">
+                                                                        <div class="">
+                                                                            <input type="text" name="total_freight"
+                                                                            value="{{$shipment->total_freight}}" class="form-control gtotal">
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Box Packing Charge</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="">
+                                                                            <input type="text" name="packing_charge" value="{{ $shipment->packing_charge}}"  id="packing_charge" class="form-control gtotal">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Other Packing Charge</label>
+                                                                    </div>
+                                                                    <div class="col-md-6 ">
+                                                                        <div class="">
+                                                                            <input type="text" name="other_charges" value="{{ $discount->other_packing_charge? $discount->other_packing_charge:0}}" class="form-control gtotal">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Document Charge</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="">
+                                                                            <input type="text" name="document_charge" value="{{ $discount->document_charge? $discount->document_charge:0}}" class="form-control  gtotal" step="any">
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Discount</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="">
+                                                                        <input type="text" value="{{ $discount->discount? $discount->discount:0}}"
+                                                                        id="discount" name="discount" class="form-control discount">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Grand Total  {{ $shipment->grand_total}} </label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="">
+                                                                            <input type="text" name="grand_total" value="{{ $shipment->grand_total}}" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td> --}}
+
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
 
                                 <div class="text-center" style="display:block;">
                                     <button type="submit" class="btn btn-success waves-effect waves-light">Submit
@@ -1527,6 +1748,226 @@ body{
 
             }); // ajax call closing
         })
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    const grand_total = document.querySelector('input[name="grand_total_weight"]');
+    const rate_normal_weight = document.querySelector('input[name="rate_normal_weight"]');
+    const amount_normal_weight = document.querySelector('input[name="amount_normal_weight"]');
+
+    const electronics = document.querySelector('input[name="electronics_weight"]');
+    const rate_electronics_weight = document.querySelector('input[name="rate_electronics_weight"]');
+    const amount_electronics_weight = document.querySelector('input[name="amount_electronics_weight"]');
+
+    const msic = document.querySelector('input[name="msic_weight"]');
+    const rate_msic_weight = document.querySelector('input[name="rate_msic_weight"]');
+    const amount_msic_weight = document.querySelector('input[name="amount_msic_weight"]');
+
+
+
+
+    const insurance = document.querySelector('input[name="insurance"]');
+    const rate_insurance = document.querySelector('input[name="rate_insurance"]');
+    const amount_insurance = document.querySelector('input[name="amount_insurance"]');
+
+    const awbfee = document.querySelector('input[name="awbfee"]');
+    const rate_awbfee = document.querySelector('input[name="rate_awbfee"]');
+    const amount_awbfee = document.querySelector('input[name="amount_awbfee"]');
+
+    const vat_amount = document.querySelector('input[name="vat_amount"]');
+    const rate_vat_amount = document.querySelector('input[name="rate_vat_amount"]');
+    const amount_vat_amount = document.querySelector('input[name="amount_vat_amount"]');
+
+    const volume_weight = document.querySelector('input[name="volume_weight"]');
+    const rate_volume_weight = document.querySelector('input[name="rate_volume_weight"]');
+    const amount_volume_weight = document.querySelector('input[name="amount_volume_weight"]');
+
+    const normal_weight = document.querySelector('input[name="normal_weight"]');
+
+    const grand_total_weight = document.querySelector('input[name="grand_total_weight"]');
+    const electronics_weight = document.querySelector('input[name="electronics_weight"]');
+    const msic_weight = document.querySelector('input[name="msic_weight"]');
+
+    const amount_grand_total = document.querySelector('input[name="amount_grand_total"]');
+
+
+
+    function multiplyTotal() {
+        const val1 = parseFloat(grand_total.value);
+        const val2 = parseFloat(rate_normal_weight.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_normal_weight.value =result.toFixed(0);
+            }
+            else{
+                amount_normal_weight.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+    function multiplyDuty() {
+        const val1 = parseFloat(electronics.value);
+        const val2 = parseFloat(rate_electronics_weight.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_electronics_weight.value =result.toFixed(0);
+            }
+            else{
+                amount_electronics_weight.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+    function multiplyPacking() {
+        const val1 = parseFloat(msic.value);
+        const val2 = parseFloat(rate_msic_weight.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_msic_weight.value =result.toFixed(0);
+            }
+            else{
+                amount_msic_weight.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
+
+
+
+
+    function multiplyInsurance() {
+        const val1 = parseFloat(insurance.value);
+        const val2 = parseFloat(rate_insurance.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_insurance.value =result.toFixed(0);
+            }
+            else{
+                amount_insurance.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
+    function multiplyVolume() {
+        const val1 = parseFloat(volume_weight.value);
+        const val2 = parseFloat(rate_volume_weight.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_volume_weight.value =result.toFixed(0);
+            }
+            else{
+                amount_volume_weight.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
+    function multiplyAwbFee() {
+        const val1 = parseFloat(awbfee.value);
+        const val2 = parseFloat(rate_awbfee.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_awbfee.value =result.toFixed(0);
+            }
+            else{
+                amount_awbfee.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
+    function multiplyVatAmount() {
+        const val1 = parseFloat(vat_amount.value);
+        const val2 = parseFloat(rate_vat_amount.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_vat_amount.value =result.toFixed(0);
+            }
+            else{
+                amount_vat_amount.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
+    function totalQuantity() {
+        const val1 = parseFloat(amount_normal_weight.value) || 0;
+        const val2 = parseFloat(amount_electronics_weight.value) || 0;
+        const val3 = parseFloat(amount_msic_weight.value) || 0;
+        const val4 = parseFloat(amount_insurance.value) || 0;
+        const val5 = parseFloat(amount_awbfee.value) || 0;
+        const val6 = parseFloat(amount_vat_amount.value) || 0;
+        const val7 = parseFloat(amount_volume_weight.value) || 0;
+
+        if ([val1, val2, val3, val4, val5, val6, val7].every(val => !isNaN(val))) {
+            var result = val1 + val2 + val3 + val4 + val5 + val6 + val7;
+            amount_grand_total.value = result.toFixed(2);
+        }
+
+
+    }
+
+
+    grand_total.addEventListener('input', multiplyTotal);
+    rate_normal_weight.addEventListener('input', multiplyTotal);
+
+    electronics.addEventListener('input', multiplyDuty);
+    rate_electronics_weight.addEventListener('input', multiplyDuty);
+
+    msic.addEventListener('input', multiplyPacking);
+    rate_msic_weight.addEventListener('input', multiplyPacking);
+
+    insurance.addEventListener('input', multiplyInsurance);
+    rate_insurance.addEventListener('input', multiplyInsurance);
+
+    volume_weight.addEventListener('input', multiplyVolume);
+    rate_volume_weight.addEventListener('input', multiplyVolume);
+
+    awbfee.addEventListener('input', multiplyAwbFee);
+    rate_awbfee.addEventListener('input', multiplyAwbFee);
+
+    vat_amount.addEventListener('input', multiplyVatAmount);
+    rate_vat_amount.addEventListener('input', multiplyVatAmount);
+
+
+    rate_normal_weight.addEventListener('input', totalQuantity);
+    rate_electronics_weight.addEventListener('input', totalQuantity);
+    rate_msic_weight.addEventListener('input', totalQuantity);
+    rate_insurance.addEventListener('input', totalQuantity);
+    rate_volume_weight.addEventListener('input', totalQuantity);
+    rate_awbfee.addEventListener('input', totalQuantity);
+    rate_vat_amount.addEventListener('input', totalQuantity);
+
+    amount_normal_weight.addEventListener('input', totalQuantity);
+    amount_electronics_weight.addEventListener('input', totalQuantity);
+    amount_msic_weight.addEventListener('input', totalQuantity);
+    amount_insurance.addEventListener('input', totalQuantity);
+    amount_awbfee.addEventListener('input', totalQuantity);
+    amount_vat_amount.addEventListener('input', totalQuantity);
+    amount_volume_weight.addEventListener('input', totalQuantity);
+
+});
+
+
+
 
 
     </script>

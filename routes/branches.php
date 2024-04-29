@@ -17,7 +17,7 @@ use App\Http\Controllers\Branch\UserController;
 use App\Http\Controllers\Branch\GoodsDetailsController;
 use App\Http\Controllers\Branch\VendorController;
 use App\Http\Controllers\Branch\EnquiryController;
-
+use App\Http\Controllers\Branch\SenderReceiverController;
 
 
 Route::group(['prefix' => 'branch', 'as' => 'branch.', "middleware" => ["branch"]], function () {
@@ -76,6 +76,7 @@ Route::group(['prefix' => 'branch', 'as' => 'branch.', "middleware" => ["branch"
     Route::get('ships/packing-list-print', [AddToShipController::class, 'packinglistptint'])->name('ships.packinglistptint');
     Route::get('ships/customer-manifest-print', [AddToShipController::class, 'customermanifestprint'])->name('ships.customermanifestptint');
 
+    Route::post('/export-image', [ShipmentController::class, 'exportImage']);
 
     Route::get('ships/undoaddbooking/{id}', [AddToShipController::class, 'undoaddbooking'])->name('ships.undoaddbooking');
     // Route::get('shipment/item', [ShipmentController::class, 'item'])->name('shipment.item');
@@ -142,6 +143,9 @@ Route::group(['prefix' => 'branch', 'as' => 'branch.', "middleware" => ["branch"
     Route::resource('enquiry', EnquiryController::class);
     Route::post('enquiry/updateStatus/',[EnquiryController::class,'updateStatus'])->name('enquiry.updateStatus');
 
+    Route::get('customers/{type?}',[SenderReceiverController::class, 'viewall'])->name('customers.view.type');
+    Route::resource('customer', SenderReceiverController::class);
+    Route::get('customers/delete/{id}',[SenderReceiverController::class, 'destroy'])->name('customers.destroy');
 
 
 

@@ -1,26 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Print View</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
     <style>
-        @page {
-            size: A4;
-            margin: 0;
+
+    @media print {
+      @page {
+        margin: 0;
+      }
+      /* .printxxxx {
+        page-break-after: always;
+      } */
+      .printable-invoice {
+            page-break-before: always;
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-
+      td{
+        padding:0px !important;
+      }
+        h4{
+            padding:0px !important;
+            margin:0px !important;
+        }
+        #print_button button{
+            display:none;
+        }
+        .address {
+            font-size: 14px !important;
         }
 
+    }
 
+    .main_div{
+            font-size: 10px !important;
+        }
 
+        .pod{
+            height: 155px;
+        }
         .container {
             width: 100%;
 
@@ -47,7 +66,7 @@
             border-top: solid;
         }
         input[type="checkbox"] {
-            transform: scale(1.5); /* Change the scale value to adjust the size */
+            transform: scale(1); /* Change the scale value to adjust the size */
         }
         input[type="checkbox"] {
             border-width: 3px; /* Change the border-width value to adjust the width */
@@ -78,39 +97,56 @@
             text-align: justify;
         }
 
-
-        @media print {
-            .indented-paragraph {
-                /* Adjust print styles as needed */
-                padding-left: 20px !important;
-            }
-
-            .bottom-space {
-                /* Adjust print styles as needed */
-                margin-bottom: 20px !important;
-            }
+        .header h6{
+            font-size: 12px;
         }
+
         @media screen and (max-width: 600px) {
             .shipment-info {
             text-align: left;
             }
         }
+        #printButton {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #c52014;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            z-index: 1000;
+            width: 95px
+        }
 
+        #printButton:hover {
+            background-color: #009eb3;
+        }
 
     </style>
 </head>
 
 <body>
-    <div class="container pt-3">
+
+    <button id="printButton" onclick="printPDF()">Print</button><br>
+    @php
+        $first_loop = true;
+    @endphp
+@foreach ($shipment->packages as $i=>$item)
+
+    <div class="p-3 {{ $first_loop == false ? 'printable-invoice' : '' }}">
         <div class="main_div">
             <div class="row">
-                <div class="col-5 mt-4 ml-4">
+                <div class="col-5 mt-4 ml-4 header">
                     <div  style="float:left;">
                         <img src="{{asset($shipment->agency->logo) }}" alt="Bestexpress" style="height:60px;" class="img-responsive logo" >
                     </div>
-                        <h6>DIVISION OF MAZYOONA MUSCUT TRADING
-                        DATE REF NO. PKG WGHT ORIGIN DESTINATION AWB NO:
-                       ROOM NO I/462 , 1ST FLOOR , COCHIN , KERALA , INDIA</h6>
+                        <h6 class="text-uppercase">DIVISION OF {{$shipment->agency->name}},
+                            {{$shipment->agency->address}},
+                            {{$shipment->agency->district}},
+                            PIN:- {{$shipment->agency->pincode}}</h6>
                 </div>
                 <div class="col-3 d-flex align-items-center justify-content-center" >
                     <h1 class="inv_no">INV NO </h1>
@@ -175,14 +211,14 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-3 mt-5 pt-3 " style="border-bottom:solid; border-width: 3px;margin-top: -16px;">
-                        <h6 class="align-items-center justify-content-center shipment-info">
+                    <div class="col-3 mt-2 pt-3 " style="border-bottom:solid; border-width: 3px;margin-top: -16px;font-size: 11px;">
+                        <b class="align-items-center justify-content-center shipment-info">
                             {{ $shipment->sender->name }} ,
                             {{ $shipment->sender->address->address }},
                             <br> MOB:
                             +{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }},
                             <br> ID
-                        </h6>
+                        </b>
                     </div>
                     <div class="col-2" style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
                         <table class="table">
@@ -197,14 +233,13 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-3 mt-5 pt-3" style="border-bottom:solid; border-width: 3px; margin-top: -16px;">
-                        <h6 class="align-items-center justify-content-center shipment-info">
+                    <div class="col-3 mt-2 pt-3" style="border-bottom:solid; border-width: 3px; margin-top: -16px;font-size: 11px;">
+                        <b class="align-items-center justify-content-center shipment-info">
                             {{ $shipment->receiver->name }} ,
-                            {{Log::info($shipment->receiver->address->address)}}
                             {{ $shipment->receiver->address->address }},<br> MOB:
                             +{{ $shipment->receiver->country_code_phone}} {{ $shipment->receiver->phone }},
                             <br> ID
-                        </h6>
+                        </b>
                     </div>
                     <div class="col-2" style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
                         <table class="table" >
@@ -234,27 +269,8 @@
                             </tr>
                         </thead>
                        <tbody>
-                        @php
-                            $total_value1 = 0;
-                            $total_item = count($shipment->packages);
-                            if (gettype($total_item/2) == 'integer') {
-                                $left_count = $total_item/2;
-                                $right_count = $left_count;
-                            }
-                            else {
-                                $left_count = intval($total_item/2) + 1;
-                                $right_count = $total_item - $left_count;
-                            }
-                            $left_data = $shipment->packages->take($left_count);
-                            $right_data = $shipment->packages->slice($right_count );
 
 
-                        @endphp
-
-                        @for ($i = 0; $i< $left_count; $i++)
-                            @php
-                                $item = $left_data[$i];
-                            @endphp
                             <tr>
                                 <td class="sno">{{$i + 1}}</td>
                                 <td>{{$item->description}}</td>
@@ -263,10 +279,7 @@
                                 <td>{{$item->subtotal}}</td>
 
                             </tr>
-                            @php
-                               $total_value1 += $item->subtotal
-                            @endphp
-                        @endfor
+
 
 
 
@@ -286,7 +299,7 @@
                             </tr>
                         </thead>
                        <tbody>
-                        @php
+                        {{-- @php
                             $total_value2 = 0;
                             $total_item = count($shipment->packages);
                             if (gettype($total_item/2) == 'integer') {
@@ -301,8 +314,8 @@
                             $right_data = $shipment->packages->slice($right_count );
 
 
-                        @endphp
-                            @for ($i = $left_count; $i< $total_item; $i++)
+                        @endphp --}}
+                            {{-- @for ($i = $left_count; $i< $total_item; $i++)
                             @php
                                 $item = $right_data[$i];
                             @endphp
@@ -317,13 +330,13 @@
                             @php
                                $total_value2 += $item->subtotal
                             @endphp
-                        @endfor
+                        @endfor --}}
 
 
 
                             <tr>
                                 <td colspan="4" class="text-center"><b>TOTAL CIF VALUE IN USD </b></td>
-                                <td ><b>${{$total_value1 + $total_value2}}</b></td>
+                                <td ><b>${{$item->subtotal}}</b></td>
                             </tr>
                        </tbody>
                     </table>
@@ -341,10 +354,10 @@
                 <div class="col-8">
                     <div class="col-10 ml-4" style="margin-top: -25px;">
                         <p><b>CONSIGNOR DECLARATION AND AUTHORISATION</b></p>
-                        I <b>MOHAMED BINU ASHIM , AL AIN , UAE , MOB: 0558893088 , ID 784-1991872532</b>
+                        I <b>{{$shipment->sender->name}} , {{ $shipment->sender->address->address }}, MOB: +{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }} , ID {{ $shipment->sender->identification_number }}</b>
                         <p>
                             hereby declare that the Courier gift parcel being sent by me through ARAFA CARGO LLC / DIVISION OF
-                            MAZYOONA MUSCAT TRADING does not contain any Dangerous / Hazardous goods as per IATA
+                            {{$shipment->agency->name}} does not contain any Dangerous / Hazardous goods as per IATA
                             regulations and does not carry cash/ currency
                         </p>
                         <p>
@@ -361,13 +374,13 @@
                             prescribed under low.
                         </p>
                         <p>
-                            I do here by appointed and authorize M/s Mazyoona Muscut Trading as my authorized courier agent to do the
+                            I do here by appointed and authorize M/s {{$shipment->agency->name}} as my authorized courier agent to do the
                             courier baggage clearance at India on behalf of me.
                         </p>
                         <b>SIGNATURE:</b>
                     </div>
                 </div>
-                <div class="col-1 mb-4 d-flex align-items-center justify-content-center" style="background: gray; color:#fff; height:300px;">
+                <div class="col-1 mb-4 d-flex align-items-center justify-content-center" style="background: gray; color:#fff; ">
                     <h1>POD</h1>
                 </div>
                 <div class="col-3 mb-4 " >
@@ -398,13 +411,30 @@
             </div>
 
         </div>
-    </div>
+        </div>
+        @php
+            $first_loop = false;
+        @endphp
+        @endforeach
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     <script>
         JsBarcode("#barcode", "<?php echo $shipment->booking_number ?>",{
             width: 2,
-            height: 70
+            height: 70,
+            fontSize: 30
         });
 
+        function printPDF() {
+            // Hide the print button while printing
+            document.getElementById('printButton').style.display = 'none';
+
+            // Print the content
+            window.print();
+
+            // Show the print button again after printing is done
+            document.getElementById('printButton').style.display = 'block';
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

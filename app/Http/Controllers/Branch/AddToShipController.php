@@ -18,6 +18,7 @@ use App\Models\ShipsBookings;
 use App\Models\ShipmentsStatuses;
 use App\Models\StatusesBookingNumber;
 use App\Models\BoxesStatuses;
+use App\Models\ShipTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -48,7 +49,9 @@ class AddToShipController extends BaseController
                             })->where('is_transfer',0)->where('is_shipment',0);
 
         $boxes = $querys->get();
-        return view('branches.addtoship.addbooking', compact('bookings','ships', 'ship_bookingsList','shipId','shipments','boxes'));
+        $ship_types = ShipTypes::all();
+        $agencies = Agencies::all();
+        return view('branches.addtoship.addbooking', compact('bookings','ships', 'ship_bookingsList','shipId','shipments','boxes', 'ship_types', 'agencies'));
     }
 
     public function createbookingtoship(Request $request) {
