@@ -134,9 +134,10 @@
     @php
         $first_loop = true;
     @endphp
-@foreach ($shipment->packages as $i=>$item)
 
-    <div class="p-3 {{ $first_loop == false ? 'printable-invoice' : '' }}">
+@foreach ($shipment->boxes as $i=>$item)
+
+    <div class=" mt-2 {{ $first_loop == false ? 'printable-invoice' : 'p-3 ' }}">
         <div class="main_div">
             <div class="row">
                 <div class="col-5 mt-4 ml-4 header">
@@ -172,10 +173,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ $shipment->branch->name}}</td>
-                            <td>{{ $shipment->booking_number }} </td>
+                            <td>{{ \Carbon\Carbon::now()->format('d/m/Y') }}</td>
+                            <td>{{ $item->box_name}} </td>
                             <td>{{ $shipment->number_of_pcs }}</td>
-                            <td>{{ round($shipment->normal_weight, 2) }}</td>
+                            <td>{{ round($shipment->grand_total_weight, 2) }}</td>
                             <td>UAE</td>
                             <td>COK</td>
                             <td>0</td>
@@ -213,11 +214,12 @@
                     </div>
                     <div class="col-3 mt-2 pt-3 " style="border-bottom:solid; border-width: 3px;margin-top: -16px;font-size: 11px;">
                         <b class="align-items-center justify-content-center shipment-info">
-                            {{ $shipment->sender->name }} ,
-                            {{ $shipment->sender->address->address }},
+                            {{ $item->sender_name ? $item->sender_name  : ''}} ,
+                            {{ $item->sender_address ? $item->sender_address : '' }},
                             <br> MOB:
-                            +{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }},
-                            <br> ID
+                            {{ $item->sender_mob ? $item->sender_mob : ''}} <br>
+                            ID: {{$item->sender_id_no ? $item->sender_id_no : ''}}
+                            <br>
                         </b>
                     </div>
                     <div class="col-2" style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
@@ -235,10 +237,13 @@
                     </div>
                     <div class="col-3 mt-2 pt-3" style="border-bottom:solid; border-width: 3px; margin-top: -16px;font-size: 11px;">
                         <b class="align-items-center justify-content-center shipment-info">
-                            {{ $shipment->receiver->name }} ,
-                            {{ $shipment->receiver->address->address }},<br> MOB:
-                            +{{ $shipment->receiver->country_code_phone}} {{ $shipment->receiver->phone }},
-                            <br> ID
+                            {{ $item->receiver_name ? $item->receiver_name  : ''}} ,
+                            {{ $item->receiver_address ? $item->receiver_address : '' }},
+                            <br> MOB:
+                            {{ $item->receiver_mob ? $item->receiver_mob : ''}} <br>
+                            ID: {{$item->receiver_id_no ? $item->receiver_id_no : ''}}
+
+                            <br>
                         </b>
                     </div>
                     <div class="col-2" style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
@@ -270,19 +275,36 @@
                         </thead>
                        <tbody>
 
+                        @php
+                        $total_value1 = 0;
+                        $total_item = count($item->packages);
+                        if (gettype($total_item/2) == 'integer') {
+                            $left_count = $total_item/2;
+                            $right_count = $left_count;
+                        }
+                        else {
+                            $left_count = intval($total_item/2) + 1;
+                            $right_count = $total_item - $left_count;
+                        }
+                        $left_data = $item->packages->take($left_count);
+                        $right_data = $item->packages->slice($right_count );
+                    @endphp
+                        @for ($i = 0; $i< $left_count ; $i++)
+                        @php
+                            $items = $left_data[$i];
+                        @endphp
+                        <tr>
+                            <td class="sno">{{$i + 1}}</td>
+                            <td>{{$items->description}}</td>
+                            <td>{{$items->quantity}}</td>
+                            <td>{{$items->unit_price}}</td>
+                            <td>{{$items->subtotal}}</td>
 
-                            <tr>
-                                <td class="sno">{{$i + 1}}</td>
-                                <td>{{$item->description}}</td>
-                                <td>{{$item->quantity}}</td>
-                                <td>{{$item->unit_price}}</td>
-                                <td>{{$item->subtotal}}</td>
-
-                            </tr>
-
-
-
-
+                        </tr>
+                        @php
+                           $total_value1 += $items->subtotal
+                        @endphp
+                    @endfor
 
                        </tbody>
                     </table>
@@ -299,9 +321,9 @@
                             </tr>
                         </thead>
                        <tbody>
-                        {{-- @php
+                        @php
                             $total_value2 = 0;
-                            $total_item = count($shipment->packages);
+                            $total_item = count($item->packages);
                             if (gettype($total_item/2) == 'integer') {
                                 $left_count = $total_item/2;
                                 $right_count = $left_count;
@@ -310,33 +332,33 @@
                                 $left_count = intval($total_item/2) + 1;
                                 $right_count = $total_item - $left_count;
                             }
-                            $left_data = $shipment->packages->take($left_count);
-                            $right_data = $shipment->packages->slice($right_count );
+                            $left_data = $item->packages->take($left_count);
+                            $right_data = $item->packages->slice($right_count );
 
 
-                        @endphp --}}
-                            {{-- @for ($i = $left_count; $i< $total_item; $i++)
+                        @endphp
+                            @for ($i = $left_count; $i< $total_item; $i++)
                             @php
-                                $item = $right_data[$i];
+                                $items = $right_data[$i];
                             @endphp
                             <tr>
                                 <td class="sno">{{$i + 1}}</td>
-                                <td>{{$item->description}}</td>
-                                <td>{{$item->quantity}}</td>
-                                <td>{{$item->unit_price}}</td>
-                                <td>{{$item->subtotal}}</td>
+                                <td>{{$items->description}}</td>
+                                <td>{{$items->quantity}}</td>
+                                <td>{{$items->unit_price}}</td>
+                                <td>{{$items->subtotal}}</td>
 
                             </tr>
                             @php
-                               $total_value2 += $item->subtotal
+                               $total_value2 += $items->subtotal
                             @endphp
-                        @endfor --}}
+                        @endfor
 
 
 
                             <tr>
                                 <td colspan="4" class="text-center"><b>TOTAL CIF VALUE IN USD </b></td>
-                                <td ><b>${{$item->subtotal}}</b></td>
+                                <td ><b>${{$total_value1 + $total_value2}}</b></td>
                             </tr>
                        </tbody>
                     </table>

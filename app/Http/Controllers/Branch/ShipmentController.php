@@ -27,6 +27,7 @@ use App\Models\GoodsDetails;
 use App\Models\BoxesStatuses;
 use App\Models\ShipmentTransfers;
 use App\Models\BookingStatus;
+use App\Models\Box_sender_reciver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -205,9 +206,16 @@ class ShipmentController extends BaseController
             $shipments->rate_volume_weight = $request->rate_volume_weight;
             $shipments->amount_volume_weight = $request->amount_volume_weight;
 
+            $shipments->discount_weight = $request->discount_weight;
+            $shipments->rate_discount_weight = $request->rate_discount_weight;
+            $shipments->amount_discount_weight = $request->amount_discount_weight;
+
             $shipments->amount_grand_total = $request->amount_grand_total;
             $shipments->number_of_pcs = $request->number_of_pcs;
 
+            $shipments->add_pack_charge = $request->add_pack_charge;
+            $shipments->rate_add_pack_charge = $request->rate_add_pack_charge;
+            $shipments->amount_add_pack_charge = $request->amount_add_pack_charge;
 
             $shipments->save();
             $status = Statuses::find($request->status_id);
@@ -374,6 +382,10 @@ class ShipmentController extends BaseController
                 $shipments->rate_grand_total = $request->rate_grand_total;
                 $shipments->amount_grand_total = $request->amount_grand_total;
 
+                $shipments->add_pack_charge = $request->add_pack_charge;
+                $shipments->rate_add_pack_charge = $request->rate_add_pack_charge;
+                $shipments->amount_add_pack_charge = $request->amount_add_pack_charge;
+
 
                 $shipments->msic_weight = $request->msic_weight;
                 $shipments->grand_total_box_value = $request->grand_total_box_value;
@@ -393,6 +405,7 @@ class ShipmentController extends BaseController
 
                 Boxes::where('shipment_id', $shipments->id)->delete();
                 Packages::where('shipment_id', $shipments->id)->delete();
+                Box_sender_reciver::where('shipment_id', $shipments->id)->delete();
 
                 for ($i = 0; $i < $request->number_of_pcs; $i++) {
                     $j= $i+1;
@@ -417,8 +430,74 @@ class ShipmentController extends BaseController
                     $box->unit_value = $request->input("unit_value".$j);
                     $box->total_value = $request->input("total_value".$j);
 
-                    $box->sender_id = $request->input('box_sender_id'.$j);
-                    $box->receiver_id = $request->input('box_receiver_id'.$j);
+                        $box->sender_name = $request->input("sender_name".$j);
+                        $box->sender_address = $request->input("sender_address".$j);
+                        $box->sender_mob = $request->input("sender_mob".$j);
+                        $box->sender_id_no = $request->input("sender_id_no".$j);
+
+                        $box->receiver_name = $request->input("receiver_name".$j);
+                        $box->receiver_address = $request->input("receiver_address".$j);
+                        $box->receiver_mob = $request->input("receiver_mob".$j);
+                        $box->receiver_id_no = $request->input("receiver_id_no".$j);
+
+                        $box->sender_pin = $request->input("sender_pin".$j);
+                        $box->receiver_pin = $request->input("receiver_pin".$j);
+
+
+                        if ($request->file('sender_id_image'.$j)) {
+                            $fileName = auth()->id() . '_' . time() . '.'. $request->file('sender_id_image'.$j)->extension();
+                            // $type = $request->document->getClientMimeType();
+                            // $size = $request->document->getSize();
+
+                            $request->file('sender_id_image'.$j)->move(public_path('uploads/customer_logo'), $fileName);
+                            $fileName = 'uploads/customer_logo/'.$fileName;
+                            $box->sender_id_image = $fileName;
+
+                        }
+                        else{
+                            $box->sender_id_image = $request->input("sender_id_image_value".$j);
+                        }
+
+                        if ($request->file('receiver_id_image'.$j)) {
+                            $fileName = auth()->id() . '_' . time() . '.'. $request->file('receiver_id_image'.$j)->extension();
+                            // $type = $request->document->getClientMimeType();
+                            // $size = $request->document->getSize();
+
+                            $request->file('receiver_id_image'.$j)->move(public_path('uploads/customer_logo'), $fileName);
+                            $fileName = 'uploads/customer_logo/'.$fileName;
+                            $box->receiver_id_image = $fileName;
+
+                        }
+                        else{
+                            $box->receiver_id_image = $request->input("receiver_id_image_value".$j);
+                        }
+
+                        $Box_sender = new Box_sender_reciver();
+                        $Box_sender->shipment_id = $shipments->id;
+                        $Box_sender->name = $request->input("sender_name".$j);
+                        $Box_sender->address = $request->input("sender_address".$j);
+                        $Box_sender->mobile = $request->input("sender_mob".$j);
+                        $Box_sender->pin = $request->input("sender_pin".$j);
+                        $Box_sender->id_no = $request->input("sender_id_no".$j);
+                        isset($sender_fileName) ? $Box_sender->id_image = $sender_fileName: $Box_sender->id_image = $request->input("sender_id_image_value".$j);
+                        $Box_sender->type = 1;
+                        $Box_sender->box_id = $request->input("box_name".$j);
+                        $Box_sender->save();
+
+                        $Box_receiver = new Box_sender_reciver();
+                        $Box_receiver->shipment_id = $shipments->id;
+                        $Box_receiver->name = $request->input("receiver_name".$j);
+                        $Box_receiver->address = $request->input("receiver_address".$j);
+                        $Box_receiver->mobile = $request->input("receiver_mob".$j);
+                        $Box_receiver->pin = $request->input("receiver_pin".$j);
+                        $Box_receiver->id_no = $request->input("receiver_id_no".$j);
+                        isset($receiver_fileName) ? $Box_receiver->id_image = $receiver_fileName:$Box_receiver->id_image = $request->input("receiver_id_image_value".$j);
+                        $Box_receiver->type = 0;
+                        $Box_receiver->box_id = $request->input("box_name".$j);
+                        $Box_receiver->save();
+
+                        // $box->sender_id_image = $request->input("sender_id_image".$j);
+                        // $box->receiver_id_image = $request->input("receiver_id_image".$j);
 
                     $box->save();
                 }
@@ -543,7 +622,13 @@ class ShipmentController extends BaseController
                     $shipments->volume_weight = $request->volume_weight;
                     $shipments->rate_volume_weight = $request->rate_volume_weight;
                     $shipments->amount_volume_weight = $request->amount_volume_weight;
+                    $shipments->discount_weight = $request->discount_weight;
+                    $shipments->rate_discount_weight = $request->rate_discount_weight;
+                    $shipments->amount_discount_weight = $request->amount_discount_weight;
 
+                    $shipments->add_pack_charge = $request->add_pack_charge;
+                    $shipments->rate_add_pack_charge = $request->rate_add_pack_charge;
+                    $shipments->amount_add_pack_charge = $request->amount_add_pack_charge;
 
 
                     $shipments->msic_weight = $request->msic_weight;
@@ -561,10 +646,10 @@ class ShipmentController extends BaseController
 
                     Boxes::where('shipment_id', $shipments->id)->delete();
                     Packages::where('shipment_id', $shipments->id)->delete();
+                    Box_sender_reciver::where('shipment_id', $shipments->id)->delete();
 
                     for ($i = 0; $i < $request->number_of_pcs; $i++) {
                         $j= $i+1;
-
                         $box = new Boxes();
                         $box->shipment_id = $shipments->id;
                         $box->box_name	 = $request->input("box_name".$j);
@@ -583,8 +668,81 @@ class ShipmentController extends BaseController
                         $box->box_packing_charge = $request->input("box_packing_charge".$j);
                         $box->unit_value = $request->input("unit_value".$j);
                         $box->total_value = $request->input("total_value".$j);
-                        $box->sender_id = $request->input("box_sender_id".$j);
-                        $box->receiver_id = $request->input("box_receiver_id".$j);
+                        // $box->sender_id = $request->input("box_sender_id".$j);
+                        // $box->receiver_id = $request->input("box_receiver_id".$j);
+
+                        $box->sender_name = $request->input("sender_name".$j);
+                        $box->sender_address = $request->input("sender_address".$j);
+                        $box->sender_mob = $request->input("sender_mob".$j);
+                        $box->sender_id_no = $request->input("sender_id_no".$j);
+
+                        $box->receiver_name = $request->input("receiver_name".$j);
+                        $box->receiver_address = $request->input("receiver_address".$j);
+                        $box->receiver_mob = $request->input("receiver_mob".$j);
+                        $box->receiver_id_no = $request->input("receiver_id_no".$j);
+
+                        $box->sender_pin = $request->input("sender_pin".$j);
+                        $box->receiver_pin = $request->input("receiver_pin".$j);
+
+                        if ($request->file('sender_id_image'.$j)) {
+                            $fileName = auth()->id() . '_' . time() . '.'. $request->file('sender_id_image'.$j)->extension();
+                            // $type = $request->document->getClientMimeType();
+                            // $size = $request->document->getSize();
+
+                            $request->file('sender_id_image'.$j)->move(public_path('uploads/customer_logo'), $fileName);
+                            $sender_fileName = 'uploads/customer_logo/'.$fileName;
+                            $box->sender_id_image = $sender_fileName;
+
+                        }
+                        else{
+                            $box->sender_id_image = $request->input("sender_id_image_value".$j);
+                        }
+
+                        if ($request->file('receiver_id_image'.$j)) {
+
+                            $fileName = auth()->id() . '_' . time() . '.'. $request->file('receiver_id_image'.$j)->extension();
+                            // $type = $request->document->getClientMimeType();
+                            // $size = $request->document->getSize();
+
+                            $request->file('receiver_id_image'.$j)->move(public_path('uploads/customer_logo'), $fileName);
+                            $receiver_fileName = 'uploads/customer_logo/'.$fileName;
+                            $box->receiver_id_image = $receiver_fileName;
+
+                        }
+                        else{
+                            $box->receiver_id_image = $request->input("receiver_id_image_value".$j);
+                        }
+
+
+
+
+
+                        $Box_sender = new Box_sender_reciver();
+                        $Box_sender->shipment_id = $shipments->id;
+                        $Box_sender->name = $request->input("sender_name".$j);
+                        $Box_sender->address = $request->input("sender_address".$j);
+                        $Box_sender->mobile = $request->input("sender_mob".$j);
+                        $Box_sender->pin = $request->input("sender_pin".$j);
+                        $Box_sender->id_no = $request->input("sender_id_no".$j);
+                        isset($sender_fileName) ? $Box_sender->id_image = $sender_fileName: $Box_sender->id_image = $request->input("sender_id_image_value".$j);
+                        $Box_sender->type = 1;
+                        $Box_sender->box_id = $request->input("box_name".$j);
+                        $Box_sender->save();
+
+                        $Box_receiver = new Box_sender_reciver();
+                        $Box_receiver->shipment_id = $shipments->id;
+                        $Box_receiver->name = $request->input("receiver_name".$j);
+                        $Box_receiver->address = $request->input("receiver_address".$j);
+                        $Box_receiver->mobile = $request->input("receiver_mob".$j);
+                        $Box_receiver->pin = $request->input("receiver_pin".$j);
+                        $Box_receiver->id_no = $request->input("receiver_id_no".$j);
+                        isset($receiver_fileName) ? $Box_receiver->id_image = $receiver_fileName:$Box_receiver->id_image = $request->input("receiver_id_image_value".$j);
+                        $Box_receiver->type = 0;
+                        $Box_receiver->box_id = $request->input("box_name".$j);
+                        $Box_receiver->save();
+                        // $box->sender_id_image = $request->input("sender_id_image".$j);
+                        // $box->receiver_id_image = $request->input("receiver_id_image".$j);
+
                         $box->save();
                     }
 
@@ -716,11 +874,56 @@ class ShipmentController extends BaseController
                 $box->volume = $request->input("volume".$j);
                 $box->unit_value = $request->input("unit_value".$j);
                 $box->total_value = $request->input("total_value".$j);
-                $box->sender_id = $request->input('box_sender_id');
-                $box->receiver_id = $request->input('box_receiver_id');
+
+
+                $box->sender_name = $request->input("sender_name".$j);
+                        $box->sender_address = $request->input("sender_address".$j);
+                        $box->sender_mob = $request->input("sender_mob".$j);
+                        $box->sender_id_no = $request->input("sender_id_no".$j);
+
+                        $box->receiver_name = $request->input("receiver_name".$j);
+                        $box->receiver_address = $request->input("receiver_address".$j);
+                        $box->receiver_mob = $request->input("receiver_mob".$j);
+                        $box->receiver_id_no = $request->input("receiver_id_no".$j);
+
+                        $box->sender_pin = $request->input("sender_pin".$j);
+                        $box->receiver_pin = $request->input("receiver_pin".$j);
+
+                        if ($request->file('sender_id_image'.$j)) {
+                            $fileName = auth()->id() . '_' . time() . '.'. $request->file('sender_id_image'.$j)->extension();
+                            // $type = $request->document->getClientMimeType();
+                            // $size = $request->document->getSize();
+
+                            $request->file('sender_id_image'.$j)->move(public_path('uploads/customer_logo'), $fileName);
+                            $fileName = 'uploads/customer_logo/'.$fileName;
+                            $box->sender_id_image = $fileName;
+
+                        }
+                        else{
+                            $box->sender_id_image = $request->input("sender_id_image_value".$j);
+                        }
+
+                        if ($request->file('receiver_id_image'.$j)) {
+                            $fileName = auth()->id() . '_' . time() . '.'. $request->file('receiver_id_image'.$j)->extension();
+                            // $type = $request->document->getClientMimeType();
+                            // $size = $request->document->getSize();
+
+                            $request->file('receiver_id_image'.$j)->move(public_path('uploads/customer_logo'), $fileName);
+                            $fileName = 'uploads/customer_logo/'.$fileName;
+                            $box->receiver_id_image = $fileName;
+
+                        }
+                        else{
+                            $box->receiver_id_image = $request->input("receiver_id_image_value".$j);
+                        }
+
+
+                        // $box->sender_id_image = $request->input("sender_id_image".$j);
+                        // $box->receiver_id_image = $request->input("receiver_id_image".$j);
 
                 $box->sender_id = $request->input('box_sender_id'.$j);
                 $box->receiver_id = $request->input('box_receiver_id'.$j);
+
                 $box->save();
             }
 
@@ -796,7 +999,6 @@ class ShipmentController extends BaseController
     public function print($id){
 
         $shipment = Shipments::with('boxes')->with('packages')->with('agency')->with('receiver')->with('sender')->findOrFail($id);
-        // dd($shipment);
         return view('branches.shipments.printview', compact('shipment'));
     }
 

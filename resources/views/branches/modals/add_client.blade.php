@@ -81,7 +81,7 @@
                                 <select style="width: 100% !important;" class="select form-control" name="country_id" id="country_id">
 
                                         @foreach ($countries as $item)
-                                        <option value="{{ $item->id }}" {{ $item->name === "India" ? 'selected' : '' }}>
+                                        <option value="{{ $item->id }}">
                                             {{ $item->name }}
                                         </option>
                                     @endforeach
@@ -101,7 +101,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-md-4">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label class="">District</label>
                                 <select style="width: 100% !important;" class="select form-control" id="district_id" name="district_id">
@@ -109,7 +109,7 @@
                                 </select>
 
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="col-md-4">
                             <div class="form-group">

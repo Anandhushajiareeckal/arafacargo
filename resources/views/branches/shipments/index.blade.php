@@ -46,14 +46,14 @@
 {{--                                </div>--}}
 {{--                            </form>--}}
 
-  
+
                             <table id="bookingdatatable"
                                    class="table table-striped table-bordered dt-responsive nowrap"
                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
 
                                 <tr>
-                                    @canany([permission_edit(),permission_view(),'shipment-show']) 
+                                    @canany([permission_edit(),permission_view(),'shipment-show'])
                                         <th style="text-align: center">Action</th>
                                     @endcanany
                                     <th>Book<br>No</th>
@@ -69,7 +69,7 @@
                                     <th>Courier<br>Company</th>
                                     <th>Driver/<br>Staff</th>
                                     <th>Date</th>
-                                    
+
                                 </tr>
 
                                 </thead>
@@ -79,8 +79,8 @@
                                         $statusList = [];
                                     ?>
                                 @foreach($shipments as $key=> $shipment)
-                                
-                                <?php 
+
+                                <?php
                                     // if(!empty($shipment->statusVal->name)){
                                         // if($shipment->statusVal->name == "Enquiry collected") {
                                         //     $showAddItems = true;
@@ -93,13 +93,13 @@
                                     $status = '';
                                     $lastStatus = '';
                                     $status = $shipment->statusVal->name;
-                                    
+
                                     foreach($shipment->boxes as $box) {
                                         if(($box->boxStatuses != null)) {
                                             $statusList = $shipment->last_status;
-                                        }  
+                                        }
                                     }
-                                     
+
 
                                     $lastStatus = (!empty($statusList) ) ? $statusList : $status ;
                                     if($lastStatus == 'Enquiry collected') {
@@ -111,9 +111,9 @@
                                     }
                                 ?>
                                     <tr>
-                                        <td>  
-                                            @can(permission_edit())   
-                                            @if(branch()->id == $shipment->branch_id)                                             
+                                        <td>
+                                            @can(permission_edit())
+                                            @if(branch()->id == $shipment->branch_id)
                                                 <a href="{{edit_url($shipment->id)}}"
                                                     class="btn btn-xs btn-icon waves-effect waves-light btn-warning">
                                                     <i class="fas  fa-lg fa-pencil-alt"></i>
@@ -139,17 +139,17 @@
 
                                             @endcan
                                             @if($showAddItems)
-                                            @if(branch()->id == $shipment->branch_id)    
+                                            @if(branch()->id == $shipment->branch_id)
                                                 <a href="{{edit_url($shipment->id)}}"
                                                     class="btn btn-xs btn-icon waves-effect waves-light btn-warning">
                                                     <i class="fas  fa-lg fa-plus"></i>
                                                 </a>
                                             @endif
-                                            @endif 
+                                            @endif
                                         </td>
                                         <td>{{ $shipment->booking_number }}</td>
                                         <td>{{ $shipment->number_of_pcs }}</td>
-                                        <td>{{ $shipment->normal_weight }}</td>                                        
+                                        <td>{{ $shipment->grand_total_weight }}</td>
                                         <td>{{ $shipment->sender->name }}</td>
                                         <td>{{ $shipment->sender->phone??'-' }}</td>
                                         <td>{{ $shipment->receiver->name??""}}</td>
@@ -165,10 +165,10 @@
                                                 @endif
                                         </td>
                                         <td>{{ !empty($shipment->created_date)? date('d-m-Y', strtotime($shipment->created_date)):''  }}</td>
-                                       
+
                                         <!-- @canany([permission_edit(),permission_view(),'shipment-show'])
                                             <form method="post" action="{{delete_url($shipment->id)}}"> -->
-                                                <!-- <td>   
+                                                <!-- <td>
                                                     @can(permission_edit())
                                                         <a href="{{edit_url($shipment->id)}}"
                                                            class="btn btn-icon waves-effect waves-light btn-warning">
@@ -192,7 +192,7 @@
                                                            class="btn btn-icon waves-effect waves-light btn-warning">
                                                             <i class="fas fa-plus"></i>
                                                         </a>
-                                                    @endif 
+                                                    @endif
                                                 </td> -->
                                             <!-- </form> -->
                                         <!-- @endcanany -->
@@ -201,7 +201,7 @@
                                 </tbody>
                             </table>
 
-                            
+
                         </div>
                     </div>
                 </div>
@@ -222,14 +222,14 @@
     <script>
 
 $(document).ready(function () {
-    $('#bookingdatatable').DataTable({  
+    $('#bookingdatatable').DataTable({
         "autoWidth": false,
-        "aaSorting": [ [0,'desc'] ], 
+        "aaSorting": [ [0,'desc'] ],
         "scrollX": true,
         "responsive": false
-    });  
+    });
 
-}); 
+});
 
     </script>
 @endsection

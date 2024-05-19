@@ -8,7 +8,7 @@ use App\Models\Branches;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Http\UploadedFile;
-use App\Http\Requests\StoreFileRequest; 
+use App\Http\Requests\StoreFileRequest;
 use DB;
 use Illuminate\Support\Facades\Log;
 
@@ -78,13 +78,13 @@ class AgencyController extends BaseController
         $size = $request->logo->getSize();
 
         $request->logo->move(public_path('uploads/agency_logo'), $fileName);
-        $fileName = 'uploads/agency_logo/'.$fileName; 
+        $fileName = 'uploads/agency_logo/'.$fileName;
 
-        $branch = new Branches();
-        $branch->name = $request->name;
-        $branch->location = $request->address;
-        $branch->branch_code = $request->agency_code;        
-        $branch->save(); 
+        // $branch = new Branches();
+        // $branch->name = $request->name;
+        // $branch->location = $request->address;
+        // $branch->branch_code = $request->agency_code;
+        // $branch->save();
 
         $user = new User();
         $user->name = $request->name;
@@ -93,7 +93,7 @@ class AgencyController extends BaseController
         $user->password = bcrypt($request->password);
         $user->save();
         // $user->assignRole("admin");
- 
+
 
         $agency = new Agencies();
         $agency->name = $request->name;
@@ -104,7 +104,7 @@ class AgencyController extends BaseController
         $agency->gst_no = $request->gst_no;
         $agency->logo = $fileName;
         $agency->user_id = $user->id;
-        $agency->branch_id = $branch->id;
+        // $agency->branch_id = $branch->id;
 
         $agency->country = $request->country;
         $agency->state = $request->state;
@@ -122,7 +122,7 @@ class AgencyController extends BaseController
         toastr()->error($e->getMessage());
         return redirect()->back();
     }
-                
+
         toastr()->success(section_title() . ' Created Successfully');
         return redirect()->to(index_url());
     }
@@ -151,7 +151,7 @@ class AgencyController extends BaseController
      */
     public function edit($id)
     {
-        $agency = Agencies::find($id);         
+        $agency = Agencies::find($id);
         return view('superadmin.agency.edit', compact('agency'));
     }
 
@@ -167,7 +167,7 @@ class AgencyController extends BaseController
         // $this->validate($request, [
         //     'name' => 'required',
         //     'email' => 'required',
-        // ]); 
+        // ]);
         try {
             \DB::beginTransaction();
 
@@ -181,13 +181,13 @@ class AgencyController extends BaseController
             $fileName = 'uploads/agency_logo/'.$fileName;
             $agency->logo = $fileName;
         }
-        
-       
+
+
         $agency->name = $request->input('name');
         $agency->email = $request->input('email');
         $agency->address = $request->input('address');
         $agency->contact_no = $request->input('contact_no');
-        $agency->gst_no = $request->input('gst_no');     
+        $agency->gst_no = $request->input('gst_no');
         $agency->agency_code = $request->agency_code;
 
         $agency->country = $request->country;
@@ -196,12 +196,12 @@ class AgencyController extends BaseController
         $agency->post = $request->post;
         $agency->pincode = $request->pincode;
 
-        
-        $agency->save(); 
 
-        
+        $agency->save();
+
+
         $user = User::where('email', $request->input('email'))->first();
-        if(!$user){ 
+        if(!$user){
             $user = new User();
         }
         $user->name = $request->input('name');
@@ -210,17 +210,17 @@ class AgencyController extends BaseController
         if($request->input('password')) {
             $user->password = bcrypt($request->input('password'));
         }
-        
+
         $user->save();
 
-        $branch = Branches::find($agency->branch_id);
-        if(!$branch) {
-            $branch = new Branches();
-        }
-        $branch->name =  $request->input('name');
-        $branch->location =  $request->input('address');
-        $branch->branch_code =  $request->input('agency_code');        
-        $branch->save();       
+        // $branch = Branches::find($agency->branch_id);
+        // if(!$branch) {
+        //     $branch = new Branches();
+        // }
+        // $branch->name =  $request->input('name');
+        // $branch->location =  $request->input('address');
+        // $branch->branch_code =  $request->input('agency_code');
+        // $branch->save();
           \DB::commit();
     } catch (\Exception $e) {
 

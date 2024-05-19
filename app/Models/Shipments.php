@@ -108,11 +108,16 @@ class Shipments extends Model
     public function shipmentTransfer(): BelongsTo
     {
         return $this->belongsTo(ShipmentTransfers::class);
-    } 
+    }
 
     public function movingType()
     {
         return $this->hasOne(MovingTypes::class, 'id','moving_type');
+    }
+
+    public function shipMethType()
+    {
+        return $this->hasOne(ShipTypes::class, 'id','shipping_method_id');
     }
 
 

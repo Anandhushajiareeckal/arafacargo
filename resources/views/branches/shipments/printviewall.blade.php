@@ -1,13 +1,15 @@
 <?php
 $padding = null;
  $shipment_count = count($shipments );
+ $padding = true;
  foreach($shipments  as $key => $shipment) {
-    $padding = 'pt-3';
-      $key+1;
-      if ($key == 0) {
-        $padding = 'p-3';
-      }
+    // $padding = 'pt-3';
+    //   $key+1;
+    //   if ($key == 0) {
+    //     $padding = 'p-3';
+    //   }
     ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -147,7 +149,10 @@ $padding = null;
     </style>
 
 <body>
-    <div class="{{$padding}} printable-invoice">
+    @foreach ($shipment->packages as $i=>$item )
+
+
+    <div class=" printable-invoice {{ $padding == true ? 'm-3 ' : '' }} mt-2">
         <div class="main_div">
             <div class="row">
                 <div class="col-5 mt-4 ml-4">
@@ -186,7 +191,7 @@ $padding = null;
                         <tbody>
                             <tr>
                                 <td>{{ \Carbon\Carbon::now()->format('d/m/Y') }}</td>
-                                <td>{{ $shipment->booking_number }} </td>
+                                <td>{{ $item->box->box_name}} </td>
                                 <td>{{ $shipment->number_of_pcs }}</td>
                                 <td>{{ round($shipment->normal_weight, 2) }}</td>
                                 <td>UAE</td>
@@ -227,11 +232,11 @@ $padding = null;
                     </div>
                     <div class="col-3 mt-2 pt-3 " style="border-bottom:solid; border-width: 3px;margin-top: -16px; font-size: 11px;">
                         <b class="align-items-center justify-content-center shipment-info">
-                            {{ $shipment->sender->name }} ,
-                            {{ $shipment->sender->address->address }},
+                            {{ $item->box->sender ? $item->box->sender->name  : ''}} ,
+                            {{ $item->box->sender ? $item->box->sender->address->address : '' }},
                             <br> MOB:
-                            +{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }},
-                            <br> ID
+                            +{{ $item->box->sender ? $item->box->sender->country_code_phone : ''}} {{ $item->box->sender ? $item->box->sender->phone : ''}}
+                            <br>
                         </b>
                     </div>
                     <div class="col-2" style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
@@ -249,10 +254,12 @@ $padding = null;
                     </div>
                     <div class="col-3 mt-2 pt-3" style="border-bottom:solid; border-width: 3px; margin-top: -16px; font-size: 11px;">
                         <b class="align-items-center justify-content-center shipment-info">
-                            {{ $shipment->receiver->name }} ,
-                            {{ $shipment->receiver->address->address }},<br> MOB:
-                            +{{ $shipment->receiver->country_code_phone}} {{ $shipment->receiver->phone }},
-                            <br> ID
+
+                            {{ $item->box->receiver ? $item->box->receiver->name  : ''}} ,
+                            {{ $item->box->receiver ? $item->box->receiver->address->address : '' }},
+                            <br> MOB:
+                            +{{ $item->box->receiver ? $item->box->receiver->country_code_phone : ''}} {{ $item->box->receiver ? $item->box->receiver->phone : ''}}
+                            <br>
                         </b>
                     </div>
                     <div class="col-2" style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
@@ -283,27 +290,8 @@ $padding = null;
                             </tr>
                         </thead>
                        <tbody>
-                        @php
-                            $total_value1 = 0;
-                            $total_item = count($shipment->packages);
-                            if (gettype($total_item/2) == 'integer') {
-                                $left_count = $total_item/2;
-                                $right_count = $left_count;
-                            }
-                            else {
-                                $left_count = intval($total_item/2) + 1;
-                                $right_count = $total_item - $left_count;
-                            }
-                            $left_data = $shipment->packages->take($left_count);
-                            $right_data = $shipment->packages->slice($right_count );
 
 
-                        @endphp
-
-                        @for ($i = 0; $i< $left_count; $i++)
-                            @php
-                                $item = $left_data[$i];
-                            @endphp
                             <tr>
                                 <td class="sno">{{$i + 1}}</td>
                                 <td>{{$item->description}}</td>
@@ -312,10 +300,7 @@ $padding = null;
                                 <td>{{$item->subtotal}}</td>
 
                             </tr>
-                            @php
-                               $total_value1 += $item->subtotal
-                            @endphp
-                        @endfor
+
 
 
 
@@ -335,44 +320,14 @@ $padding = null;
                             </tr>
                         </thead>
                        <tbody>
-                        @php
-                            $total_value2 = 0;
-                            $total_item = count($shipment->packages);
-                            if (gettype($total_item/2) == 'integer') {
-                                $left_count = $total_item/2;
-                                $right_count = $left_count;
-                            }
-                            else {
-                                $left_count = intval($total_item/2) + 1;
-                                $right_count = $total_item - $left_count;
-                            }
-                            $left_data = $shipment->packages->take($left_count);
-                            $right_data = $shipment->packages->slice($right_count );
 
 
-                        @endphp
-                            @for ($i = $left_count; $i< $total_item; $i++)
-                            @php
-                                $item = $right_data[$i];
-                            @endphp
-                            <tr>
-                                <td class="sno">{{$i + 1}}</td>
-                                <td>{{$item->description}}</td>
-                                <td>{{$item->quantity}}</td>
-                                <td>{{$item->unit_price}}</td>
-                                <td>{{$item->subtotal}}</td>
-
-                            </tr>
-                            @php
-                               $total_value2 += $item->subtotal
-                            @endphp
-                        @endfor
 
 
 
                             <tr>
                                 <td colspan="4" class="text-center"><b>TOTAL CIF VALUE IN USD </b></td>
-                                <td ><b>${{$total_value1 + $total_value2}}</b></td>
+                                <td ><b>${{$item->subtotal}}</b></td>
                             </tr>
                        </tbody>
                     </table>
@@ -448,6 +403,11 @@ $padding = null;
 
         </div>
     </div>
+    @php
+        $padding = false;
+    @endphp
+    @endforeach
+
     @if( $shipment_count == $key+1)
         <button id="printButton" onclick="printPDF()">Print</button>
 
@@ -472,7 +432,6 @@ $padding = null;
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
 </body>
 
 </html>

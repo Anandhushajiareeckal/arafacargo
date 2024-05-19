@@ -62,4 +62,15 @@ class Boxes extends Model
     {
         return $this->shipments->customer();
     }
+    public function sender(): BelongsTo
+    {
+        return $this->belongsTo(Customers::class);
+    }
+
+    public function receiver(): BelongsTo
+    {
+        return $this->belongsTo(Customers::class);
+    }
+
+    
 }

@@ -282,7 +282,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-12 text-center mt-2" >
-                                                                <button type="submit" class="btn btn-success p-2">Print all</button>
+                                                                <button type="submit"  class="btn btn-success p-2" >Print all</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -290,7 +290,7 @@
                                             </div>
                                         </div>
 
-                                        <button type="submit" class="btn btn-success waves-effect waves-light ml-2 mb-1" data-bs-toggle="modal" data-bs-target="#printAllModal">
+                                        <button type="submit" id="printallButton" class="btn btn-success waves-effect waves-light ml-2 mb-1" data-bs-toggle="modal" data-bs-target="#printAllModal" disabled>
                                             <i class="fas fa-print"> Print all</i>
                                         </button>
 
@@ -364,7 +364,7 @@
 
                                             ?>
                                             <tr style="{{ $style }}">
-                                                <td style="text-align:center" ><input {{$disabled}} type="checkbox" name="shipBookId[]" class="shipmentIds {{$newClass}}" value="{{$booking->shipment->id}}" shipId="{{$booking->shipment_id}}" boxId="{{$booking->id}}"></td>
+                                                <td style="text-align:center" ><input {{$disabled}} type="checkbox" name="shipBookId[]" class="shipmentIds {{$newClass}} shipmet_check" value="{{$booking->shipment->id}}" shipId="{{$booking->shipment_id}}" boxId="{{$booking->id}}"></td>
                                                 <td style="text-align:center" class="detailedBoxView" value="{{$booking->id}}" dateVal="{{date('Y-m-d')}}">{{ $booking->shipment->booking_number}}</td>
                                                 <td style="text-align:center">{{$ships->shipment_id}}</td>
                                                 <td style="text-align:center">1</td>
@@ -509,11 +509,11 @@
                                         }
                                     ?>
                                     <tr data-shipment-type-id="{{ $boxes->shipment->shipping_method_id }}">
-                                        <td><input type="checkbox" name="bookingSelection[]" class="bookingSelection" id="bookingSelection" selectBoxId="{{$boxes->id}}" value="{{$boxes->id}}" boxWt="{{$boxes->weight}}" boxVal="{{number_format(($boxes->total_value + $boxes->box_packing_charge),2)}}" @if($boxes->is_select == 1) checked @endif ></td>
+                                        <td><input type="checkbox" name="bookingSelection[]" class="bookingSelection" id="bookingSelection" selectBoxId="{{$boxes->id}}" value="{{$boxes->id}}" boxWt="{{$boxes->weight}}" boxVal="{{number_format((floatval($boxes->total_value) + floatval($boxes->box_packing_charge)),2)}}" @if($boxes->is_select == 1) checked @endif ></td>
                                         <td>{{ !empty($boxes->shipment->created_date)? date('d-m-Y', strtotime($boxes->shipment->created_date)):''  }}
                                             <br> {{ $boxes->shipment->agency?$boxes->shipment->agency->name:'-' }}
                                         </td>
-                                        <td>{{$boxes->shipment->shipping_method_id}}</td>
+                                        <td>{{$boxes->shipment->shipMethType?$boxes->shipment->shipMethType->name:''}}</td>
 
                                         <td> @if($boxes->shipment->collected_by == 'driver')
                                                     {{ $boxes->shipment->driver?$boxes->shipment->driver->name:'-'}}
@@ -526,8 +526,8 @@
                                         <td>{{ $boxes->shipment->booking_number??""}} <br> {{ $type }}</td>
                                         <td>{{ $boxes->box_name??""}}</td>
                                         <td>{{ $boxes->weight??""}}</td>
-                                        <td>{{ number_format($boxes->total_value,2)??""}}</td>
-                                        <td class="boxVal">{{ number_format(($boxes->total_value + $boxes->box_packing_charge),2) ?? ""}}</td>
+                                        <td>{{ number_format(floatval($boxes->total_value),2)??""}}</td>
+                                        <td class="boxVal">{{ number_format((floatval($boxes->total_value) + floatval($boxes->box_packing_charge)),2) ?? ""}}</td>
                                     </tr>
                                 @endforeach
                                 <?php
@@ -611,6 +611,15 @@
                                 @error('status_id')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                            <label>Comment</label>
+                            <textarea name="comment" id="status_comment" cols="30" rows="0" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -753,6 +762,24 @@
     <script>
         $(document).ready(function() {
 
+            $('.shipmet_check').change(function(){
+                if($(this).is(':checked')){
+                    $('#printallButton').prop('disabled', false);
+                } else {
+                    $('#printallButton').prop('disabled', true);
+                }
+            });
+
+            $('#allcb').change(function(){
+                if($(this).is(':checked')){
+                    console.log('hhhhhhhhhhhhhhhhhhhhhhhhhh');
+                    $('#printallButton').prop('disabled', false);
+                } else {
+                    $('#printallButton').prop('disabled', true);
+                }
+            });
+
+
             $('#bookingList_checkbox').click(function() {
                 $('.bookingSelection').prop('checked', $(this).prop('checked')).change();
             });
@@ -781,6 +808,8 @@
                         window.location.reload();
                     }
                 });
+
+
             });
 
 
@@ -920,6 +949,7 @@
                 var selectedShipmentId = $(".selectedShipmentId").val();
                 var selectedBoxId = $(".selectedBoxId").val();
                 var status_id = $("#status_id").val();
+                var status_comment = $("#status_comment").val();
                 var created_date = $("#created_date").val();
                 $.ajax({
                         headers: {
@@ -929,7 +959,7 @@
                         url: url,
                         type: "POST",
                         async:false,
-                        data: JSON.stringify({"shipIds":selectedShipIds,"selectedBoxId":selectedBoxId, "shipmentIds":selectedShipmentId, "status_id":status_id, "created_date":created_date }),
+                        data: JSON.stringify({"shipIds":selectedShipIds,"selectedBoxId":selectedBoxId, "shipmentIds":selectedShipmentId, "status_id":status_id, "created_date":created_date, 'comment':status_comment }),
                         cache: false,
                         contentType: false,
                         processData: false,

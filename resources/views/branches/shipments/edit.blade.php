@@ -51,7 +51,9 @@ body{
 .my-save{
 	margin-top:22px;
 }
-
+.box_details .form-group{
+        margin-bottom: 0rem;
+}
 </style>
     <div class="content-page" id="content-page">
         <div class="content">
@@ -97,7 +99,9 @@ body{
                                                 <label>Booking No.</label>
                                                 <input type="text" name="booking_number"
                                                        value="{{ $shipment->booking_number }}" class="form-control"
-                                                       required readonly >
+                                                       required readonly
+                                                       id="booking_no_uniq"
+                                                       style="{{ $shipment->booking_number ? 'readonly !important' : '' }}">
                                                 @error('booking_number')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -421,9 +425,9 @@ body{
                                                 <div class="package col-md-12"  id="package_ID" >
                                                     <div class="header row">
                                                         <div class="col-md-6"  style="float:left">
-                                                        <h5 class="packageinfo-head"  data-myattri="{{$ik}}">Box - {{$shipment->number_of_pcs}}{{$ik}}{{branch()->branch_code?branch()->branch_code:''}}{{$bookingNum}}</h5>
+                                                        <h5 class="packageinfo-head"  data-myattri="{{$ik}}">Box - {{$box->box_name}}</h5>
 
-                                                        <input type="hidden" name="box_name{{$ik}}"   data-myattri="{{$ik}}" class="box_name" value="{{$shipment->number_of_pcs}}{{$ik}}{{branch()->branch_code?branch()->branch_code:''}}{{$bookingNum}}" />
+                                                        <input type="hidden" name="box_name{{$ik}}"   data-myattri="{{$ik}}" class="box_name" value="{{$box->box_name}}" />
                                                         </div>
                                                         <div class="col-md-6 text-right pb-2" style="float:left">
                                                         <button type="button" id="addpackage{{$ik}}" data-myattri="{{$ik}}"  class="btn btn-success addpackage">Add Items</button>
@@ -432,44 +436,107 @@ body{
                                                         </div>
                                                     </div>
                                                     <div class="row ">
-                                                        <div class="col-6">
-                                                            <div class="row">
-                                                                <div class="form-group col-md-10">
-                                                                    <label>Sender/Customer</label>
-                                                                    <select name="box_sender_id{{$ik}}" id="sender_id" class="form-control select2">
-                                                                        <option value="">Select</option>
-                                                                        @foreach (get_customers('sender') as $sender)
-                                                                            <option value="{{ $sender->id }}"
-                                                                                {{ ($box->sender_id == $sender->id) ? 'selected' : "" }}
-                                                                                >{{ $sender->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                    @error('sender_id')
+                                                        <div class="col-5 box_details">
+                                                            <div class="form-group ">
+                                                                <label>Sender/Customer</label>
+                                                                {{-- <select name="box_sender_id{{$ik}}" id="sender_id" class="form-control select2">
+                                                                    <option value="">Select</option>
+                                                                    @foreach (get_customers('sender') as $sender)
+                                                                        <option value="{{ $sender->id }}"
+                                                                            {{ ($box->sender_id == $sender->id) ? 'selected' : "" }}
+                                                                            >{{ $sender->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                @error('sender_id')
                                                                     <span class="text-danger">{{ $message }}</span>
-                                                                    @enderror
+                                                                @enderror --}}
+                                                            </div>
 
-                                                                </div>
+                                                            <div class="form-group">
+                                                                <label>Name</label>
+                                                                <input type="text" name="sender_name{{$ik}}" value="{{ $box->sender_name }}" class="form-control">
+                                                            </div>
 
+                                                            <div class="form-group">
+                                                                <label>Address</label>
+                                                                <textarea name="sender_address{{$ik}}"  cols="10" rows="10" class="form-control" style="height: 45px;">{{ $box->sender_address }}</textarea>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Pin</label>
+                                                                <input type="text" name="sender_pin{{$ik}}" value="{{ $box->sender_pin }}" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Mobile</label>
+                                                                <input type="text" name="sender_mob{{$ik}}" value="{{ $box->sender_mob }}" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group mb-2">
+                                                                <label>ID</label>
+                                                                <input type="text" name="sender_id_no{{$ik}}" value="{{ $box->sender_id_no }}" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group mb-2">
+                                                                <label>ID Image</label>
+                                                                <input type="hidden" name="sender_id_image_value{{$ik}}" value="{{$box->sender_id_image}}">
+                                                                <input type="file" name="sender_id_image{{$ik}}" value="{{ $box->sender_id_image }}" class="form-control" multiple>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-5 box_details">
+                                                            <div class="form-group ">
+                                                                <label>Receiver/Customer</label>
+                                                                {{-- <select name="box_receiver_id{{$ik}}" id="receiver_id"
+                                                                        class="form-control select2">
+                                                                        <option value="">Select</option>
+                                                                    @foreach (get_customers('receiver') as $receiver)
+                                                                        <option value="{{ $receiver->id }}"
+                                                                        {{ ($box->receiver_id == $receiver->id) ? 'selected' : "" }}
+                                                                        >{{ $receiver->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                @error('receiver_id')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror --}}
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Name</label>
+                                                                <input type="text" name="receiver_name{{$ik}}" value="{{ $box->receiver_name }}" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Address</label>
+                                                                <textarea name="receiver_address{{$ik}}"  cols="10" rows="10" class="form-control" style="height: 45px;">{{ $box->receiver_address }}</textarea>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Pin</label>
+                                                                <input type="text" name="receiver_pin{{$ik}}" value="{{ $box->receiver_pin }}" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Mobile</label>
+                                                                <input type="text" name="receiver_mob{{$ik}}" value="{{ $box->receiver_mob }}" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group mb-2">
+                                                                <label>ID</label>
+                                                                <input type="text" name="receiver_id_no{{$ik}}" value="{{ $box->receiver_id_no }}" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group mb-2">
+                                                                <label>ID Image</label>
+                                                                <input type="hidden" name="receiver_id_image_value{{$ik}}" value="{{$box->receiver_id_image}}">
+                                                                <input type="file" name="receiver_id_image{{$ik}}" value="{{$box->receiver_id_image}}" class="form-control" multiple>
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <div class="row">
-                                                                <div class="form-group col-md-10">
-                                                                    <label>Receiver/Customer</label>
-                                                                    <select name="box_receiver_id{{$ik}}" id="receiver_id"
-                                                                            class="form-control select2">
-                                                                            <option value="">Select</option>
-                                                                        @foreach (get_customers('receiver') as $receiver)
-                                                                            <option value="{{ $receiver->id }}"
-                                                                            {{ ($box->receiver_id == $receiver->id) ? 'selected' : "" }}
-                                                                            >{{ $receiver->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                    @error('receiver_id')
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-
+                                                        <div class="col-md-2">
+                                                            <div class="form-group">
+                                                                <label>Weight</label>
+                                                                <input type="text" name="weight{{$ik}}" value="{{ $box->weight }}" class="form-control">
+                                                                {{-- <input type="text" name="weight" value="{{$weight->weight?$weight->weight:''}}" class="form-control box-weight1"> --}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -496,7 +563,7 @@ body{
                                                                 <td>
                                                                     <input type="number" placeholder="Enter unit price"
                                                                         name="unit{{$ik}}[]" value="{{$package->unit_price}}"
-                                                                        class="form-control unit" data-myattri="{{$ik}}">
+                                                                        class="form-control unit" data-myattri="{{$ik}}" step="0.01">
 
                                                                 </td>
                                                                 <td>
@@ -626,12 +693,12 @@ body{
 
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-1">
+                                                        {{-- <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>Weight</label>
                                                                 <input type="text" name="weight{{$ik}}" value="{{$box->weight}}" class="form-control box-weight" data-weight="{{$ik}}">
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>Rate</label>
@@ -791,7 +858,29 @@ body{
                                                                 </div>
 
 
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Additional Packing charge</label>
+                                                                    </div>
+                                                                    <div class="col-md-2"">
+                                                                        <div class="">
+                                                                            <input type="text" name="add_pack_charge"
+                                                                            value="{{$shipment->add_pack_charge}}" class="form-control add_pack_charge tot_wgt">
+                                                                        </div>
+                                                                    </div>
 
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_add_pack_charge" value="{{$shipment->rate_add_pack_charge}}" class="form-control rate_add_pack_charge tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                    <div class="">
+                                                                        <input type="text" name="amount_add_pack_charge" value="{{$shipment->amount_add_pack_charge}}" class="form-control tot_amt">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
 
 
 
@@ -893,6 +982,31 @@ body{
                                                                     </div>
 
                                                                 </div>
+
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Discount</label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="discount_weight"
+                                                                            value="{{$shipment->discount_weight}}" class="form-control discount_weight tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_discount_weight" value="{{$shipment->rate_discount_weight}}" class="form-control rate_discount_weight tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_discount_weight" value="{{$shipment->amount_discount_weight}}" class="form-control ">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
 
 
 
@@ -1077,7 +1191,7 @@ body{
                                             <div class="package col-md-12"  id="package_ID" >
                                                 <div class="header">
                                                     <div class="col-md-6"  style="float:left">
-                                                    <h5 class="packageinfo-head1">Package Info</h5>
+                                                    <h5 class="packageinfo-head1">Package Info </h5>
                                                     <input type="hidden" name="box_name_1" value="" class="box_name1" />
                                                     </div>
                                                     <div class="col-md-6 text-right pb-2" style="float:left">
@@ -1086,42 +1200,104 @@ body{
                                                     </div>
                                                 </div>
                                                 <div class="row ">
-                                                    <div class="col-6">
-                                                        <div class="row">
-                                                            <div class="form-group col-md-10">
-                                                                <label>Sender/Customer</label>
-                                                                <select name="box_sender_id" id="box_sender_id" class="form-control select2">
-                                                                    <option value="">Select</option>
-                                                                    @foreach (get_customers('sender') as $sender)
-                                                                        <option value="{{ $sender->id }}"
-                                                                            >{{ $sender->name }} </option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('sender_id')
+                                                    <div class="col-5">
+                                                        <div class="form-group ">
+                                                            <label>Sender/Customer</label>
+                                                            {{-- <select name="box_sender_id" id="box_sender_id" class="form-control select2">
+                                                                <option value="">Select</option>
+                                                                @foreach (get_customers('sender') as $sender)
+                                                                    <option value="{{ $sender->id }}"
+                                                                        >{{ $sender->name }} </option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('sender_id')
                                                                 <span class="text-danger">{{ $message }}</span>
-                                                                @enderror
-
-                                                            </div>
-
+                                                            @enderror --}}
                                                         </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="row">
-                                                            <div class="form-group col-md-10">
-                                                                <label>Receiver/Customer</label>
-                                                                <select name="box_receiver_id" id="box_receiver_id"
-                                                                        class="form-control select2">
-                                                                        <option value="">Select</option>
-                                                                    @foreach (get_customers('receiver') as $receiver)
-                                                                        <option value="{{ $receiver->id }}"
-                                                                        >{{ $receiver->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('receiver_id')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
 
+                                                        <div class="form-group">
+                                                            <label>Name</label>
+                                                            <input type="text" name="sender_name[]"  class="form-control sender_name_1">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Address</label>
+                                                            <textarea name="sender_address[]"  cols="10" rows="10" class="form-control sender_address_1" style="height: 45px;"></textarea>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Pin</label>
+                                                            <input type="text" name="sender_pin[]" value="" class="form-control sender_pin_1">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Mobile</label>
+                                                            <input type="text" name="sender_mob[]"  class="form-control sender_mob_1">
+                                                        </div>
+
+                                                        <div class="form-group mb-2">
+                                                            <label>ID</label>
+                                                            <input type="text" name="sender_id_no[]"  class="form-control sender_id_no_1">
+                                                        </div>
+
+                                                        <div class="form-group mb-2">
+                                                            <label>ID Image</label>
+                                                            <input type="file" name="sender_id_img[]"  class="form-control sender_id_img_1">
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <div class="form-group">
+                                                            <label>Receiver/Customer</label>
+                                                            {{-- <select name="box_receiver_id" id="box_receiver_id"
+                                                                    class="form-control select2">
+                                                                    <option value="">Select</option>
+                                                                @foreach (get_customers('receiver') as $receiver)
+                                                                    <option value="{{ $receiver->id }}"
+                                                                    >{{ $receiver->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('receiver_id')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror --}}
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Name</label>
+                                                            <input type="text" name="receiver_name[]"  class="form-control receiver_name_1">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Address</label>
+                                                            <textarea name="receiver_address[]"  cols="10" rows="10" class="form-control receiver_address_1" style="height: 45px;"></textarea>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Pin</label>
+                                                            <input type="text" name="receiver_pin[]" value="" class="form-control receiver_pin_1">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Mobile</label>
+                                                            <input type="text" name="receiver_mob[]"  class="form-control receiver_mob_1">
+                                                        </div>
+
+                                                        <div class="form-group mb-2">
+                                                            <label>ID</label>
+                                                            <input type="text" name="receiver_id_no[]"  class="form-control receiver_id_no_1">
+                                                        </div>
+
+                                                        <div class="form-group mb-2">
+                                                            <label>ID Image</label>
+                                                            <input type="file" name="receiver_id_img[]"  class="form-control receiver_id_img_1">
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <label>Weight</label>
+                                                            <input type="text" name="weight[]" value="" class="form-control box-weight1">
+                                                            {{-- <input type="text" name="weight" value="{{$weight->weight?$weight->weight:''}}" class="form-control box-weight1"> --}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1146,7 +1322,7 @@ body{
                                                             <td>
                                                                 <input type="number" placeholder="Enter unit price"
                                                                     name="unit[]"
-                                                                    class="form-control unit">
+                                                                    class="form-control unit" step="0.01">
                                                             </td>
                                                             <td>
                                                                 <input type="text" name="subtotal[]" readonly
@@ -1273,13 +1449,7 @@ body{
                                                     </div>
 
 
-                                                    <div class="col-md-1">
-                                                        <div class="form-group">
-                                                            <label>Weight</label>
-                                                            <input type="text" name="weight" value="30.1" class="form-control box-weight1">
-                                                            {{-- <input type="text" name="weight" value="{{$weight->weight?$weight->weight:''}}" class="form-control box-weight1"> --}}
-                                                        </div>
-                                                    </div>
+
 
 
                                                     <div class="col-md-1">
@@ -1365,6 +1535,21 @@ body{
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    const grand_total = document.querySelector('input[name="grand_total_weight"]');
+    const rate_normal_weight = document.querySelector('input[name="rate_normal_weight"]');
+    const amount_normal_weight = document.querySelector('input[name="amount_normal_weight"]');
+
+    const rate_electronics_weight = document.querySelector('input[name="rate_electronics_weight"]');
+    const amount_electronics_weight = document.querySelector('input[name="amount_electronics_weight"]');
+
+    const msic = document.querySelector('input[name="msic_weight"]');
+    const rate_msic_weight = document.querySelector('input[name="rate_msic_weight"]');
+    const amount_msic_weight = document.querySelector('input[name="amount_msic_weight"]');
+
+    const add_pack_charge = document.querySelector('input[name="add_pack_charge"]');
+    const rate_add_pack_charge = document.querySelector('input[name="rate_add_pack_charge"]');
+    const amount_add_pack_charge = document.querySelector('input[name="amount_add_pack_charge"]');
+
     const insurance = document.querySelector('input[name="insurance"]');
     const rate_insurance = document.querySelector('input[name="rate_insurance"]');
     const amount_insurance = document.querySelector('input[name="amount_insurance"]');
@@ -1381,13 +1566,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const rate_volume_weight = document.querySelector('input[name="rate_volume_weight"]');
     const amount_volume_weight = document.querySelector('input[name="amount_volume_weight"]');
 
+    const discount_weight = document.querySelector('input[name="discount_weight"]');
+    const rate_discount_weight = document.querySelector('input[name="rate_discount_weight"]');
+    const amount_discount_weight = document.querySelector('input[name="amount_discount_weight"]');
+
     const normal_weight = document.querySelector('input[name="normal_weight"]');
 
     const grand_total_weight = document.querySelector('input[name="grand_total_weight"]');
     const electronics_weight = document.querySelector('input[name="electronics_weight"]');
     const msic_weight = document.querySelector('input[name="msic_weight"]');
 
+    const amount_grand_total = document.querySelector('input[name="amount_grand_total"]');
 
+
+
+    function multiplyAddPackCharge() {
+        const val1 = parseFloat(add_pack_charge.value);
+        const val2 = parseFloat(rate_add_pack_charge.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_add_pack_charge.value =result.toFixed(0);
+            }
+            else{
+                amount_add_pack_charge.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
 
     function multiplyInsurance() {
         const val1 = parseFloat(insurance.value);
@@ -1453,6 +1660,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function multiplyDiscount() {
+        const val1 = parseFloat(discount_weight.value);
+        const val2 = parseFloat(rate_discount_weight.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_discount_weight.value =result.toFixed(0);
+            }
+            else{
+                amount_discount_weight.value = result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
     function totalQuantity() {
         const val1 = parseFloat(insurance.value) || 0;
         const val2 = parseFloat(volume_weight.value) || 0;
@@ -1461,14 +1684,48 @@ document.addEventListener('DOMContentLoaded', function() {
         const val5 = parseFloat(grand_total_weight.value) || 0;
         const val6 = parseFloat(electronics_weight.value) || 0;
         const val7 = parseFloat(msic_weight.value) || 0;
+        const val8 = parseFloat(amount_discount_weight.value) || 0;
+        const val9 = parseFloat(amount_add_pack_charge.value) || 0;
 
-        if ([val1, val2, val3, val4, val5, val6, val7].every(val => !isNaN(val))) {
-            var result = val1 + val2 + val3 + val4 + val5 + val6 + val7;
-            normal_weight.value = result.toFixed(2);
+
+        if ([val1, val2, val3, val4, val5, val6, val7,val9 ].every(val => !isNaN(val))) {
+            var result = val1 + val2 + val3 + val4 + val5 + val6 + val7 + val9;
+            var grant_tot = result - val8;
+            console.log(result);
+            console.log(grant_tot);
+            amount_grand_total.value = grant_tot.toFixed(2);
         }
 
 
     }
+
+    // function totalQuantityss() {
+    //     const val1 = parseFloat(amount_normal_weight.value) || 0;
+    //     const val2 = parseFloat(amount_electronics_weight.value) || 0;
+    //     const val3 = parseFloat(amount_msic_weight.value) || 0;
+    //     const val4 = parseFloat(amount_insurance.value) || 0;
+    //     const val5 = parseFloat(amount_awbfee.value) || 0;
+    //     const val6 = parseFloat(amount_vat_amount.value) || 0;
+    //     const val7 = parseFloat(amount_volume_weight.value) || 0;
+    //     const val8 = parseFloat(amount_discount_weight.value) || 0;
+
+
+    //     if ([val1, val2, val3, val4, val5, val6, val7].every(val => !isNaN(val))) {
+    //         var result = val1 + val2 + val3 + val4 + val5 + val6 + val7;
+    //         var grant_tot = result - val8;
+    //         amount_grand_total.value = grant_tot.toFixed(2);
+    //     }
+    // }
+
+    // function discountQuantity() {
+    //     totalQuantityss()
+    //     const val1 = parseFloat(amount_discount_weight.value) || 0;
+    //     const total = parseFloat(amount_grand_total.value) || 0;
+    //     if (!isNaN(val1)) {
+    //         var result = total - val1;
+    //         // amount_grand_total.value = result.toFixed(2);
+    //     }
+    // }
 
     insurance.addEventListener('input', multiplyInsurance);
     rate_insurance.addEventListener('input', multiplyInsurance);
@@ -1482,6 +1739,12 @@ document.addEventListener('DOMContentLoaded', function() {
     vat_amount.addEventListener('input', multiplyVatAmount);
     rate_vat_amount.addEventListener('input', multiplyVatAmount);
 
+    discount_weight.addEventListener('input', multiplyDiscount);
+    rate_discount_weight.addEventListener('input', multiplyDiscount);
+
+    add_pack_charge.addEventListener('input', multiplyAddPackCharge);
+    rate_add_pack_charge.addEventListener('input', multiplyAddPackCharge);
+
     insurance.addEventListener('input', totalQuantity);
     volume_weight.addEventListener('input', totalQuantity);
     awbfee.addEventListener('input', totalQuantity);
@@ -1489,6 +1752,31 @@ document.addEventListener('DOMContentLoaded', function() {
     grand_total_weight.addEventListener('input', totalQuantity);
     electronics_weight.addEventListener('input', totalQuantity);
     msic_weight.addEventListener('input', totalQuantity);
+    add_pack_charge.addEventListener('input', totalQuantity);
+
+    rate_normal_weight.addEventListener('input', totalQuantity);
+    rate_electronics_weight.addEventListener('input', totalQuantity);
+    rate_msic_weight.addEventListener('input', totalQuantity);
+    rate_insurance.addEventListener('input', totalQuantity);
+    rate_volume_weight.addEventListener('input', totalQuantity);
+    rate_awbfee.addEventListener('input', totalQuantity);
+    rate_vat_amount.addEventListener('input', totalQuantity);
+    rate_add_pack_charge.addEventListener('input', totalQuantity);
+
+    amount_normal_weight.addEventListener('input', totalQuantity);
+    amount_electronics_weight.addEventListener('input', totalQuantity);
+    amount_msic_weight.addEventListener('input', totalQuantity);
+    amount_insurance.addEventListener('input', totalQuantity);
+    amount_awbfee.addEventListener('input', totalQuantity);
+    amount_vat_amount.addEventListener('input', totalQuantity);
+    amount_volume_weight.addEventListener('input', totalQuantity);
+    amount_add_pack_charge.addEventListener('input', totalQuantity);
+
+    discount_weight.addEventListener('input', totalQuantity);
+    rate_discount_weight.addEventListener('input', totalQuantity);
+    amount_discount_weight.addEventListener('input', totalQuantity);
+
+
 });
 
 
@@ -1534,6 +1822,7 @@ $("#saveDraft").on('click',function(e){
 
 
 
+
         $(function () {
                 var no_of_pcs = $('#number_of_pcs').val();
                 if(no_of_pcs == 0){
@@ -1562,7 +1851,12 @@ $("#saveDraft").on('click',function(e){
                     $('.select2').select2();
                         addremoveClass();
                     })
+
+
             });
+
+
+
 
             $('#addBox').on('click', function () {
                 var no_of_box = parseInt($('#number_of_pcs').val());
@@ -1570,9 +1864,9 @@ $("#saveDraft").on('click',function(e){
                     count = 0;
                     $('#total-package').css({'display':'block'});
 
-                    $("input[name='msic_weight']").val('');
+                    // $("input[name='msic_weight']").val('');
                     $("input[name='normal_weight']").val('');
-                    $("input[name='grand_total_weight']").val('');
+                    // $("input[name='grand_total_weight']").val('');
                     $("input[name='grand_total_box_value']").val('');
                     $("input[name='total_freight']").val('');
                     $("input[name='misc_freight']").val('');
@@ -1602,6 +1896,22 @@ $("#saveDraft").on('click',function(e){
                         myClone.find('.box-weight1').attr('data-weight', k);
                         myClone.find('.box-weight1').attr('name','weight'+ k);
                         myClone.find('.box-weight1').attr('class', 'form-control box-weight');
+
+                        myClone.find('.receiver_name_1').attr('name','receiver_name'+ k);
+                        myClone.find('.receiver_address_1').attr('name','receiver_address'+ k);
+                        myClone.find('.receiver_mob_1').attr('name','receiver_mob'+ k);
+                        myClone.find('.receiver_id_no_1').attr('name','receiver_id_no'+ k);
+                        myClone.find('.sender_pin_1').attr('name','sender_pin'+ k);
+                        myClone.find('.receiver_pin_1').attr('name','receiver_pin'+ k);
+
+                        myClone.find('.sender_id_img_1').attr('name','sender_id_img'+ k);
+                        myClone.find('.receiver_id_img_1').attr('name','receiver_id_img'+ k);
+
+                        myClone.find('.sender_name_1').attr('name','sender_name'+ k);
+                        myClone.find('.sender_address_1').attr('name','sender_address'+ k);
+                        myClone.find('.sender_mob_1').attr('name','sender_mob'+ k);
+                        myClone.find('.sender_id_no_1').attr('name','sender_id_no'+ k);
+
 
                         myClone.find('#box_sender_id').attr('name','box_sender_id'+ k);
                         myClone.find('#box_receiver_id').attr('name','box_receiver_id'+ k);
@@ -1649,11 +1959,12 @@ $("#saveDraft").on('click',function(e){
                         myClone.find('.other_select').attr('data-no',k);
 
                         var myName = $(this).text();
-                        myClone.find('.packageinfo-head1').text('Box - '+ j+ j+'<?=branch()->branch_code?branch()->branch_code:''?>'+<?=$bookingNum?>);
+                        const booking_number = document.querySelector('input[name="booking_number"]');
+                        myClone.find('.packageinfo-head1').text('Box - '+ j+ booking_number.value +<?=$bookingNum?>);
                         myClone.find('.packageinfo-head1').attr('data-myattri', j);
                         myClone.find('.packageinfo-head1').attr('class', 'packageinfo-head');
 
-                        myClone.find('.box_name1').val('Box - '+ j+ j+'<?=branch()->branch_code?branch()->branch_code:''?>'+<?=$bookingNum?>);
+                        myClone.find('.box_name1').val(j+ booking_number.value );
                         myClone.find('.box_name1').attr('data-myattri', j);
                         myClone.find('.box_name1').attr('name', 'box_name'+k);
                         myClone.find('.box_name1').attr('class', 'box_name');
@@ -1706,17 +2017,23 @@ $("#saveDraft").on('click',function(e){
 
             function updateBoxName(count, bookingNumber ){
 
-                $(".box_name").each(function (boxnum) {
-                    var boxnum= boxnum+1;
-                    $(this).val(''+count+ boxnum +'<?=branch()->branch_code?branch()->branch_code:''?>'+ <?=$bookingNum?>);
+                const booking_number = document.querySelector('input[name="booking_number"]');
 
-                });
+
+                // $(".box_name"+i+1).each(function (boxnum) {
+
+                //     var boxnum= boxnum+1;
+                //     console.log(''+ boxnum + booking_number.value);
+                //     $(this).val(''+ boxnum + booking_number.value);
+
+                // });
 
 
                 $(".packageinfo-head").each(function (index) {
                     var index =  $(".packageinfo-head").length -index;
                     // var index= index-1;
-                    $(this).text('Box - '+  count+ index +'<?=branch()->branch_code?branch()->branch_code:''?>'+ <?=$bookingNum?>);
+                    $(this).text('Box - '+ index + booking_number.value );
+
 
                 });
 
@@ -1751,7 +2068,7 @@ $("#saveDraft").on('click',function(e){
                 $('#AddClient #clientType').val("sender");
                 $('.id_no label').text("Sender Id");
                 $('.id_type label').text("Sender Identification Type");
-                $("select[name='client_identification_type']").val('<?=$previous_sender->identification_type?>');
+                // $("select[name='client_identification_type']").val('<?=$previous_sender->identification_type?>');
                 $("select[name='country_id']").val(<?=$previous_sender->address->country_id?>);
 
                 $('#state_id').html('');
@@ -1786,7 +2103,7 @@ $("#saveDraft").on('click',function(e){
                 $('#AddClient #clientType').val("receiver");
                 $('.id_no label').text("Receiver Id");
                 $('.id_type label').text("Receiver Identification Type");
-                $("select[name='client_identification_type']").val('<?=$previous_receiver->identification_type?>');
+                // $("select[name='client_identification_type']").val('<?=$previous_receiver->identification_type?>');
                 $("select[name='country_id']").val(<?=$previous_receiver->address->country_id?>);
 
                 $('#state_id').html('');
@@ -1870,7 +2187,7 @@ $("#saveDraft").on('click',function(e){
                             sum_value += +$(this).val();
                             $("input[name='normal_weight']").val(sum_value);
                             $("input[name='normal_weight_temp']").val(sum_value);
-                            $("input[name='grand_total_weight']").val(sum_value);
+                            // $("input[name='grand_total_weight']").val(sum_value);
                         })
                         $("input[name='rate_normal_weight']").trigger("keyup");
                         var wgt = $(this).attr("data-weight");
@@ -2116,7 +2433,7 @@ $("#saveDraft").on('click',function(e){
                                     <td style="padding:10px" width="2%"><span class="form-control border-0">`+si+`</span></td>
                                     <td style="padding:10px" width="40%"><input placeholder="Enter description" type="text" name="description`+i+`[]" class="form-control"></td>
                                         <td style="padding:10px"><input placeholder="Enter quantity" type="number" name="qty`+i+`[]"  class="form-control qty"></td>
-                                        <td style="padding:10px"><input type="number"  data-myAttri="`+i+`" placeholder="Enter unit price" name="unit`+i+`[]" class="form-control unit"></td>
+                                        <td style="padding:10px"><input type="number"  data-myAttri="`+i+`" placeholder="Enter unit price" name="unit`+i+`[]" class="form-control unit" step="0.01"></td>
                                         <td style="padding:10px"><input type="text" readonly name="subtotal`+i+`[]" class="form-control value pkg-subtotal"></td>
                                         <td>
                                         <button type="button"  name="remove`+i+`[]" class="remove btn btn-danger" data-remove="`+i+`">X</button>
@@ -2145,7 +2462,7 @@ $("#saveDraft").on('click',function(e){
 
                         $(".box-weight").trigger("input");
                         $(".box-unit-value").trigger("input");
-                        $(".msic_weight").trigger("input");
+                        // $(".msic_weight").trigger("input");
                         $(".gtotal").trigger("input");
                         $("#discount").trigger("input");
                         $(".qty").trigger("keyup");
@@ -2629,10 +2946,10 @@ function getVolume(event){
             success: function (result) {
                 // when call is sucessfull
                 $(".box-rate").val( result.rate);
-                $("input[name='rate_normal_weight']").val(result.rate);
+                // $("input[name='rate_normal_weight']").val(result.rate);
 
                 $(".box-rate").trigger("input");
-                $("input[name='rate_normal_weight']").trigger("keyup");
+                // $("input[name='rate_normal_weight']").trigger("keyup");
 
 
 

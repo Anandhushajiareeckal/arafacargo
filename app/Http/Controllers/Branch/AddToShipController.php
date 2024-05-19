@@ -203,6 +203,7 @@ class AddToShipController extends BaseController
             $bookings = new BoxesStatuses();
             $bookings->status_id = $request->status_id;
             $bookings->box_id = $boxes;
+            $bookings->comment = $request->comment;
             $bookings->created_at = (!empty($request->created_date)) ? $request->created_date : date('Y-m-d');
             $bookings->save();
         }

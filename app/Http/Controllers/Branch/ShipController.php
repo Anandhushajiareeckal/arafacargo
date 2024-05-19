@@ -24,7 +24,7 @@ use App\Models\ClearingAgents;
 use App\Models\PortOfOrigins;
 use App\Models\ShipmentsStatuses;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;   
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Collection;
 use DataTables;
 use DB;
@@ -38,7 +38,7 @@ class ShipController extends BaseController
      */
     public function index(Request $request)
     {
-       
+
     }
 
     /**
@@ -47,14 +47,14 @@ class ShipController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
-         
-        $ships =  Ships::with('createdBy','shipmentStatus','shipmentMethodTypes','portOfOrigins','portOfDestinations','clearingAgents')->where('branch_id', branch()->id)->orderBy('id', 'desc')->get();  
-        $staffs = Staffs::notadmin()->get();  
-        $shipmentTypes = ShipTypes::all(); 
+    {
+
+        $ships =  Ships::with('createdBy','shipmentStatus','shipmentMethodTypes','portOfOrigins','portOfDestinations','clearingAgents')->where('branch_id', branch()->id)->orderBy('id', 'desc')->get();
+        $staffs = Staffs::notadmin()->get();
+        $shipmentTypes = ShipTypes::all();
         $statuses = status_list_admin(); //Statuses::get();
-        $ports = PortOfOrigins::where('status',1)->get(); 
-        $agents = ClearingAgents::where('status',1)->get(); 
+        $ports = PortOfOrigins::where('status',1)->get();
+        $agents = Agencies::all();
         return view('branches.ships.create', compact('staffs', 'ships', 'shipmentTypes', 'ports', 'agents','statuses'));
 
     }
@@ -67,15 +67,15 @@ class ShipController extends BaseController
      */
     public function store(Request $request)
     {
-         
+
         //  return $request;
         // if (Ships::where('shipment_id', '=', $request->shipment_id)->first() != null) {
-        //     toastr()->error('shipment id already exists'); 
+        //     toastr()->error('shipment id already exists');
         //     return redirect()->back();
         // }
 
         // if (Ships::where('shipment_name', '=', $request->shipment_name)->first() != null) {
-        //     toastr()->error('shipment name already exists'); 
+        //     toastr()->error('shipment name already exists');
         //     return redirect()->back();
         // }
 
@@ -89,8 +89,8 @@ class ShipController extends BaseController
 
         // $request->validate([
         //     'shipment_id' => 'required|unique:ships',
-        //     'shipment_name' => 'required', 
-        //     'shipment_type' => 'required', 
+        //     'shipment_name' => 'required',
+        //     'shipment_type' => 'required',
         //     'port_of_origin' => 'required',
         // ]);
 
@@ -110,12 +110,12 @@ class ShipController extends BaseController
             // $ships->created_time = $request->created_time;
             $ships->license_details = $request->license_details;
             $ships->shipment_details = $request->shipment_details;
-            $ships->created_by = $request->created_by;  
+            $ships->created_by = $request->created_by;
             $ships->branch_id = branch()->id;
             $ships->shipment_status = $request->status;
-            $ships->save(); 
+            $ships->save();
             $ship_id = $ships->id;
-            
+
             \DB::commit();
         } catch (\Exception $e) {
 
@@ -124,13 +124,13 @@ class ShipController extends BaseController
             toastr()->error($e->getMessage());
             return redirect()->back();
         }
-                 
+
         $ship_id = Ships::where('id',$ship_id )->first();
-        toastr()->success(section_title() . 'Added Successfully');    
-        
+        toastr()->success(section_title() . 'Added Successfully');
+
         return  redirect()->route('branch.ship.create');
         }
- 
+
     /**
      * Display the specified resource.
      *
@@ -139,10 +139,10 @@ class ShipController extends BaseController
      */
     public function show($id)
     {
-        $bookings = Shipments::where('ship_id', '')->get();      
-  
+        $bookings = Shipments::where('ship_id', '')->get();
+
         return view('branches.ships.create', compact('bookings'));
-       
+
         // $shipment = Shipments::with('driver')->findOrFail($id);
         // return view('branches.shipments.show', compact('shipment'));
     }
@@ -251,16 +251,16 @@ class ShipController extends BaseController
         // $bookinigIds = $request->bookinigId;
         $bookinigIds = explode(',',  $request->bookinigId);
         $ship_id = $request->ship_id;
-        $shipments = Shipments::where('ship_id', $ship_id)->update(['ship_id' => null]); 
-        
+        $shipments = Shipments::where('ship_id', $ship_id)->update(['ship_id' => null]);
+
         ShipsBookings::where('ship_id', $ship_id)->delete();
-       
+
         foreach( $bookinigIds as   $bookinigId ) {
             $ship_bookings = new ShipsBookings();
             $ship_bookings->ship_id = $ship_id;
-            $ship_bookings->booking_number =$bookinigId; 
-            $ship_bookings->save(); 
-            $shipment = Shipments::where('id', $bookinigId)->update(['ship_id' =>  $ship_id]); 
+            $ship_bookings->booking_number =$bookinigId;
+            $ship_bookings->save();
+            $shipment = Shipments::where('id', $bookinigId)->update(['ship_id' =>  $ship_id]);
         }
 
         $ship_bookingsList = ShipsBookings::with('shipment')->with('ship')->where('ship_id', $ship_id)->get();
@@ -272,32 +272,32 @@ class ShipController extends BaseController
             $tot_temp= $booking->shipment->total_weight +$booking->shipment->msic_weight;
             $tot_weight +=$tot_temp;
             $tot_value += $booking->shipment->grand_total;
-            $res.= '<tr><td style="text-align:center" >'.$booking->shipment->booking_number.'</td> '; 
+            $res.= '<tr><td style="text-align:center" >'.$booking->shipment->booking_number.'</td> ';
             $res.= ' <td style="text-align:center">'.$booking->ship->shipment_name.'</td>';
             $res.= ' <td style="text-align:center">'.$booking->shipment->number_of_pcs .'</td>';
             $res.= ' <td style="text-align:center">'.$booking->shipment->total_weight +$booking->shipment->msic_weight .'</td>';
             $res.= ' <td style="text-align:center">'.$booking->shipment->grand_total.'</td>';
             $res.= ' <td style="text-align:center"> Shipment Forwarded </td>';
-            $res.= '<td>            
+            $res.= '<td>
                     <a href="#"
                        class="btn btn-icon waves-effect waves-light btn-success">
                         <i class="fas fa-eye"></i>
-                    </a>    
+                    </a>
                     <a href="shipment/print/'.$booking->shipment->id.'"
                        class="btn btn-icon waves-effect waves-light btn-success">
                         <i class="fas fa-print"></i>
-                    </a>  
+                    </a>
                     <a href="#"
                        class="btn btn-icon waves-effect waves-light btn-dark">
                         <i class="fas fa-undo"></i>
                     </a>
-                 </td> </tr>';  
+                 </td> </tr>';
             }
-            $res.='<tr><td  colspan="3"> </td><td style="text-align:center">'. $tot_weight.'</td><td style="text-align:center" >'.$tot_value.'</td> <td colspan="2"  ></td></tr>';   
+            $res.='<tr><td  colspan="3"> </td><td style="text-align:center">'. $tot_weight.'</td><td style="text-align:center" >'.$tot_value.'</td> <td colspan="2"  ></td></tr>';
             return $res;
-         
+
     }
-    
+
     public function getBoxDetails(Request $request) {
         $boxId = $request->boxId;
         $boxName = $request->boxName;
@@ -339,7 +339,7 @@ class ShipController extends BaseController
             //         $query->where('ship_id',$id);
             //     })->where('is_transfer',0);
             $querys = Boxes::with('shipment')->where('ship_id',$id)->where('is_transfer',0);
-            
+
             $boxes = $querys->get();
 
             //   dd($boxes);
@@ -349,18 +349,18 @@ class ShipController extends BaseController
             $drivers = Drivers::all();
             $tripsheets = Tripsheets::where('branch_id', branch()->id)->where('status', 'trip_created')->get();
 
-        
+
         return view('branches.ships.manifestoView',compact('id','boxes', 'branches', 'drivers', 'tripsheets','statuses','getShips'));
     }
 
     public function editShip($id) {
         $shipId = $id;
-        $ship =  Ships::with('createdBy','shipmentStatus','shipmentMethodTypes','portOfOrigins','portOfDestinations','clearingAgents')->where('branch_id', branch()->id)->orderBy('id', 'desc')->find($id);  
-        $staffs = Staffs::notadmin()->get();  
-        $shipmentTypes = ShipTypes::all(); 
+        $ship =  Ships::with('createdBy','shipmentStatus','shipmentMethodTypes','portOfOrigins','portOfDestinations','clearingAgents')->where('branch_id', branch()->id)->orderBy('id', 'desc')->find($id);
+        $staffs = Staffs::notadmin()->get();
+        $shipmentTypes = ShipTypes::all();
         $statuses = status_list_admin(); //Statuses::get();
-        $ports = PortOfOrigins::where('status',1)->get(); 
-        $agents = ClearingAgents::where('status',1)->get(); 
+        $ports = PortOfOrigins::where('status',1)->get();
+        $agents = Agencies::all();
         return view('branches.ships.editShips', compact('staffs', 'ship', 'shipmentTypes', 'ports', 'agents','statuses'));
     }
 
@@ -380,12 +380,12 @@ class ShipController extends BaseController
             // $ships->created_time = $request->created_time;
             $ships->license_details = $request->license_details;
             $ships->shipment_details = $request->shipment_details;
-            $ships->created_by = $request->created_by;  
+            $ships->created_by = $request->created_by;
             $ships->branch_id = branch()->id;
             $ships->shipment_status = $request->status;
-            $ships->save(); 
+            $ships->save();
             $ship_id = $ships->id;
-            
+
             \DB::commit();
         } catch (\Exception $e) {
 
@@ -394,10 +394,10 @@ class ShipController extends BaseController
             toastr()->error($e->getMessage());
             return redirect()->back();
         }
-                 
+
         $ship_id = Ships::where('id',$ship_id )->first();
-        toastr()->success('Shipment Updated Successfully');    
-        
+        toastr()->success('Shipment Updated Successfully');
+
         return redirect()->route('branch.ship.create');
     }
 
@@ -408,7 +408,7 @@ class ShipController extends BaseController
         $shipBookings =  Boxes::with('boxStatuses.status','shipment.shipmentStatus','shipment.packages','boxStatuses.status')->whereHas('shipment',function ($query) {
             $query->where('branch_id', branch()->id);
         })->where('is_shipment',1)->where('ship_id',$shipId)->get();
-        
+
         foreach($shipBookings as $key => $box) {
             $lastStatus = collect($box->boxStatuses)->last();
             $shipBookings[$key]["last_status"] = $lastStatus->status->name;
@@ -416,5 +416,5 @@ class ShipController extends BaseController
         // return $shipBookings;
         return view('branches.ships.detailedView', compact('shipment','shipBookings'));
     }
-    
+
 }

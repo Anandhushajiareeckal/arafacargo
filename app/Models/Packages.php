@@ -33,4 +33,5 @@ class Packages extends Model
     {
         return $this->belongsTo(Boxes::class);
     }
+   
 }

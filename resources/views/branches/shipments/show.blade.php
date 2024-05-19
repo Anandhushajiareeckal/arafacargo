@@ -155,10 +155,10 @@
                                     <th>Shipment No. : </th>
                                     <th  >{{  $shipment->company->shipment_reference_id ?? "" }}</th>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <th> Status : </th>
                                     <th style="text-transform: uppercase;">{{ $shipment->statusVal->name ?? "" }}</th>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <th>Driver Name : </th>
                                     <th style="text-transform: uppercase;">{{ isset($shipment->driver->name) ? $shipment->driver->name :'' }}</th>
@@ -189,11 +189,11 @@
                                 </tr>
                                 <tr>
                                     <th>Weight : </th>
-                                    <th>{{ $shipment->normal_weight }}</th>
+                                    <th>{{ $shipment->grand_total_weight }}</th>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <th>Width : </th>
-                                    <th>{{ $shipment->width }}</th>
+                                    <th>{{ $shipment->width }}</th>1
                                 </tr>
                                 <tr>
                                     <th>Height  : </th>
@@ -206,7 +206,7 @@
                                 <tr>
                                     <th>Moving Type : </th>
                                     <td style="text-transform: uppercase;">{{ $shipment->movingType->name??'' }}</td>
-                                </tr>
+                                </tr> --}}
                             </table>
                         </div>
 
@@ -219,10 +219,10 @@
                         <div class="head">Box Status</div>
                         <div class="desc">
                             <table style="width:100%">
-                                <tr>
+                                {{-- <tr>
                                     <th style="width:30%">Status :</th>
-                                    <th style="text-transform: uppercase;">{{ $shipment->statusVal->name ?? "" }}</th>
-                                </tr>
+                                    <th style="text-transform: uppercase;">{{  ?? "" }}</th>
+                                </tr> --}}
 
                             </table>
                         </div>
@@ -237,23 +237,35 @@
                                     <th style="text-transform: uppercase;">{{ $shipment->payment_method }}</th>
                                 </tr>
                                 <tr>
-                                    <th>Other Charge : </th>
-                                    <th style="text-transform: uppercase;">{{ $shipment->other_charges }}</th>
+                                    <th>Duty</th>
+                                    <th style="text-transform: uppercase;">{{ $shipment->amount_electronics_weight }}</th>
                                 </tr>
                                 <tr>
-                                    <th>Payment Status : </th>
-                                    <th style="text-transform: uppercase;">{{ $shipment->payment_status }}</th>
+                                    <th>Packing charge</th>
+                                    <th style="text-transform: uppercase;">{{ $shipment->amount_msic_weight }}</th>
                                 </tr>
                                 <tr>
-                                    <th>Paacking Charge : </th>
-                                    <th>{{ $shipment->packing_charge }}</th>
+                                    <th>Insurance </th>
+                                    <th style="text-transform: uppercase;">{{ $shipment->amount_insurance }}</th>
                                 </tr>
                                 <tr>
-                                    <th>Discount : </th><th>{{ $shipment->discount }}</th>
+                                    <th>AWB Fee </th>
+                                    <th style="text-transform: uppercase;">{{ $shipment->amount_awbfee }}</th>
                                 </tr>
                                 <tr>
-                                    <th>Total Amount : </th><th>{{ $shipment->total_amount }}</th>
+                                    <th>VAT Amount </th>
+                                    <th style="text-transform: uppercase;">{{ $shipment->amount_vat_amount }}</th>
                                 </tr>
+                                <tr>
+                                    <th>Volume weight </th>
+                                    <th style="text-transform: uppercase;">{{ $shipment->amount_volume_weight }}</th>
+                                </tr>
+                                <tr>
+                                    <th>Discount </th>
+                                    <th style="text-transform: uppercase;">{{ $shipment->amount_discount_weight }}</th>
+                                </tr>
+
+
 
                             </table>
                         </div>

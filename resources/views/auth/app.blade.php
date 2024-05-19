@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <title>Login |{{ config('app.name', 'Arafa Cargo') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Best express cargo" name="description" />
+    <meta content="{{ config('app.name', 'Arafa Cargo') }}" name="description" />
     <meta content="aju" name="author" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />

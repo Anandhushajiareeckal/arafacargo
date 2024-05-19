@@ -643,6 +643,31 @@ body{
                                                                 </div>
 
 
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Additional Packing charge</label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="add_pack_charge"
+                                                                            value="" class="form-control add_pack_charge tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_add_pack_charge" value="" class="form-control rate_add_pack_charge tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                    <div class="">
+                                                                        <input type="text" name="amount_add_pack_charge" value="" class="form-control tot_amt">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+
 
 
 
@@ -741,6 +766,30 @@ body{
                                                                     <div class="col-md-2">
                                                                         <div class="">
                                                                             <input type="text" name="amount_volume_weight" value="" class="form-control tot_amt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="row  pt-2">
+                                                                    <div class="col-md-6"  style="text-align:right;">
+                                                                        <label>Discount</label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="discount_weight"
+                                                                            value="" class="form-control discount_weight tot_wgt">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="rate_discount_weight" value="" class="form-control rate_discount_weight tot_rate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="">
+                                                                            <input type="text" name="amount_discount_weight" value="" class="form-control ">
                                                                         </div>
                                                                     </div>
 
@@ -1765,7 +1814,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const rate_msic_weight = document.querySelector('input[name="rate_msic_weight"]');
     const amount_msic_weight = document.querySelector('input[name="amount_msic_weight"]');
 
-
+    const add_pack_charge = document.querySelector('input[name="add_pack_charge"]');
+    const rate_add_pack_charge = document.querySelector('input[name="rate_add_pack_charge"]');
+    const amount_add_pack_charge = document.querySelector('input[name="amount_add_pack_charge"]');
 
 
     const insurance = document.querySelector('input[name="insurance"]');
@@ -1789,6 +1840,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const grand_total_weight = document.querySelector('input[name="grand_total_weight"]');
     const electronics_weight = document.querySelector('input[name="electronics_weight"]');
     const msic_weight = document.querySelector('input[name="msic_weight"]');
+
+    const discount_weight = document.querySelector('input[name="discount_weight"]');
+    const rate_discount_weight = document.querySelector('input[name="rate_discount_weight"]');
+    const amount_discount_weight = document.querySelector('input[name="amount_discount_weight"]');
 
     const amount_grand_total = document.querySelector('input[name="amount_grand_total"]');
 
@@ -1841,7 +1896,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-
+    function multiplyAddPackCharge() {
+        const val1 = parseFloat(add_pack_charge.value);
+        const val2 = parseFloat(rate_add_pack_charge.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_add_pack_charge.value =result.toFixed(0);
+            }
+            else{
+                amount_add_pack_charge.value =result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
 
 
     function multiplyInsurance() {
@@ -1908,6 +1977,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function multiplyDiscount() {
+        const val1 = parseFloat(discount_weight.value);
+        const val2 = parseFloat(rate_discount_weight.value);
+        if (!isNaN(val1) && !isNaN(val2)) {
+            var result = (val1 * val2);
+            if (Number.isInteger(result)){
+                amount_discount_weight.value =result.toFixed(0);
+            }
+            else{
+                amount_discount_weight.value = result.toFixed(2);
+            }
+        } else {
+            result.value = '';
+        }
+    }
+
     function totalQuantity() {
         const val1 = parseFloat(amount_normal_weight.value) || 0;
         const val2 = parseFloat(amount_electronics_weight.value) || 0;
@@ -1916,10 +2001,26 @@ document.addEventListener('DOMContentLoaded', function() {
         const val5 = parseFloat(amount_awbfee.value) || 0;
         const val6 = parseFloat(amount_vat_amount.value) || 0;
         const val7 = parseFloat(amount_volume_weight.value) || 0;
+        const val8 = parseFloat(amount_discount_weight.value) || 0;
+        const val9 = parseFloat(amount_add_pack_charge.value) || 0;
 
-        if ([val1, val2, val3, val4, val5, val6, val7].every(val => !isNaN(val))) {
-            var result = val1 + val2 + val3 + val4 + val5 + val6 + val7;
-            amount_grand_total.value = result.toFixed(2);
+
+        if ([val1, val2, val3, val4, val5, val6, val7,val9].every(val => !isNaN(val))) {
+            var result = val1 + val2 + val3 + val4 + val5 + val6 + val7 + val9;
+            var grant_tot = result - val8;
+            amount_grand_total.value = grant_tot.toFixed(2);
+        }
+
+
+    }
+
+    function discountQuantity() {
+        totalQuantity()
+        const val1 = parseFloat(amount_discount_weight.value) || 0;
+        const total = parseFloat(amount_grand_total.value) || 0;
+        if (!isNaN(val1)) {
+            var result = total - val1;
+            // amount_grand_total.value = result.toFixed(2);
         }
 
 
@@ -1935,6 +2036,9 @@ document.addEventListener('DOMContentLoaded', function() {
     msic.addEventListener('input', multiplyPacking);
     rate_msic_weight.addEventListener('input', multiplyPacking);
 
+    add_pack_charge.addEventListener('input', multiplyAddPackCharge);
+    rate_add_pack_charge.addEventListener('input', multiplyAddPackCharge);
+
     insurance.addEventListener('input', multiplyInsurance);
     rate_insurance.addEventListener('input', multiplyInsurance);
 
@@ -1947,6 +2051,9 @@ document.addEventListener('DOMContentLoaded', function() {
     vat_amount.addEventListener('input', multiplyVatAmount);
     rate_vat_amount.addEventListener('input', multiplyVatAmount);
 
+    discount_weight.addEventListener('input', multiplyDiscount);
+    rate_discount_weight.addEventListener('input', multiplyDiscount);
+
 
     rate_normal_weight.addEventListener('input', totalQuantity);
     rate_electronics_weight.addEventListener('input', totalQuantity);
@@ -1955,6 +2062,8 @@ document.addEventListener('DOMContentLoaded', function() {
     rate_volume_weight.addEventListener('input', totalQuantity);
     rate_awbfee.addEventListener('input', totalQuantity);
     rate_vat_amount.addEventListener('input', totalQuantity);
+    rate_add_pack_charge.addEventListener('input', totalQuantity);
+
 
     amount_normal_weight.addEventListener('input', totalQuantity);
     amount_electronics_weight.addEventListener('input', totalQuantity);
@@ -1963,6 +2072,11 @@ document.addEventListener('DOMContentLoaded', function() {
     amount_awbfee.addEventListener('input', totalQuantity);
     amount_vat_amount.addEventListener('input', totalQuantity);
     amount_volume_weight.addEventListener('input', totalQuantity);
+    amount_add_pack_charge.addEventListener('input', totalQuantity);
+
+    rate_discount_weight.addEventListener('input', discountQuantity);
+    amount_discount_weight.addEventListener('input', discountQuantity);
+
 
 });
 
