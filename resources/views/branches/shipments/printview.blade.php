@@ -176,7 +176,7 @@
                             <td>{{ \Carbon\Carbon::now()->format('d/m/Y') }}</td>
                             <td>{{ $item->box_name}} </td>
                             <td>{{ $shipment->number_of_pcs }}</td>
-                            <td>{{ round($shipment->grand_total_weight, 2) }}</td>
+                            <td>{{ round($item->weight, 2) }}</td>
                             <td>UAE</td>
                             <td>COK</td>
                             <td>0</td>
@@ -215,7 +215,8 @@
                     <div class="col-3 mt-2 pt-3 " style="border-bottom:solid; border-width: 3px;margin-top: -16px;font-size: 11px;">
                         <b class="align-items-center justify-content-center shipment-info">
                             {{ $item->sender_name ? $item->sender_name  : ''}} ,
-                            {{ $item->sender_address ? $item->sender_address : '' }},
+                            {{ $item->sender_address ? $item->sender_address : '' }},<br>
+                            PIN:-{{$item->sender_address ?' PIN:-'.$item->sender_pin : '' }},
                             <br> MOB:
                             {{ $item->sender_mob ? $item->sender_mob : ''}} <br>
                             ID: {{$item->sender_id_no ? $item->sender_id_no : ''}}
@@ -238,7 +239,8 @@
                     <div class="col-3 mt-2 pt-3" style="border-bottom:solid; border-width: 3px; margin-top: -16px;font-size: 11px;">
                         <b class="align-items-center justify-content-center shipment-info">
                             {{ $item->receiver_name ? $item->receiver_name  : ''}} ,
-                            {{ $item->receiver_address ? $item->receiver_address : '' }},
+                            {{ $item->receiver_address ? $item->receiver_address : '' }},<br>
+                            {{$item->receiver_address ? 'PIN:-'. $item->receiver_pin : '' }},
                             <br> MOB:
                             {{ $item->receiver_mob ? $item->receiver_mob : ''}} <br>
                             ID: {{$item->receiver_id_no ? $item->receiver_id_no : ''}}

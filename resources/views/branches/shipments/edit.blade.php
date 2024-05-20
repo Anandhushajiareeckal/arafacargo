@@ -101,7 +101,7 @@ body{
                                                        value="{{ $shipment->booking_number }}" class="form-control"
                                                        required readonly
                                                        id="booking_no_uniq"
-                                                       style="{{ $shipment->booking_number ? 'readonly !important' : '' }}">
+                                                >
                                                 @error('booking_number')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -1516,7 +1516,7 @@ body{
     $(document).ready(function() {
     // Check if "driver" is already selected initially
     if ($('#collected_by').val() === 'driver') {
-        toggleBookingNumberInput(true);
+        toggleBookingNumberInput(false);
     }
 
     // Bind change event handler
@@ -3030,3 +3030,5 @@ function getBoxPackingVal(event) {
 </script>
 
 @endsection
+
+

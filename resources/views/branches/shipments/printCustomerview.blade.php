@@ -36,11 +36,14 @@
             height: 100px !important;
         }
         .value_goods{
-            height: 31px !important;
+            height: 34px !important;
+        }
+        .value_goods1{
+            padding: 9px !important;
         }
 
         .value_goods .vr_line{
-            height: 28px !important;
+            height: 33px !important;
             border-top: none !important;
             border-bottom: none !important;
             border-right: none !important;
@@ -55,7 +58,7 @@
         }
 
         .blank_row{
-            height: 78px !important;
+            height: 114px !important;
         }
 
         .spcl_remark p{
@@ -63,15 +66,16 @@
             font-size: 9px !important;
         }
         .ind_air1{
-            padding: 1px !important;
+            padding: 7px !important;
+        }
+        .ind_air2{
+            padding: 6px !important;
         }
 
         .home_del{
-            height: 16px !important;
+            height: 22px !important;
         }
-        .value_goods{
-            height: 28px !important;
-        }
+
 
 
         .#00b050 p{
@@ -104,7 +108,9 @@
             border-top: 1px solid #000 !important;
             border-bottom: 1px solid #000 !important;
             border-right: 1px solid #000 ;
+            padding: 3px !important;
         }
+
 
         .table_head th{
             border-bottom: 1px solid #000 !important;
@@ -148,9 +154,20 @@
             font-size: 9px;
         }
 
+        .date_table td{
+            padding: 4px !important;
+            font-size: 12px !important;
+        }
+
 
 
     }
+
+
+
+
+
+
 
     .barcode_sec text{
         font-size: 37px !important;
@@ -217,8 +234,7 @@
         .pacling_list th{
             border-right: 1px solid #000;
             border-top: 2px solid #000;
-
-            background: #d9d9d9;
+            padding-top: 7px !important;
         }
         .pacling_list .sno{
             background: #d9d9d9;
@@ -228,7 +244,7 @@
             padding: 1px;
         }
         .item_table td, th{
-            padding: 1px;
+            padding: 5px;
         }
         .item_table td{
             text-align: center;
@@ -479,7 +495,7 @@
                             <br>
                         </b>
                     </div>
-                    <div class="col-3 consignee_add" style="border:2px solid #000; border-top: none !important; border-width: 2px; margin-top: -16px; border-bottom:none; --bs-gutter-x: -0.5rem;">
+                    <div class="col-2 consignee_add" style="border:2px solid #000; border-top: none !important; border-width: 2px; margin-top: -16px; border-bottom:none; --bs-gutter-x: -0.5rem;">
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -557,11 +573,11 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-3 mt-2 pt-3" style=" border-width: 2px; margin-top: -16px; font-size: 11px; ">
+                    <div class="col-4 mt-2 pt-3" style=" border-width: 2px; margin-top: -16px; font-size: 11px; ">
                         <b class="align-items-center justify-content-center shipment-info">
                             {{ $shipment->receiver->name }} ,
                             {{ $shipment->receiver->address->address }},
-                            {{ $shipment->receiver->address->district->name}},
+                            {{ $shipment->receiver->address->district->name??''}},
                             <br> MOB:
                             +{{ $shipment->receiver->country_code_phone}} {{ $shipment->receiver->phone }},
                             +{{ $shipment->receiver->country_code_whatsapp}} {{ $shipment->receiver->whatsapp_number }},
@@ -606,9 +622,9 @@
                                         <div class="col-6 text-end" >رسوم الشحن</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->grand_total_weight }}</td>
-                                <td>{{$shipment->rate_normal_weight}}</td>
-                                <td>{{$shipment->amount_normal_weight}}</td>
+                                <td>{{$shipment->grand_total_weight?? 0 }}</td>
+                                <td>{{$shipment->rate_normal_weight?? 0}}</td>
+                                <td>{{$shipment->amount_normal_weight?? 0}}</td>
                             </tr>
                             <tr>
                                 <th>
@@ -617,9 +633,9 @@
                                         <div class="col-6 text-end" >واجب</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->electronics_weight}}</td>
-                                <td>{{$shipment->rate_electronics_weight}}</td>
-                                <td>{{$shipment->amount_electronics_weight}}</td>
+                                <td>{{$shipment->electronics_weight?? 0}}</td>
+                                <td>{{$shipment->rate_electronics_weight?? 0}}</td>
+                                <td>{{$shipment->amount_electronics_weight?? 0}}</td>
                             </tr>
                             <tr>
                                 <th>
@@ -628,9 +644,9 @@
                                         <div class="col-6 text-end">تهمة التعبئة</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->msic_weight}}</td>
-                                <td>{{$shipment->rate_msic_weight}}</td>
-                                <td>{{$shipment->amount_msic_weight}}</td>
+                                <td>{{$shipment->msic_weight?? 0}}</td>
+                                <td>{{$shipment->rate_msic_weight?? 0}}</td>
+                                <td>{{$shipment->amount_msic_weight?? 0}}</td>
                             </tr>
 
                             <tr>
@@ -640,18 +656,18 @@
                                         <div class="col-6 text-end"> رسوم التعبئة الإضافية</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->add_pack_charge}}</td>
-                                <td>{{$shipment->rate_add_pack_charge}}</td>
-                                <td>{{$shipment->amount_add_pack_charge}}</td>
+                                <td>{{$shipment->add_pack_charge?? 0}}</td>
+                                <td>{{$shipment->rate_add_pack_charge?? 0}}</td>
+                                <td>{{$shipment->amount_add_pack_charge?? 0}}</td>
                             </tr>
                             <tr>
                                 <th><div class="row">
                                     <div class="col-6 text-start">Insurance</div>
                                     <div class="col-6 text-end">تأمين</div>
                                 </div></th>
-                                <td>{{$shipment->insurance}}</td>
-                                <td>{{$shipment->rate_insurance}}</td>
-                                <td>{{$shipment->amount_insurance}}</td>
+                                <td>{{$shipment->insurance?? 0}}</td>
+                                <td>{{$shipment->rate_insurance?? 0}}</td>
+                                <td>{{$shipment->amount_insurance?? 0}}</td>
                             </tr>
                             <tr>
                                 <th>
@@ -660,9 +676,9 @@
                                         <div class="col-6 text-end">رسوم بوليصة الشحن الجوي</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->awbfee}}</td>
-                                <td>{{$shipment->rate_awbfee}}</td>
-                                <td>{{$shipment->amount_awbfee}}</td>
+                                <td>{{$shipment->awbfee?? 0}}</td>
+                                <td>{{$shipment->rate_awbfee?? 0}}</td>
+                                <td>{{$shipment->amount_awbfee?? 0}}</td>
                             </tr>
                             <tr>
                                 <th>
@@ -671,21 +687,11 @@
                                         <div class="col-6 text-end">قيمة الضريبة</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->vat_amount}}</td>
-                                <td>{{$shipment->rate_vat_amount}}</td>
-                                <td>{{$shipment->amount_vat_amount}}</td>
+                                <td>{{$shipment->vat_amount?? 0}}</td>
+                                <td>{{$shipment->rate_vat_amount?? 0}}</td>
+                                <td>{{$shipment->amount_vat_amount?? 0}}</td>
                             </tr>
-                            <tr>
-                                <th>
-                                    <div class="row">
-                                        <div class="col-6 text-start">Discount</div>
-                                        <div class="col-6 text-end">تخفيض</div>
-                                    </div>
-                                </th>
-                                <td>{{$shipment->discount_weight}}</td>
-                                <td>{{$shipment->rate_discount_weight}}</td>
-                                <td>{{$shipment->amount_discount_weight}}</td>
-                            </tr>
+
                             <tr>
                                 <th>
                                     <div class="row">
@@ -693,9 +699,21 @@
                                         <div class="col-6 text-end">وزن الحجم</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->volume_weight}}</td>
-                                <td>{{$shipment->rate_volume_weight}}</td>
-                                <td>{{$shipment->amount_volume_weight}}</td>
+                                <td>{{$shipment->volume_weight?? 0}}</td>
+                                <td>{{$shipment->rate_volume_weight?? 0}}</td>
+                                <td>{{$shipment->amount_volume_weight?? 0}}</td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    <div class="row">
+                                        <div class="col-6 text-start">Discount</div>
+                                        <div class="col-6 text-end">تخفيض</div>
+                                    </div>
+                                </th>
+                                <td>{{$shipment->discount_weight?? 0}}</td>
+                                <td>{{$shipment->rate_discount_weight?? 0}}</td>
+                                <td>{{$shipment->amount_discount_weight?? 0}}</td>
                             </tr>
 
                             <tr style="border-bottom: 2px solid #000; border-left:none !important;">
@@ -717,26 +735,26 @@
                     </table>
                 </div>
                 <div class="col-4 #00b050">
-                    <div class="row text-center spcl_remark spcl_remark1" style="border:1px solid #000; border-right: none;  margin-left: -25px; margin-right: -24px; height:25px; "  >
+                    <div class="row text-center spcl_remark spcl_remark1" style="border:1px solid #000; border-right: none;  margin-left: -25px; margin-right: -24px; height:28px; "  >
                         <b class="" style=" color:#fff; background:#00b050 " ><div class="row"><div class="col-6 text-start">SPECIAL REMARKS</div><div class="col-6 text-end">كلمة خاصة</div></div></b>
                     </div>
-                    <div class="row text-center blank_row spcl_remark" style="border:1px solid #000; border-top:none;border-left: none !important; border-right: none; margin-left: -25px; margin-right: -24px; height: 35%; ">
+                    <div class="row text-center blank_row spcl_remark" style="border:1px solid #000; border-top:none;border-left: none !important; border-right: none; margin-left: -25px; margin-right: -24px; height: 38%; ">
                     </div>
                     <div class="row text-center spcl_remark home_del" style="border:1px solid #000; border-top:none; border-right: none;border-left: none !important; margin-left: -25px; margin-right: -24px;">
-                        <b style="padding: 2px;">HOME DELIVERY -NOT FOR SALE</b>
+                        <b style="padding: 6px;">HOME DELIVERY -NOT FOR SALE</b>
                     </div>
                     <div class="row text-center spcl_remark ind_air1" style="border:1px solid #000; border-top:none; border-right: none;border-left: none !important; margin-left: -25px; margin-right: -24px;">
-                        <p style="padding: 3px;">INDIA-AIR CARGO ESTIMATED DELIVERY TIME -10-15 WORKING DAYS,  وقت الهندي الجوي الشح التسليم المقدر 15-10- يوم عمل</p>
+                        <p style="padding: 10px;">INDIA-AIR CARGO ESTIMATED DELIVERY TIME -10-15 WORKING DAYS,  وقت الهندي الجوي الشح التسليم المقدر 15-10- يوم عمل</p>
                     </div>
                     <div class="row text-center spcl_remark ind_air2" style="border:1px solid #000; border-top:none; border-right: none;border-left: none !important; margin-left: -25px; margin-right: -24px; margin-top: 2px;">
-                        <p style="padding: 2px;">INDIA-SEA CARGO ESTIMATED DELIVERY TIME 45-60 WORKING DAYS, وقت الهندي البحري الشحن التسليم المقدر 60-45 يوم عمل</p>
+                        <p style="padding: 10px;">INDIA-SEA CARGO ESTIMATED DELIVERY TIME 45-60 WORKING DAYS, وقت الهندي البحري الشحن التسليم المقدر 60-45 يوم عمل</p>
                     </div>
                     <div class="row text-center value_goods spcl_remark" style="border:1px solid #000; border-top:none; border-right: none;border-left: none !important; margin-left: -25px; margin-right: -24px;">
-                        <div class="col-7" style="padding:8px;">
+                        <div class="col-7 value_goods1" style="padding:11px;">
                             <b >VALUE OF GOODS (AED) </b>
 
                         </div>
-                        <div class="col-1 vr_line"  style="border-left: 2px solid #000; height: 29px"></div>
+                        <div class="col-1 vr_line"  style="border-left: 2px solid #000; height: 38px"></div>
                         <div class="col-4">
                             <h6></h6>
                         </div>
@@ -767,15 +785,15 @@
                     <p>ال ٌوجد ضمان على األوانً الزجاجٌة واإللكترونٌات التً ال تحتوي على عبوات
                         أصلٌة من الشركة أو عبوات خشبٌة.
                     </p>
-                    <p>* الحد األقصى السترداد إجمالً الخسارة سٌكون درهماً . 20 جنٌ ًها للكٌلو جرام</p>
-                    <p>* أوافق على إرسال رسائل تروٌجٌة إلى رقمً المحدد.</p>
-                    <p> * فً حالة وجود أي تأخٌر بسبب التخلٌص الجمركً فً بلد المقصد، ٌجب على</p>
+                    <p> الحد األقصى السترداد إجمالً الخسارة سٌكون درهماً . 20 جنٌ ًها للكٌلو جرام *</p>
+                    <p> أوافق على إرسال رسائل تروٌجٌة إلى رقمً المحدد *</p>
+                    <p>  فً حالة وجود أي تأخٌر بسبب التخلٌص الجمركً فً بلد المقصد، ٌجب على *</p>
                     <p>العمٌل االنتظار حتى ٌتم حل المشكلة</p>
 
                 </div>
 
             </div>
-            <div class="row pt-3 ml-3">
+            <div class="row pt-2 ml-3">
                 <div class="col-6">
                     <p>FOR ARAFA CARGO LLC ………………………………………………………</p>
                     <br>

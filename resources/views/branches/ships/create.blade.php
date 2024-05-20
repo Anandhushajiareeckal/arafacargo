@@ -234,7 +234,7 @@
 
                                             $tot_temp_exist= $booking->weight;
                                             $tot_weight_exist +=$tot_temp_exist;
-                                            $tot_value_exist += $booking->total_value + $booking->box_packing_charge;
+                                            $tot_value_exist += (float)$booking->total_value + (float)$booking->box_packing_charge;
                                             $totalPieces += 1;
 
                                             if(($lastStatus != null)) {
