@@ -4,131 +4,11 @@
     <title>Print View</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-    <style>
+    <link rel="stylesheet" href="{{asset('assets/css/printview.css')}}">
 
-    @media print {
-      @page {
-        margin: 0;
-      }
-      /* .printxxxx {
-        page-break-after: always;
-      } */
-      .printable-invoice {
-            page-break-before: always;
-        }
-
-      td{
-        padding:0px !important;
-      }
-        h4{
-            padding:0px !important;
-            margin:0px !important;
-        }
-        #print_button button{
-            display:none;
-        }
-        .address {
-            font-size: 14px !important;
-        }
-
-    }
-
-    .main_div{
-            font-size: 10px !important;
-        }
-
-        .pod{
-            height: 155px;
-        }
-        .container {
-            width: 100%;
-
-
-        }
-        .main_div{
-            border: solid;
-        }
-        .ml-4{
-            margin-left: 30px;
-        }
-        .ml-3{
-            margin-left: 15px;
-        }
-        .inv_no{
-            background: black;
-            color: #fff;
-            width: 100px;
-            width: 155px;
-            padding: 5px;
-        }
-        .table_head th{
-            border-bottom: solid;
-            border-top: solid;
-        }
-        input[type="checkbox"] {
-            transform: scale(1); /* Change the scale value to adjust the size */
-        }
-        input[type="checkbox"] {
-            border-width: 3px; /* Change the border-width value to adjust the width */
-        }
-        .pacling_list td{
-            border-right: solid;
-            border-bottom: solid;
-        }
-
-        .pacling_list th{
-            border-right: solid;
-            border-top: solid;
-            background: #d9d9d9;
-        }
-        .pacling_list .sno{
-            background: #d9d9d9;
-        }
-
-        .adress_table td{
-            padding: 1px;
-        }
-        .item_table td, th{
-            padding: 1px;
-        }
-
-        .footer b, p {
-            margin:1px;
-            text-align: justify;
-        }
-
-        .header h6{
-            font-size: 12px;
-        }
-
-        @media screen and (max-width: 600px) {
-            .shipment-info {
-            text-align: left;
-            }
-        }
-        #printButton {
-            position: fixed;
-            top: 30px;
-            left: 30px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #c52014;
-            color: #fff;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            z-index: 1000;
-            width: 95px
-        }
-
-        #printButton:hover {
-            background-color: #009eb3;
-        }
-
-    </style>
 </head>
 
-<body>
+<body style="overflow-x: hidden;">
 
     <button id="printButton" onclick="printPDF()">Print</button><br>
     @php
@@ -138,12 +18,13 @@
 @foreach ($shipment->boxes as $i=>$item)
 
     <div class=" mt-2 {{ $first_loop == false ? 'printable-invoice' : 'p-3 ' }}">
-        <div class="main_div">
+
+        <div class="main_div ">
             <div class="row">
                 <div class="col-5 mt-4 ml-4 header">
                     <div  style="float:left;">
-                        <img src="{{asset($shipment->agency->logo) }}" alt="Bestexpress" style="height:60px;" class="img-responsive logo" >
-                    </div>
+                        <img src="{{asset($shipment->agency->logo) }}" alt="Bestexpress"  class="img-responsive logo" >
+                    </div><br><br><br><br>
                         <h6 class="text-uppercase">DIVISION OF {{$shipment->agency->name}},
                             {{$shipment->agency->address}},
                             {{$shipment->agency->district}},
@@ -153,7 +34,7 @@
                     <h1 class="inv_no">INV NO </h1>
                 </div>
                 <div class="col-3 d-flex align-items-center justify-content-center" >
-                    <svg id="barcode"></svg>
+                    <svg id="barcode{{$loop->index}}"></svg>
 
                     {{-- <h1 class="inv_no">{{ $shipment->booking_number }} </h1> --}}
                 </div>
@@ -175,7 +56,7 @@
                         <tr>
                             <td>{{ \Carbon\Carbon::now()->format('d/m/Y') }}</td>
                             <td>{{ $item->box_name}} </td>
-                            <td>{{ $shipment->number_of_pcs }}</td>
+                            <td>1</td>
                             <td>{{ round($item->weight, 2) }}</td>
                             <td>UAE</td>
                             <td>COK</td>
@@ -187,11 +68,11 @@
             <div class="row">
                 <div class="col-12">
                     <table class="table">
-                        <thead class="table_head">
+                        <thead class="table_head head_frm_to">
                             <tr>
-                                <th class="col-4 text-center"style="padding-left:100px;" > FROM ADDRESS</th>
-                                <th class="col-4 text-center" style="padding-left:200px;">TO ADDRESS</th>
-                                <th class="col-4 text-center" style="padding-left:200px;">SERVICE</th>
+                                <th class="col-4 text-center" > FROM ADDRESS</th>
+                                <th class="col-4 text-center" >TO ADDRESS</th>
+                                <th class="col-4 text-center" >SERVICE</th>
                             </tr>
                         </thead>
 
@@ -199,7 +80,7 @@
 
                 </div>
                 <div class="row adress_table" style="margin-left: 3px;">
-                    <div class="col-2" style="margin-top: -16px; border-right: solid; border-bottom: solid; border-width: 3px;">
+                    <div class="col-2 adress_table_first_div" >
                         <table class="table">
                             <tbody>
                                     <tr><td>ADDRESS</td></tr>
@@ -212,18 +93,18 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-3 mt-2 pt-3 " style="border-bottom:solid; border-width: 3px;margin-top: -16px;font-size: 11px;">
+                    <div class="col-3 mt-2 pt-3 adress_table_sec_div" >
                         <b class="align-items-center justify-content-center shipment-info">
                             {{ $item->sender_name ? $item->sender_name  : ''}} ,
                             {{ $item->sender_address ? $item->sender_address : '' }},<br>
-                            PIN:-{{$item->sender_address ?' PIN:-'.$item->sender_pin : '' }},
+                            {{$item->sender_address ? 'PIN:-'.$item->sender_pin : '' }},
                             <br> MOB:
                             {{ $item->sender_mob ? $item->sender_mob : ''}} <br>
                             ID: {{$item->sender_id_no ? $item->sender_id_no : ''}}
                             <br>
                         </b>
                     </div>
-                    <div class="col-2" style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
+                    <div class="col-2 adress_table_thrd_div" >
                         <table class="table">
                             <tbody>
                                     <tr><td>ADDRESS</td></tr>
@@ -236,11 +117,11 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-3 mt-2 pt-3" style="border-bottom:solid; border-width: 3px; margin-top: -16px;font-size: 11px;">
+                    <div class="col-3 mt-2 pt-3 adress_table_frth_div" >
                         <b class="align-items-center justify-content-center shipment-info">
                             {{ $item->receiver_name ? $item->receiver_name  : ''}} ,
                             {{ $item->receiver_address ? $item->receiver_address : '' }},<br>
-                            {{$item->receiver_address ? 'PIN:-'. $item->receiver_pin : '' }},
+                            {{$item->receiver_address ?'PIN:-'. $item->receiver_pin : '' }},
                             <br> MOB:
                             {{ $item->receiver_mob ? $item->receiver_mob : ''}} <br>
                             ID: {{$item->receiver_id_no ? $item->receiver_id_no : ''}}
@@ -248,7 +129,7 @@
                             <br>
                         </b>
                     </div>
-                    <div class="col-2" style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
+                    <div class="col-2 adress_table_fifth_div" >
                         <table class="table" >
                             <tbody  class="tb_checkbox">
                                 <tr><td>DOCUMENTS <input type="checkbox" class="ml-3"></td></tr>
@@ -260,19 +141,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 text-center">
-                <div class="mt-1"><b>PACKING LIST</b></h5>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="mt-1"><b>PACKING LIST</b></h5>
+                </div>
             </div>
+
             <div class="row item_table">
                 <div class="col-6">
                     <table class="table text-center pacling_list">
-                        <thead >
+                        <thead>
                             <tr>
                                 <th>SI NO.</th>
-                                <th>TEM DESCRIPTION</th>
+                                <th>ITEM DESCRIPTION</th>
                                 <th>QTY</th>
                                 <th>PRICE($)</th>
-                                <th>TOTAL VALUE</th>
+                                <th class="tot_val_hed_1">TOTAL VALUE</th>
                             </tr>
                         </thead>
                        <tbody>
@@ -300,7 +184,7 @@
                             <td>{{$items->description}}</td>
                             <td>{{$items->quantity}}</td>
                             <td>{{$items->unit_price}}</td>
-                            <td>{{$items->subtotal}}</td>
+                            <td class="tot_val_hed_1">{{$items->subtotal}}</td>
 
                         </tr>
                         @php
@@ -312,14 +196,14 @@
                     </table>
                 </div>
                 <div class="col-6"  style="margin-left: -24px;">
-                    <table class="table text-center pacling_list" style="border-left: solid">
+                    <table class="table text-center pacling_list item_tbl_1" >
                         <thead >
                             <tr>
-                                <th>SI NO.</th>
-                                <th>TEM DESCRIPTION</th>
+                                <th class="sino_hed_2">SI NO.</th>
+                                <th>ITEM DESCRIPTION</th>
                                 <th>QTY</th>
                                 <th>PRICE($)</th>
-                                <th>TOTAL VALUE</th>
+                                <th class="tot_val_hed_2">TOTAL VALUE</th>
                             </tr>
                         </thead>
                        <tbody>
@@ -348,7 +232,7 @@
                                 <td>{{$items->description}}</td>
                                 <td>{{$items->quantity}}</td>
                                 <td>{{$items->unit_price}}</td>
-                                <td>{{$items->subtotal}}</td>
+                                <td class="tot_val_hed_2">{{$items->subtotal}}</td>
 
                             </tr>
                             @php
@@ -360,23 +244,26 @@
 
                             <tr>
                                 <td colspan="4" class="text-center"><b>TOTAL CIF VALUE IN USD </b></td>
-                                <td ><b>${{$total_value1 + $total_value2}}</b></td>
+                                <td class="tot_val_hed_2"><b>${{$total_value1 + $total_value2}}</b></td>
                             </tr>
                        </tbody>
                     </table>
                 </div>
             </div>
 
+
+
+
             <div class="row">
-                <div class="col-12 text-center" style="height: 30px; " >
+                <div class="col-12 text-center hr_line_col"  >
                     <b >Total Values are Customs purpose only, not for commercial purpose REASON : GIFT</b>
-                    <hr style="height: 3px;background-color: black; 0;opacity: inherit;">
+                    <hr style="height: 1px;background-color: black; 0;opacity: inherit;">
                 </div>
 
             </div>
             <div class="row mt-5 footer">
                 <div class="col-8">
-                    <div class="col-10 ml-4" style="margin-top: -25px;">
+                    <div class="col-10 ml-4 decl_left">
                         <p><b>CONSIGNOR DECLARATION AND AUTHORISATION</b></p>
                         I <b>{{$shipment->sender->name}} , {{ $shipment->sender->address->address }}, MOB: +{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }} , ID {{ $shipment->sender->identification_number }}</b>
                         <p>
@@ -404,7 +291,7 @@
                         <b>SIGNATURE:</b>
                     </div>
                 </div>
-                <div class="col-1 mb-4 d-flex align-items-center justify-content-center" style="background: gray; color:#fff; ">
+                <div class="col-1 mb-4 d-flex align-items-center justify-content-center pod" >
                     <h1>POD</h1>
                 </div>
                 <div class="col-3 mb-4 " >
@@ -435,15 +322,12 @@
             </div>
 
         </div>
-        </div>
-        @php
-            $first_loop = false;
-        @endphp
-        @endforeach
+    </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     <script>
-        JsBarcode("#barcode", "<?php echo $shipment->booking_number ?>",{
+
+        JsBarcode("#barcode"+"<?php echo $loop->index ?>", "<?php echo $item->box_name ?>",{
             width: 2,
             height: 70,
             fontSize: 30
@@ -460,6 +344,10 @@
             document.getElementById('printButton').style.display = 'block';
         }
     </script>
+     @php
+        $first_loop = false;
+    @endphp
+ @endforeach
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Staffs;
-
-
+use App\Models\Districts;
+use App\Models\States;
 class StaffApiController extends Controller
 {
     /**
@@ -27,7 +27,7 @@ class StaffApiController extends Controller
     // {
 
     //     if ($request->user()) {
-    //         $user = $request->user(); 
+    //         $user = $request->user();
     //         if ($user->superadmin == 1) {
     //             return redirect()->route('super-admin.dashboard');
     //         }
@@ -40,15 +40,39 @@ class StaffApiController extends Controller
     //     }
     //     return redirect()->route('login');
 
-    // } 
+    // }
 
     public function getStaffApi(Request $request)
     {
-        $staff = Staffs::notadmin()->where('branch_id', 24)->get(); 
+        $staff = Staffs::notadmin()->where('branch_id', 24)->get();
         return response()->json(['data' => $staff], 200);
-       
 
-    } 
-   
-   
+
+    }
+
+
+
+    public function get_state(Request $request){
+        $states  = States::where('country_id', 101)->get();
+        foreach($states as $state){
+            foreach($request->all() as $dist){
+                if($state->name == $dist['state']){
+                    $district = new Districts();
+                    $district->name = $dist['district'];
+                    $district->state_id = $state->id;
+                    $district->country_id = 101;
+                    $district->country_code = 'IN';
+                    $district->save();
+
+                  }
+            }
+        }
+
+        // foreach ($request->all() as $data) {
+        //     $stateNames[] = ['state' => $data['state']];
+        // }
+        return response()->json('success');
+    }
+
+
 }

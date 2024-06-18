@@ -124,11 +124,11 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="">Upload Document</label>  
+                                        <label for="">Upload Document</label>
                                         <img src="{{url($customer->logo??'#') }}" width="50"class=" mr-3">
                                         <input type="file" class="form-control" name="document" id="document" placeholder="document">
                                     </div>
-                                </div> 
+                                </div>
                             </div>
 
                             <hr>
@@ -169,17 +169,27 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="">City</label>
-                                        <select style="width: 100% !important;" class="select form-control" id="city_id" name="city_id">
+                                        {{-- <select style="width: 100% !important;" class="select form-control" id="city_id" name="city_id">
                                             <option value="{{$customer->address->city->id??'-'}}">{{$customer->address->city->name??'-'}}</option>
-                                        </select>
+                                        </select> --}}
+                                        <input type="text" class="form-control" name="cities" id="post" placeholder="city" value="{{$customer->city_name}}" >
 
                                     </div>
-                                </div> 
+                                </div>
 
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="">Zip Code</label>
                                         <input type="text" id="zip_code" name="zip_code" class="form-control" value="{{$customer->address->zip_code}}">
+                                        {{-- <select style="width: 100% !important;" disabled class="select2 form-control" id="city_modal_user" name="city_modal_user">
+                                                </select> --}}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">Post</label>
+                                        <input type="text" id="post" name="post" class="form-control" value="{{$customer->post}}" >
                                         {{-- <select style="width: 100% !important;" disabled class="select2 form-control" id="city_modal_user" name="city_modal_user">
                                                 </select> --}}
                                     </div>

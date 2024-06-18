@@ -23,6 +23,7 @@ use App\Models\Drivers;
 use App\Models\Staffs;
 use App\Models\States;
 use App\Models\Cities;
+use App\Models\Districts;
 use App\Models\GoodsDetails;
 use App\Models\BoxesStatuses;
 use App\Models\ShipmentTransfers;
@@ -35,7 +36,7 @@ use Illuminate\Support\Facades\Str;
 use App\Exports\LoadingListExport;
 use Maatwebsite\Excel\Facades\Excel;
 use DataTables;
-
+use Illuminate\Support\Facades\Http;
 class ShipmentController extends BaseController
 {
     /**
@@ -43,7 +44,9 @@ class ShipmentController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+
+
+     public function index(Request $request)
     {
         if ($request->has('keyword') != "") {
             $keyword = $request->keyword;
@@ -149,16 +152,19 @@ class ShipmentController extends BaseController
             $shipments->receipt_number = $request->receipt_number;
             $shipments->packing_type = $request->packing_type;
             $shipments->agency_id = $request->agency_id;
+
             $shipments->shiping_method = $request->shiping_method;
             $shipments->created_date = $request->created_date;
 
             $shipments->payment_method = $request->payment_method;
-            $shipments->number_of_pcs = $request->number_of_pcs;
+            $shipments->number_of_pcs_create = $request->number_of_pcs;
             $shipments->status_id = $request->status_id;
             $shipments->collected_by = $request->collected_by;
             $shipments->delivery_type = $request->delivery_type;
             $shipments->time = $request->time;
             $shipments->shipping_method_id = $request->shipping_method_id;
+            $shipments->value_of_goods = $request->value_of_goods;
+            $shipments->special_remarks = $request->special_remarks;
 
 
             if($request->driver_id){
@@ -180,15 +186,15 @@ class ShipmentController extends BaseController
 
             $shipments->grand_total_weight = $request->grand_total_weight;
             $shipments->rate_normal_weight = $request->rate_normal_weight;
-            $shipments->amount_normal_weight = $request->amount_normal_weight;
+            $shipments->amount_normal_weight = $request->amount_normal_weight == 0?null:$request->amount_normal_weight;
 
             $shipments->electronics_weight = $request->electronics_weight;
             $shipments->rate_electronics_weight = $request->rate_electronics_weight;
-            $shipments->amount_electronics_weight = $request->amount_electronics_weight;
+            $shipments->amount_electronics_weight = $request->amount_electronics_weight == 0 ? null :$request->amount_electronics_weight;
 
             $shipments->msic_weight = $request->msic_weight;
             $shipments->rate_msic_weight = $request->rate_msic_weight;
-            $shipments->amount_msic_weight = $request->amount_msic_weight;
+            $shipments->amount_msic_weight = $request->amount_msic_weight == 0 ? null : $request->amount_msic_weight;
 
             $shipments->insurance = $request->insurance;
             $shipments->rate_insurance = $request->rate_insurance;
@@ -211,8 +217,7 @@ class ShipmentController extends BaseController
             $shipments->amount_discount_weight = $request->amount_discount_weight;
 
             $shipments->amount_grand_total = $request->amount_grand_total;
-            $shipments->number_of_pcs = $request->number_of_pcs;
-
+            $shipments->number_of_pcs_create = $request->number_of_pcs;
             $shipments->add_pack_charge = $request->add_pack_charge;
             $shipments->rate_add_pack_charge = $request->rate_add_pack_charge;
             $shipments->amount_add_pack_charge = $request->amount_add_pack_charge;
@@ -334,7 +339,8 @@ class ShipmentController extends BaseController
                 $shipments->delivery_type = $request->delivery_type;
                 $shipments->time = $request->time;
                 $shipments->shipping_method_id = $request->shipping_method_id;
-
+                $shipments->value_of_goods = $request->value_of_goods;
+                $shipments->special_remarks = $request->special_remarks;
 
 
 
@@ -369,12 +375,12 @@ class ShipmentController extends BaseController
                 $shipments->normal_weight = $request->normal_weight;
 
                 $shipments->rate_normal_weight = $request->rate_normal_weight;
-                $shipments->amount_normal_weight = $request->amount_normal_weight;
+                $shipments->amount_normal_weight = $request->amount_normal_weight == 0?null:$request->amount_normal_weight;
                 $shipments->electronics_weight = $request->electronics_weight;
                 $shipments->rate_electronics_weight = $request->rate_electronics_weight;
-                $shipments->amount_electronics_weight = $request->amount_electronics_weight;
+                $shipments->amount_electronics_weight = $request->amount_electronics_weight == 0 ? null :$request->amount_electronics_weight;
                 $shipments->rate_msic_weight = $request->rate_msic_weight;
-                $shipments->amount_msic_weight = $request->amount_msic_weight;
+                $shipments->amount_msic_weight = $request->amount_msic_weight == 0 ? null : $request->amount_msic_weight;
                 $shipments->other_weight = $request->other_weight;
                 $shipments->rate_other_weight = $request->rate_other_weight;
                 $shipments->amount_other_weight = $request->amount_other_weight;
@@ -411,7 +417,18 @@ class ShipmentController extends BaseController
                     $j= $i+1;
                     $box = new Boxes();
                     $box->shipment_id = $shipments->id;
-                    $box->box_name	 = $request->input("box_name".$j);
+                    if($request->number_of_pcs == 1){
+                        $box->box_name	 = $request->booking_number;
+                    }
+                    elseif($i == 0 && $request->booking_number == $request->input("box_name".$j))
+                    {
+                        $box->box_name	 = $j.$request->booking_number;
+                    }
+                    else
+                    {
+                        $box->box_name	 = $request->input("box_name".$j);
+
+                    }
                     $box->box_dimension_id	 = $request->input("dimension".$j);
                     $box->other_length = $request->input("other_length".$j);
                     $box->other_width = $request->input("other_width".$j);
@@ -560,13 +577,13 @@ class ShipmentController extends BaseController
                     $shipments->receipt_number = $request->receipt_number;
                     $shipments->packing_type = $request->packing_type;
                     $shipments->agency_id = $request->agency_id;
-                    $shipments->shiping_method = $request->shiping_method;
+                    $request->shiping_method?$shipments->shiping_method = $request->shiping_method:'';
                     $shipments->payment_method = $request->payment_method;
                     $shipments->number_of_pcs = $request->number_of_pcs;
                     $shipments->status_id = $request->status_id;
                     $shipments->delivery_type = $request->delivery_type;
                     $shipments->time = $request->time;
-                    $shipments->shipping_method_id = $request->shipping_method_id;
+                    $request->shipping_method_id?$shipments->shipping_method_id = $request->shipping_method_id:'';
 
                     $shipments->collected_by = $request->collected_by;
                     if($request->driver_id){
@@ -597,18 +614,23 @@ class ShipmentController extends BaseController
                     $shipments->normal_weight = $request->normal_weight;
 
                     $shipments->rate_normal_weight = $request->rate_normal_weight;
-                    $shipments->amount_normal_weight = $request->amount_normal_weight;
+                    $shipments->amount_normal_weight = $request->amount_normal_weight == 0?null:$request->amount_normal_weight;
                     $shipments->electronics_weight = $request->electronics_weight;
                     $shipments->rate_electronics_weight = $request->rate_electronics_weight;
-                    $shipments->amount_electronics_weight = $request->amount_electronics_weight;
+                    $shipments->amount_electronics_weight = $request->amount_electronics_weight == 0 ? null :$request->amount_electronics_weight;
                     $shipments->rate_msic_weight = $request->rate_msic_weight;
-                    $shipments->amount_msic_weight = $request->amount_msic_weight;
+                    $shipments->amount_msic_weight = $request->amount_msic_weight == 0 ? null : $request->amount_msic_weight;
                     $shipments->other_weight = $request->other_weight;
                     $shipments->rate_other_weight = $request->rate_other_weight;
                     $shipments->amount_other_weight = $request->amount_other_weight;
                     $shipments->grand_total_weight = $request->grand_total_weight;
                     $shipments->rate_grand_total = $request->rate_grand_total;
                     $shipments->amount_grand_total = $request->amount_grand_total;
+
+
+                    $shipments->value_of_goods = $request->value_of_goods;
+                    $shipments->special_remarks = $request->special_remarks;
+
 
                     $shipments->insurance = $request->insurance;
                     $shipments->rate_insurance = $request->rate_insurance;
@@ -652,7 +674,18 @@ class ShipmentController extends BaseController
                         $j= $i+1;
                         $box = new Boxes();
                         $box->shipment_id = $shipments->id;
-                        $box->box_name	 = $request->input("box_name".$j);
+                        if($request->number_of_pcs == 1){
+                            $box->box_name	 = $request->booking_number;
+                        }
+                        elseif($i == 0 && $request->booking_number == $request->input("box_name".$j))
+                        {
+                            $box->box_name	 = $j.$request->booking_number;
+                        }
+                        else
+                        {
+                            $box->box_name	 = $request->input("box_name".$j);
+
+                        }
                         $box->box_dimension_id	 = $request->input("dimension".$j);
 
                         $box->other_length = $request->input("other_length".$j);
@@ -1102,7 +1135,14 @@ class ShipmentController extends BaseController
         $statuses =  Statuses::where('status',1)->where('view',1)->orWhere('view',2)->get();//status_list_admin();//
         // $query = ShipsBookings::with('shipment','shipment.shipmentStatus','shipment.bookingNumberStatus','shipment.boxes','shipment.boxes.boxStatuses','shipment.boxes.boxStatuses.status','shipment.branch','ship','ship.createdBy','ship.portOfOrigins','ship.shipmentTypes','ship.clearingAgents');
         $query = Boxes::with('shipment.driver','shipment.boxes','shipment.shipmentStatus','shipment.sender','shipment.receiver.address','shipment.receiver.address.state','boxStatuses.status','shipment.boxes.boxStatuses','shipment.boxes.boxStatuses.status','shipment.agency','shipment.branch')->where('is_shipment',1);
-        $ships = $query->orderBy('id','desc')->get();
+        $shipsss = $query->orderBy('id', 'desc')->get();
+        $ships = collect();
+        foreach($shipsss as $shippp){
+            if($shippp->shipment->branch_id == auth()->user()->staff->branch_id){
+                Log::info($shippp->shipment->branch_id .'-----' . auth()->user()->staff->branch_id);
+                $ships->push($shippp);
+            }
+        }
         $datas = [];
         foreach($ships as  $key => $ship) {
             $getShip = Ships::with('createdBy')->where('id',$ship->ship_id)->first();

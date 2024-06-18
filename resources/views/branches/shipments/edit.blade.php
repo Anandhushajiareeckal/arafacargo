@@ -101,7 +101,7 @@ body{
                                                        value="{{ $shipment->booking_number }}" class="form-control"
                                                        required readonly
                                                        id="booking_no_uniq"
-                                                >
+                                                       style="readonly !important; }}">
                                                 @error('booking_number')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -386,6 +386,29 @@ body{
 
                                                 </div>
 
+                                                <div class="col-lg-2">
+                                                    <div class="form-group">
+                                                        <label for="propertyname">Value of Goods</label>
+                                                        <input type="text" name="value_of_goods"  class="  form-control"
+                                                            id="propertyname1"
+                                                            placeholder="Value of Goods"
+                                                            value="{{$shipment->value_of_goods}}"
+                                                            >
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label for="propertyname">Special remarks</label>
+                                                        <textarea type="text" name="special_remarks"  class="  form-control"
+                                                            id="propertyname1"
+                                                            style="height: 38px;"
+                                                            maxlength="400"
+                                                            placeholder="Special remarks"
+                                                            >{{$shipment->special_remarks}}</textarea>
+                                                    </div>
+                                                </div>
+
                                             </div>
 
 
@@ -464,7 +487,7 @@ body{
 
                                                             <div class="form-group">
                                                                 <label>Pin</label>
-                                                                <input type="text" name="sender_pin{{$ik}}" value="{{ $box->sender_pin }}" class="form-control">
+                                                                <input type="text" name="sender_pin{{$ik}}" value="{{ $box->sender_pin }}" class="form-control" >
                                                             </div>
 
                                                             <div class="form-group">
@@ -761,6 +784,7 @@ body{
                                                     </tbody>
                                                 </table>
                                             <div> -->
+
                                             <hr>
                                             <div class="col-md-8"  id="TotalDiv" style="display:none;">
                                                 <div class="body">
@@ -1227,7 +1251,7 @@ body{
 
                                                         <div class="form-group">
                                                             <label>Pin</label>
-                                                            <input type="text" name="sender_pin[]" value="" class="form-control sender_pin_1">
+                                                            <input type="text" name="sender_pin[]" value="" class="form-control sender_pin_1" >
                                                         </div>
 
                                                         <div class="form-group">
@@ -1516,13 +1540,13 @@ body{
     $(document).ready(function() {
     // Check if "driver" is already selected initially
     if ($('#collected_by').val() === 'driver') {
-        toggleBookingNumberInput(false);
+        // toggleBookingNumberInput(false);
     }
 
     // Bind change event handler
     $('#collected_by').change(function() {
         if ($(this).val() === 'driver') {
-            toggleBookingNumberInput(true);
+            // toggleBookingNumberInput(true);
         } else {
             toggleBookingNumberInput(false);
         }
@@ -1532,6 +1556,19 @@ body{
     function toggleBookingNumberInput(enable) {
         $('#bookingNumberSection input[name="booking_number"]').prop('readonly', !enable);
     }
+
+    $("#whatsapp_same").change(function() {
+        var phone = document.querySelector('input[name="phone"]');
+        var whatsapp_number = document.querySelector('input[name="whatsapp_number"]');
+        var wp_no = whatsapp_number.value;
+
+        if (this.checked) {
+            phone.value = wp_no;
+        } else { // Changed elseif to else
+            phone.value = ''; // Setting phone value to an empty string instead of null
+        }
+    });
+
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1677,22 +1714,45 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function totalQuantity() {
-        const val1 = parseFloat(insurance.value) || 0;
-        const val2 = parseFloat(volume_weight.value) || 0;
-        const val3 = parseFloat(awbfee.value) || 0;
-        const val4 = parseFloat(vat_amount.value) || 0;
-        const val5 = parseFloat(grand_total_weight.value) || 0;
-        const val6 = parseFloat(electronics_weight.value) || 0;
-        const val7 = parseFloat(msic_weight.value) || 0;
+        // const val1 = parseFloat(amount_normal_weight.value) || 0;
+        // const val2 = parseFloat(amount_electronics_weight.value) || 0;
+        // const val3 = parseFloat(amount_msic_weight.value) || 0;
+
+
+        // const val1 = parseFloat(insurance.value) || 0;
+        // const val2 = parseFloat(volume_weight.value) || 0;
+        // const val3 = parseFloat(awbfee.value) || 0;
+        // const val4 = parseFloat(vat_amount.value) || 0;
+        // const val5 = parseFloat(grand_total_weight.value) || 0;
+        // const val6 = parseFloat(electronics_weight.value) || 0;
+        // const val7 = parseFloat(msic_weight.value) || 0;
+        // const val8 = parseFloat(amount_discount_weight.value) || 0;
+        // const val9 = parseFloat(amount_add_pack_charge.value) || 0;
+
+
+        // if ([val1, val2, val3, val4, val5, val6, val7,val9 ].every(val => !isNaN(val))) {
+        //     var result = val1 + val2 + val3 + val4 + val5 + val6 + val7 + val9;
+        //     var grant_tot = result - val8;
+        //     console.log(result);
+        //     console.log(grant_tot);
+        //     amount_grand_total.value = grant_tot.toFixed(2);
+        // }
+
+
+        const val1 = parseFloat(amount_normal_weight.value) || 0;
+        const val2 = parseFloat(amount_electronics_weight.value) || 0;
+        const val3 = parseFloat(amount_msic_weight.value) || 0;
+        const val4 = parseFloat(amount_insurance.value) || 0;
+        const val5 = parseFloat(amount_awbfee.value) || 0;
+        const val6 = parseFloat(amount_vat_amount.value) || 0;
+        const val7 = parseFloat(amount_volume_weight.value) || 0;
         const val8 = parseFloat(amount_discount_weight.value) || 0;
         const val9 = parseFloat(amount_add_pack_charge.value) || 0;
 
 
-        if ([val1, val2, val3, val4, val5, val6, val7,val9 ].every(val => !isNaN(val))) {
+        if ([val1, val2, val3, val4, val5, val6, val7,val9].every(val => !isNaN(val))) {
             var result = val1 + val2 + val3 + val4 + val5 + val6 + val7 + val9;
             var grant_tot = result - val8;
-            console.log(result);
-            console.log(grant_tot);
             amount_grand_total.value = grant_tot.toFixed(2);
         }
 
@@ -1754,14 +1814,7 @@ document.addEventListener('DOMContentLoaded', function() {
     msic_weight.addEventListener('input', totalQuantity);
     add_pack_charge.addEventListener('input', totalQuantity);
 
-    rate_normal_weight.addEventListener('input', totalQuantity);
-    rate_electronics_weight.addEventListener('input', totalQuantity);
-    rate_msic_weight.addEventListener('input', totalQuantity);
-    rate_insurance.addEventListener('input', totalQuantity);
-    rate_volume_weight.addEventListener('input', totalQuantity);
-    rate_awbfee.addEventListener('input', totalQuantity);
-    rate_vat_amount.addEventListener('input', totalQuantity);
-    rate_add_pack_charge.addEventListener('input', totalQuantity);
+
 
     amount_normal_weight.addEventListener('input', totalQuantity);
     amount_electronics_weight.addEventListener('input', totalQuantity);
@@ -1771,6 +1824,15 @@ document.addEventListener('DOMContentLoaded', function() {
     amount_vat_amount.addEventListener('input', totalQuantity);
     amount_volume_weight.addEventListener('input', totalQuantity);
     amount_add_pack_charge.addEventListener('input', totalQuantity);
+
+    rate_normal_weight.addEventListener('input', totalQuantity);
+    rate_electronics_weight.addEventListener('input', totalQuantity);
+    rate_msic_weight.addEventListener('input', totalQuantity);
+    rate_insurance.addEventListener('input', totalQuantity);
+    rate_volume_weight.addEventListener('input', totalQuantity);
+    rate_awbfee.addEventListener('input', totalQuantity);
+    rate_vat_amount.addEventListener('input', totalQuantity);
+    rate_add_pack_charge.addEventListener('input', totalQuantity);
 
     discount_weight.addEventListener('input', totalQuantity);
     rate_discount_weight.addEventListener('input', totalQuantity);
@@ -2093,6 +2155,8 @@ $("#saveDraft").on('click',function(e){
                 $("select[name='country_code_whatsapp']").val(<?=$previous_sender->country_code_whatsapp?>);
                 $("select[name='country_code_phone']").val(<?=$previous_sender->country_code_phone?>);
 
+                $('#mobile2').text("Whatsapp");
+
                 $('#AddClient').modal('show');
 
             });
@@ -2128,6 +2192,10 @@ $("#saveDraft").on('click',function(e){
                 $("select[name='country_code_whatsapp']").val(<?=$previous_receiver->country_code_whatsapp?>);
                 $("select[name='country_code_phone']").val(<?=$previous_receiver->country_code_phone?>);
 
+
+                $('#AddClient').modal('show');
+
+                 $('#mobile2').text("Mobile 2");
 
                 $('#AddClient').modal('show');
             });
@@ -3030,5 +3098,3 @@ function getBoxPackingVal(event) {
 </script>
 
 @endsection
-
-

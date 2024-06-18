@@ -98,7 +98,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label>AWB No:</label>
+                                                <label>AWB No / Container no:</label>
                                                 <input type="text" name="awd_number"
                                                        value= "" class="form-control"
                                                        required >

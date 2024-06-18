@@ -4,7 +4,7 @@ namespace App\Http\Controllers\SuperAdmin;
 
 
 use App\Http\Controllers\BaseController;
-use Illuminate\Http\Request; 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\CustomerAddresses;
@@ -15,7 +15,7 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Http\UploadedFile;
 use App\Http\Requests\StoreFileRequest;
 
- 
+
 use DB;
 
 class CustomerController extends BaseController
@@ -27,7 +27,7 @@ class CustomerController extends BaseController
      */
     function __construct()
     {
-    
+
     }
 
     /**
@@ -39,7 +39,7 @@ class CustomerController extends BaseController
     {
         if($type != 'all') {
             $customers = Customers:: orderBy('id', 'DESC')
-                                    ->where('type',$type)->get(); 
+                                    ->where('type',$type)->get();
         } else {
             $customers = Customers:: orderBy('id', 'DESC')->get();
         }
@@ -60,7 +60,7 @@ class CustomerController extends BaseController
      */
     public function create()
     {
-        $countries = Countries::all(); 
+        $countries = Countries::all();
         $permission = Permission::get();
         return view('superadmin.customer.create', compact('permission', 'countries'));
     }
@@ -72,7 +72,7 @@ class CustomerController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    { 
+    {
         $messages = [
             'country_id.required' => 'Country is required',
             'state_id.required' => 'State is required',
@@ -103,8 +103,10 @@ class CustomerController extends BaseController
             $customer->whatsapp_number = $request->whatsapp_number;
             $customer->user_id = $user->id;
             $customer->branch_id = $request->branch_id;
+            $customer->post = $request->post;
             $customer->email = $request->email;
             $customer->type = $request->type;
+            $customer->city_name = $request->cities;
             $customer->identification_type = $request->client_identification_type;
             $customer->identification_number = $request->client_identification_number;
             $customer->created_by = $request->user()->id;
@@ -112,11 +114,11 @@ class CustomerController extends BaseController
                 $fileName = auth()->id() . '_' . time() . '.'. $request->document->extension();
                 $type = $request->document->getClientMimeType();
                 $size = $request->document->getSize();
-    
+
                 $request->document->move(public_path('uploads/customer_logo'), $fileName);
                 $fileName = 'uploads/customer_logo/'.$fileName;
-                $customer->logo = $fileName; 
-              
+                $customer->logo = $fileName;
+
             }
             $customer->save();
 
@@ -138,7 +140,7 @@ class CustomerController extends BaseController
         }
 
         toastr()->success(section_title() . ' Client Created Successfully');
-        return redirect()->to(index_url()); 
+        return redirect()->to(index_url());
     }
 
     /**
@@ -165,7 +167,7 @@ class CustomerController extends BaseController
      */
     public function edit($id)
     {
-        $customer = Customers::find($id);     
+        $customer = Customers::find($id);
         $countries = Countries::all();
         return view('superadmin.customer.edit', compact('customer', 'countries'));
     }
@@ -183,8 +185,8 @@ class CustomerController extends BaseController
             'name' => 'required',
             'email' => 'required',
         ]);
- 
-       
+
+
         if (User::where('email', '=', $request->email)->where('id', '!=', $request->user_id )->first() != null) {
             toastr()->error('Email already exists');
             return redirect()->back();
@@ -197,19 +199,21 @@ class CustomerController extends BaseController
             $user = User::find($request->user_id);
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->save(); 
-           
+            $user->save();
+
             $customer = Customers::find($id);
-           
+
             $customer->name = $request->name;
             $customer->country_code_phone = $request->country_code_phone;
             $customer->phone = $request->phone;
             $customer->country_code_whatsapp = $request->country_code_whatsapp;
             $customer->whatsapp_number = $request->whatsapp_number;
             $customer->user_id = $user->id;
+            $customer->post = $request->post;
             $customer->branch_id = $request->branch_id;
             $customer->email = $request->email;
             $customer->type = $request->type;
+            $customer->city_name = $request->city_id;
             $customer->identification_type = $request->client_identification_type;
             $customer->identification_number = $request->client_identification_number;
             $customer->created_by = $request->user()->id;
@@ -217,20 +221,21 @@ class CustomerController extends BaseController
                 $fileName = auth()->id() . '_' . time() . '.'. $request->document->extension();
                 $type = $request->document->getClientMimeType();
                 $size = $request->document->getSize();
-    
+
                 $request->document->move(public_path('uploads/customer_logo'), $fileName);
                 $fileName = 'uploads/customer_logo/'.$fileName;
-                $customer->logo = $fileName; 
-              
+                $customer->logo = $fileName;
+
             }
             $customer->save();
 
             $address = new CustomerAddresses();
-            $address = CustomerAddresses:: where('customer_id',$id)->first(); 
+            $address = CustomerAddresses:: where('customer_id',$id)->first();
 
             $address->customer_id = $customer->id;
             $address->country_id = $request->country_id;
             $address->state_id = $request->state_id;
+            $address->city_id = $request->city_id;
             $address->district_id = $request->district_id;
             $address->zip_code = $request->zip_code;
             $address->address = $request->address;
@@ -241,8 +246,8 @@ class CustomerController extends BaseController
             return response()->json([
                 'success' => false, 'message' => $e->getMessage(),
             ]);
-        } 
- 
+        }
+
         toastr()->success(section_title() . ' Updated Successfully');
         return redirect()->to(index_url());
     }
@@ -259,5 +264,5 @@ class CustomerController extends BaseController
         toastr()->success(section_title() . ' Deleted Successfully');
         return redirect()->to(index_url());
     }
- 
+
 }

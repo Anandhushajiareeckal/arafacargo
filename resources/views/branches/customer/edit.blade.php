@@ -124,11 +124,11 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="">Upload Document</label>  
+                                        <label for="">Upload Document</label>
                                         <img src="{{url($customer->logo??'#') }}" width="50"class=" mr-3">
                                         <input type="file" class="form-control" name="document" id="document" placeholder="document">
                                     </div>
-                                </div> 
+                                </div>
                             </div>
 
                             <hr>
@@ -174,7 +174,7 @@
                                         </select>
 
                                     </div>
-                                </div> 
+                                </div>
 
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -184,6 +184,8 @@
                                                 </select> --}}
                                     </div>
                                 </div>
+
+                                
 
                                 <div class="col-md-6">
                                     <div class="form-group">

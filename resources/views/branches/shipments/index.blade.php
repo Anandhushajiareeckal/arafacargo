@@ -148,7 +148,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $shipment->booking_number }}</td>
-                                        <td>{{ $shipment->number_of_pcs }}</td>
+                                        <td>{{ $shipment->number_of_pcs?$shipment->number_of_pcs: $shipment->number_of_pcs_create }}</td>
                                         <td>{{ $shipment->grand_total_weight }}</td>
                                         <td>{{ $shipment->sender->name }}</td>
                                         <td>{{ $shipment->sender->phone??'-' }}</td>

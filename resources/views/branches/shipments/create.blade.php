@@ -354,9 +354,31 @@ body{
                                                     </div>
 
 
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label for="propertyname">Value of Goods</label>
+                                                    <input type="text" name="value_of_goods"  class="  form-control"
+                                                        id="propertyname1"
+                                                        placeholder="Value of Goods"
+                                                        >
                                                 </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label for="propertyname">Special remarks</label>
+                                                    <textarea type="text" name="special_remarks"  class="  form-control"
+                                                        id="propertyname1"
+                                                        style="height: 38px;"
+                                                        maxlength="400"
+                                                        placeholder="Special remarks"
+                                                        ></textarea>
+                                                </div>
+                                            </div>
 
                                         </div>
+
 
                                         </div>
 
@@ -470,9 +492,9 @@ body{
 
                                     <div id="boxContainer1"> </div>
 
-                                    <div id="Container">
+                                    {{-- <div id="Container">
 
-                                    </div>
+                                    </div> --}}
 
 
                                 </div>
@@ -984,6 +1006,19 @@ body{
                     $('#bookingNumberSection input[name="booking_number"]').prop('readonly', true);
                 }
             });
+
+            $("#whatsapp_same").change(function() {
+                var phone = document.querySelector('input[name="phone"]');
+                var whatsapp_number = document.querySelector('input[name="whatsapp_number"]');
+                var wp_no = whatsapp_number.value;
+
+                if (this.checked) {
+                    phone.value = wp_no;
+                } else { // Changed elseif to else
+                    phone.value = ''; // Setting phone value to an empty string instead of null
+                }
+            });
+
         });
 
         $(function () {
@@ -1062,8 +1097,8 @@ body{
                 //     boxDimension.find('.box-total-value').attr('name','total_value'+k);
                 //     boxDimension.clone().appendTo("#boxContainer");
                 // }
-                $("#TotalDiv").css({'display':'block'});
-                $("#total-package").css({'display':'block'});
+                // $("#TotalDiv").css({'display':'block'});
+                // $("#total-package").css({'display':'block'});
 
                 addItems();
             });
@@ -1095,11 +1130,11 @@ body{
                 $('.id_no label').text("Sender Id");
                 $('.id_type label').text("Sender Identification Type");
 
-
-
-
+                $('#country_id').val("231").change();
 
                 $('#AddClient').modal('show');
+                
+                $('#mobile2').text("Whatsapp");
 
             });
 
@@ -1115,7 +1150,7 @@ body{
 
 
 
-
+ $('#mobile2').text("Mobile 2");
 
 
 
@@ -2054,6 +2089,14 @@ document.addEventListener('DOMContentLoaded', function() {
     discount_weight.addEventListener('input', multiplyDiscount);
     rate_discount_weight.addEventListener('input', multiplyDiscount);
 
+    insurance.addEventListener('input', totalQuantity);
+    volume_weight.addEventListener('input', totalQuantity);
+    awbfee.addEventListener('input', totalQuantity);
+    vat_amount.addEventListener('input', totalQuantity);
+    grand_total_weight.addEventListener('input', totalQuantity);
+    electronics_weight.addEventListener('input', totalQuantity);
+    msic_weight.addEventListener('input', totalQuantity);
+    add_pack_charge.addEventListener('input', totalQuantity);
 
     rate_normal_weight.addEventListener('input', totalQuantity);
     rate_electronics_weight.addEventListener('input', totalQuantity);

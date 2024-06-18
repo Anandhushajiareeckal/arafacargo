@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Customer Copy</title>
+    <title>{{ $shipment->booking_number }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
     <style>
 
     @media print {
       @page {
+        size: A4 !important;
         margin: 0;
       }
       /* .printxxxx {
@@ -58,7 +59,7 @@
         }
 
         .blank_row{
-            height: 114px !important;
+            height: 110px !important;
         }
 
         .spcl_remark p{
@@ -135,6 +136,7 @@
             padding: 2px;
         }
 
+
         .shipper_add b{
             font-size: 9px;
             padding: 0px !important;
@@ -142,7 +144,7 @@
         }
 
         .spcl_remark1{
-            height:23px !important ;
+            height:27px !important ;
         }
 
         .bottom_table td{
@@ -159,6 +161,14 @@
             font-size: 12px !important;
         }
 
+        .header{
+            margin-left: 6px !important ;
+        }
+
+        .barcode_sec text{
+            font-size: 28px !important;
+        }
+
 
 
     }
@@ -170,7 +180,8 @@
 
 
     .barcode_sec text{
-        font-size: 37px !important;
+        font-size: 32px;
+        transform: translateY(-10px);
     }
 
     .main_div{
@@ -216,6 +227,12 @@
         .table_head span{
             color:#fff;
         }
+
+        .date_table tbody span{
+            font-size: 13px !important;
+            font-weight: 700 !important;
+        }
+
         .green_bg span{
             color: #fff;
         }
@@ -350,7 +367,7 @@
             <div class="row">
                 <div class="col-5 mt-4 ml-4 header">
                     <div  style="float:left;">
-                        <img src="{{asset($shipment->agency->logo) }}" alt="Bestexpress" style="height:74px;" class="img-responsive logo" >
+                        <img src="{{asset($shipment->agency->logo??'') }}" alt="Bestexpress" style="height:90px;" class="img-responsive logo" >
                     </div>
                         {{-- <h6 class="text-uppercase">DIVISION OF {{$shipment->agency->name}},
                             {{$shipment->agency->address}},
@@ -362,13 +379,19 @@
                     <h1 class="inv_no">عرفة للشحن ذ.م.م</h1>
                 </div>
                 <div class="col-3 d-flex align-items-center justify-content-center barcode_sec" >
-                    <svg id="barcode"></svg>
-
+                    <div class="row text-center">
+                        <div class="col-12 " style="margin-bottom:-10px;">
+                            <h6>Invoice Number</h6>
+                        </div>
+                        <div class="col-12">
+                            <svg id="barcode"></svg>
+                        </div>
+                    </div>
                     {{-- <h1 class="inv_no">{{ $shipment->booking_number }} </h1> --}}
                 </div>
             </div>
             <div class="row text-center" style="font-size: 12px">
-                <div class="col-4"><b>WORLD WIDE CARGO SERVICES</b></div>
+                <div class="col-4"><b style="font-size: 14px;">WORLD WIDE CARGO SERVICES</b></div>
                 <div class="col-4"><b>TAX INVOICE</b></div>
                 <div class="col-4"><b>TRN NO: 100556301800003</b></div>
             </div>
@@ -389,7 +412,7 @@
                         <tr>
                             <td style="border-left: 1px solid #00b050"><span>{{ \Carbon\Carbon::now()->format('d/m/Y') }}</span></td>
                             <td><span>{{ $shipment->booking_number }}</span> </td>
-                            <td><span>{{ $shipment->number_of_pcs }}</span></td>
+                            <td><span>{{ $shipment->number_of_pcs ? $shipment->number_of_pcs : ($shipment->number_of_pcs_create ? $shipment->number_of_pcs_create : 0) }}</span></td>
                             <td><span>{{ round($shipment->grand_total_weight, 2) }}</span></td>
                             <td><span>UAE</span></td>
                             <td><span>INDIA</span></td>
@@ -403,7 +426,7 @@
                     <table class="table">
                         <thead class="adress_sec" style="border-bottom: 1px solid !important;">
                             <tr>
-                                <th class="col-6 " style="border-right: 1px solid;"> <div class="row"><div class="col-6"><b>SHIPPER ADDRESS</b></div> <div class="col-6 text-end" ><b> من العنوان</b></div></div>   </th>
+                                <th class="col-6 " style="border-right: 1px solid; "> <div class="row"><div class="col-6"><b>SHIPPER ADDRESS</b></div> <div class="col-6 text-end" ><b> من العنوان</b></div></div>   </th>
                                 <th class="col-6"> <div class="row"><div class="col-6"><b>CONSIGNEE ADDRESS</b> </div> <div class="col-6 text-end"><b>إلى عنوان </b></div> </div> </th>
                                 {{-- <th class="col-4 text-center" ><span>SERVICE</span> <br><span class="text-center"> خدمة</span></th> --}}
                             </tr>
@@ -413,7 +436,7 @@
 
                 </div>
                 <div class="row shipper_add" style="margin-left: 3px; margin-bottom: -17px;">
-                    <div class="col-3" style="margin-top: -16px !important; border-right: 1px solid #000;border-left: none !important; border-top: none !important; border-width: 2px; padding: 0px !important; margin-left: -3px;">
+                    <div class="col-3 " style="margin-top: -16px !important; border-right: 1px solid #000 !important ;border-left: none !important; border-top: none !important; border-width: 2px; padding: 0px !important; margin-left: -3px;">
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -484,18 +507,28 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-3 mt-2 pt-3 " style=" border-width: 1px;margin-top: -16px; font-size: 11px; margin-left: -1px;">
+                    <div class="col-3  pt-3 " style=" border-width: 1px;margin-top: -16px; font-size: 12px; margin-left: -1px;">
                         <b class="align-items-center justify-content-center shipment-info">
                             {{ $shipment->sender->name }} ,
                             {{ $shipment->sender->address->address }},
-                            {{ $shipment->sender->address->district ? $shipment->sender->address->district->name.',' : ''}}
-                            <br> MOB:
-                            +{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }},
-                            +{{ $shipment->sender->country_code_whatsapp}} {{ $shipment->sender->whatsapp_number }},
+                            {{ $shipment->sender->post? $shipment->sender->post.',' :''}}
                             <br>
+                            {{ $shipment->sender->city_name ? $shipment->sender->city_name.',' : ''}}
+                            {{ $shipment->sender->address->district ? $shipment->sender->address->district->name.',' : ''}}
+                            {{ $shipment->sender->address->state ? $shipment->sender->address->state->name.',' : ''}}
+                            {{ $shipment->sender->address->country_id ? $shipment->sender->address->country->name.',' : ''}}
+                            <br>
+                            {{$shipment->sender->address ? 'PIN:-'.$shipment->sender->address->zip_code.',' : ''}}
+                            MOB:
+                            +{{ $shipment->sender->country_code_whatsapp}} {{ $shipment->sender->whatsapp_number }},
+                            +{{ $shipment->sender->country_code_phone}} {{ $shipment->sender->phone }},
+                            <br>
+                            ID - {{ $shipment->sender->identification_number }}
+                            {{-- <span style="text-transform:lowercase !important;">{{ $shipment->sender->user ? $shipment->sender->user->email : ''}}</span> --}}
+
                         </b>
                     </div>
-                    <div class="col-2 consignee_add" style="border:2px solid #000; border-top: none !important; border-width: 2px; margin-top: -16px; border-bottom:none; --bs-gutter-x: -0.5rem;">
+                    <div class="col-2 consignee_add" style="border:1px solid #000 !important; margin-left: 0.5px; ; border-top: none !important; border-width: 2px; margin-top: -16px; border-bottom:none; --bs-gutter-x: -0.5rem;">
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -573,15 +606,25 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-4 mt-2 pt-3" style=" border-width: 2px; margin-top: -16px; font-size: 11px; ">
+                    <div class="col-4  pt-3" style=" border-width: 2px; margin-top: -16px; font-size: 12px; ">
                         <b class="align-items-center justify-content-center shipment-info">
+
                             {{ $shipment->receiver->name }} ,
                             {{ $shipment->receiver->address->address }},
-                            {{ $shipment->receiver->address->district->name??''}},
-                            <br> MOB:
-                            +{{ $shipment->receiver->country_code_phone}} {{ $shipment->receiver->phone }},
-                            +{{ $shipment->receiver->country_code_whatsapp}} {{ $shipment->receiver->whatsapp_number }},
+                            {{ $shipment->receiver->post?$shipment->receiver->post.',':'' }}
                             <br>
+                            {{ $shipment->receiver->city_name ? $shipment->receiver->city_name.',': ''}}
+                            {{ $shipment->receiver->address->district ? $shipment->receiver->address->district->name .',': ''}}
+                            {{ $shipment->receiver->address->district ? $shipment->receiver->address->state->name .',': ''}}
+                            {{ $shipment->receiver->address->country_id ? $shipment->receiver->address->country->name.',' : ''}}<br>
+                            {{$shipment->receiver->address ? 'PIN:-'.$shipment->receiver->address->zip_code.',' : ''}}
+                             MOB:
+                            +{{ $shipment->receiver->country_code_whatsapp}} {{ $shipment->receiver->whatsapp_number }},
+                            +{{ $shipment->receiver->country_code_phone}} {{ $shipment->receiver->phone }},
+                            <br>
+                            id - {{ $shipment->receiver->identification_number }}
+                            {{-- <span style="text-transform:lowercase !important;">{{ $shipment->receiver->user ? $shipment->receiver->user->email : ''}}</span> --}}
+
                         </b>
                     </div>
                     {{-- <div class="col-2 " style="border:solid; border-top:none; border-width: 3px; margin-top: -16px;">
@@ -608,7 +651,7 @@
                     <table class="table  pacling_list">
                         <thead >
                             <tr>
-                                <th style="background:#00b050;"> <div class="row text-white"><div class="col-6 text-start">DESCRIPTION</div><div class="col-6 text-end">عنوان الشاحن</div></div> </th>
+                                <th style="background:#00b050; padding: 8px !important;"> <div class="row text-white"><div class="col-6 text-start">DESCRIPTION</div><div class="col-6 text-end">عنوان الشاحن</div></div> </th>
                                 <th style="background:#00b050; text-align:center; border-bottom: 2px solid #000; "><span>Quantity </span> </th>
                                 <th style="background:#00b050; text-align:center; border-bottom: 2px solid #000; "> <span> Unit Rate</span></th>
                                 <th style="background:#00b050; text-align:center; border-bottom: 2px solid #000; border-right: none !important;"> <span>Amount</span></th>
@@ -622,9 +665,9 @@
                                         <div class="col-6 text-end" >رسوم الشحن</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->grand_total_weight?? 0 }}</td>
-                                <td>{{$shipment->rate_normal_weight?? 0}}</td>
-                                <td>{{$shipment->amount_normal_weight?? 0}}</td>
+                                <td>{!! $shipment->grand_total_weight ?? '<span style="color:#fff;">0</span>' !!}</td>
+                                <td>{!! $shipment->rate_normal_weight ?? ' <span style="color:#fff;">0</span>' !!}</td>
+                                <td>{!! $shipment->amount_normal_weight ?? '<span style="color:#fff;">0</span> ' !!}</td>
                             </tr>
                             <tr>
                                 <th>
@@ -633,9 +676,9 @@
                                         <div class="col-6 text-end" >واجب</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->electronics_weight?? 0}}</td>
-                                <td>{{$shipment->rate_electronics_weight?? 0}}</td>
-                                <td>{{$shipment->amount_electronics_weight?? 0}}</td>
+                                <td>{!!$shipment->electronics_weight ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->rate_electronics_weight ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->amount_electronics_weight ?? ' <span style="color:#fff;">0</span>'!!}</td>
                             </tr>
                             <tr>
                                 <th>
@@ -644,9 +687,9 @@
                                         <div class="col-6 text-end">تهمة التعبئة</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->msic_weight?? 0}}</td>
-                                <td>{{$shipment->rate_msic_weight?? 0}}</td>
-                                <td>{{$shipment->amount_msic_weight?? 0}}</td>
+                                <td>{!!$shipment->msic_weight ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->rate_msic_weight ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->amount_msic_weight ?? '<span style="color:#fff;">0</span> '!!}</td>
                             </tr>
 
                             <tr>
@@ -656,18 +699,18 @@
                                         <div class="col-6 text-end"> رسوم التعبئة الإضافية</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->add_pack_charge?? 0}}</td>
-                                <td>{{$shipment->rate_add_pack_charge?? 0}}</td>
-                                <td>{{$shipment->amount_add_pack_charge?? 0}}</td>
+                                <td>{!!$shipment->add_pack_charge ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->rate_add_pack_charge ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->amount_add_pack_charge ??'<span style="color:#fff;">0</span> '!!}</td>
                             </tr>
                             <tr>
                                 <th><div class="row">
                                     <div class="col-6 text-start">Insurance</div>
                                     <div class="col-6 text-end">تأمين</div>
                                 </div></th>
-                                <td>{{$shipment->insurance?? 0}}</td>
-                                <td>{{$shipment->rate_insurance?? 0}}</td>
-                                <td>{{$shipment->amount_insurance?? 0}}</td>
+                                <td>{!! $shipment->insurance ?? '<span style="color:#fff;">0</span>' !!}</td>
+                                <td>{!!$shipment->rate_insurance ?? ' <span style="color:#fff;">0</span>'!!}</td>
+                                <td>{!!$shipment->amount_insurance ?? ' <span style="color:#fff;">0</span>'!!}</td>
                             </tr>
                             <tr>
                                 <th>
@@ -676,9 +719,9 @@
                                         <div class="col-6 text-end">رسوم بوليصة الشحن الجوي</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->awbfee?? 0}}</td>
-                                <td>{{$shipment->rate_awbfee?? 0}}</td>
-                                <td>{{$shipment->amount_awbfee?? 0}}</td>
+                                <td>{!!$shipment->awbfee ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->rate_awbfee ?? ' <span style="color:#fff;">0</span>'!!}</td>
+                                <td>{!!$shipment->amount_awbfee ?? '<span style="color:#fff;">0</span> '!!}</td>
                             </tr>
                             <tr>
                                 <th>
@@ -687,9 +730,9 @@
                                         <div class="col-6 text-end">قيمة الضريبة</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->vat_amount?? 0}}</td>
-                                <td>{{$shipment->rate_vat_amount?? 0}}</td>
-                                <td>{{$shipment->amount_vat_amount?? 0}}</td>
+                                <td>{!!$shipment->vat_amount ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->rate_vat_amount ?? ' <span style="color:#fff;">0</span>'!!}</td>
+                                <td>{!!$shipment->amount_vat_amount ?? ' <span style="color:#fff;">0</span>'!!}</td>
                             </tr>
 
                             <tr>
@@ -699,9 +742,9 @@
                                         <div class="col-6 text-end">وزن الحجم</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->volume_weight?? 0}}</td>
-                                <td>{{$shipment->rate_volume_weight?? 0}}</td>
-                                <td>{{$shipment->amount_volume_weight?? 0}}</td>
+                                <td>{!!$shipment->volume_weight ?? ' <span style="color:#fff;">0</span>'!!}</td>
+                                <td>{!!$shipment->rate_volume_weight ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->amount_volume_weight ?? '<span style="color:#fff;">0</span> '!!}</td>
                             </tr>
 
                             <tr>
@@ -711,9 +754,9 @@
                                         <div class="col-6 text-end">تخفيض</div>
                                     </div>
                                 </th>
-                                <td>{{$shipment->discount_weight?? 0}}</td>
-                                <td>{{$shipment->rate_discount_weight?? 0}}</td>
-                                <td>{{$shipment->amount_discount_weight?? 0}}</td>
+                                <td>{!!$shipment->discount_weight ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->rate_discount_weight ?? '<span style="color:#fff;">0</span> '!!}</td>
+                                <td>{!!$shipment->amount_discount_weight ?? ' <span style="color:#fff;">0</span>'!!}</td>
                             </tr>
 
                             <tr style="border-bottom: 2px solid #000; border-left:none !important;">
@@ -723,7 +766,9 @@
                                         <div class="col-6 text-end"> كمية</div>
                                     </div>
                                 </th>
-                                <td colspan="3">{{ $shipment->number_of_pcs?$shipment->number_of_pcs:0 }}</td>
+                                <td colspan="3">
+                                    {{ $shipment->number_of_pcs ? $shipment->number_of_pcs : ($shipment->number_of_pcs_create ? $shipment->number_of_pcs_create : 0) }}
+                                </td>
                             </tr>
 
                             <tr>
@@ -736,9 +781,13 @@
                 </div>
                 <div class="col-4 #00b050">
                     <div class="row text-center spcl_remark spcl_remark1" style="border:1px solid #000; border-right: none;  margin-left: -25px; margin-right: -24px; height:28px; "  >
-                        <b class="" style=" color:#fff; background:#00b050 " ><div class="row"><div class="col-6 text-start">SPECIAL REMARKS</div><div class="col-6 text-end">كلمة خاصة</div></div></b>
+                        <b class="" style=" color:#fff; background:#00b050 " ><div class="row" style="padding: 5px !important;"><div class="col-6 text-start">SPECIAL REMARKS</div><div class="col-6 text-end">كلمة خاصة</div></div></b>
                     </div>
-                    <div class="row text-center blank_row spcl_remark" style="border:1px solid #000; border-top:none;border-left: none !important; border-right: none; margin-left: -25px; margin-right: -24px; height: 38%; ">
+                    <div class="row text-center blank_row spcl_remark align-items-center justify-content-center" style="border:1px solid #000; border-top:none;border-left: none !important; border-right: none; margin-left: -25px; margin-right: -24px; height: 38%; max-height: 38% !important; ">
+                        <p>
+                            {{$shipment->special_remarks?? ''}}
+                        </p>
+
                     </div>
                     <div class="row text-center spcl_remark home_del" style="border:1px solid #000; border-top:none; border-right: none;border-left: none !important; margin-left: -25px; margin-right: -24px;">
                         <b style="padding: 6px;">HOME DELIVERY -NOT FOR SALE</b>
@@ -755,8 +804,8 @@
 
                         </div>
                         <div class="col-1 vr_line"  style="border-left: 2px solid #000; height: 38px"></div>
-                        <div class="col-4">
-                            <h6></h6>
+                        <div class="col-3" style="padding-top:8px;" >
+                            <h6>{{$shipment->value_of_goods??''}}</h6>
                         </div>
                     </div>
                 </div>
@@ -814,7 +863,7 @@
                                 <th style="border-right: 1px solid #000"> MUSAFFAH</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="border-right: 1px solid #000;">
                             <tr>
                                 <td style="background: #00b050; color: #fff;border-right: 1px solid #000 !important; border-bottom: 1px solid #000 !important;">NEAR NMC HOSPITAL , MADINAT ZAYED </td>
                                 <td style="background: #00b050; color: #fff;border-right: 1px solid #000 !important; border-bottom: 1px solid #000 !important;">KHALIFA STREET , OPPO: RAK BANK</td>
@@ -837,7 +886,7 @@
                                 <td>054 3225594</td>
                             </tr>
                             <tr >
-                                <td colspan="3" style="background: #0070c0; color: #fff; border-top:1px solid #000;"> <b>www.arafacargo.com</b></td>
+                                <td colspan="3" style="background: #0070c0; color: #fff; border-top:1px solid #000; text-transform: lowercase;"> <b>www.arafacargo.com</b></td>
                             </tr>
                         </tbody>
 
@@ -852,7 +901,7 @@
         JsBarcode("#barcode", "<?php echo $shipment->booking_number ?>",{
             width: 2,
             height: 50,
-            fontSize: 30
+            fontSize: 30,
         });
         function printPDF() {
             // Hide the print button while printing

@@ -75,3 +75,4 @@ Route::group(['middleware' => ['auth:sanctum']] , function () {
 });
 
 Route::get('/tracking/{id}',[App\Http\Controllers\Api\TrackingController::class, 'tracking']);
+Route::post('get_state', [\App\Http\Controllers\StaffApiController::class, 'get_state']);

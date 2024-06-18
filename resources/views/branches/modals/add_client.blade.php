@@ -114,26 +114,27 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="">City</label>
-                                <select style="width: 100% !important;" class="select form-control" id="city_id" name="city_id">
+                                {{-- <select style="width: 100% !important;" class="select form-control" id="city_id" name="city_id">
 
-                                </select>
+                                </select> --}}
 
+                                <input type="text" class="form-control" name="cities" id="post" placeholder="city" >
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="">Po</label>
-                                <input type="text" class="form-control" name="post" id="post" placeholder="post">
+                                <input type="text" class="form-control" name="post" id="post" placeholder="post" >
                                 <div id="post_error" class="text-danger"></div>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="">Zip / PinCode</label><span class="text-danger">*</span>
-                                <input type="text" id="zip_code" name="zip_code" class="form-control"  onkeyup='validatePincode(event)'>
-                                <div id="zip_code_error" class="text-danger"></div>
+                                <label class="">Zip / PinCode</label>{{-- <span class="text-danger">*</span> --}}
+                                <input type="text" id="zip_code" name="zip_code" class="form-control" >
+                                {{-- <div id="zip_code_error" class="text-danger"></div> --}}
                                 {{-- <select style="width: 100% !important;" disabled class=" form-control" id="city_modal_user select2" name="city_modal_user">
                                 </select> --}}
                             </div>
@@ -157,10 +158,16 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">Whatsapp number</label>
+                                <label for=""  id="mobile1">Mobile 1</label>
                                 <input type="text" class="form-control" name="whatsapp_number" id="whatsapp_number" placeholder="whatsapp number" onkeyup='validateWhatsapp(event)'>
                                 <div id="whatsapp_number_error" class="text-danger"></div>
                             </div>
+                        </div>
+                        <div class="col-md-1 " >
+                            <label for=""></label>
+                            <div class="form-group pt-1 " style="width: 23px;">
+                                <input class="form-control" type="checkbox" value="" id="whatsapp_same">
+                              </div>
                         </div>
 
                         <div class="col-md-2">
@@ -174,9 +181,9 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label for="">Phone</label>
+                                <label for="" id="mobile2">Mobile 2</label>
                                 <input type="text" class="form-control" name="phone" id="phone" placeholder="phone"   onkeyup='validate(event)'>
                                 <div id="phone_error" class="text-danger"></div>
                             </div>

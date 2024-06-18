@@ -15,7 +15,7 @@
                             <div class="page-title-right">
                                 {{-- {!! breadcrumbs() !!} --}}
                             </div>
-                            <h4 class="page-title"> Delivary List</h4>
+                            <h4 class="page-title"> Delivery List</h4>
 
                         </div>
                     </div>
@@ -31,14 +31,14 @@
                                     <button id="exportBtn" class="btn btn-secondary mb-2">Export to Excel</button>
 
                                     <table id="table1" class="table center-aligned-table">
-                                        <thead>
+                                        <thead class="text-center">
                                         <tr>
                                             <th>SL NO</th>
                                             <th>INVOICE NO</th>
                                             <th>NO OF PCs</th>
                                             <th>WEIGHT </th>
                                             <th>CONSIGNEE ADDRESS</th>
-                                            <th>STATE</th>
+                                            <th>ITEM</th>
                                             <th>BOX NUMBER </th>
 
                                         </tr>
@@ -55,7 +55,6 @@
                                         $noofpc = 0;
 
                                         foreach( $delivery_list as $index=>$booking) {
-
                                             $tot_temp_exist= $booking->weight;
 
                                             $tot_weight_exist +=$tot_temp_exist;
@@ -94,8 +93,16 @@
                                                 if($value->shipment->booking_number == $booking->booking_number){
                                                     $nofpc = $nofpc + 1;
                                                     $tot_weight = $tot_weight + $value->weight;
-                                                    $adress = $value->shipment->receiver->name.", ".$value->shipment->receiver->address->address.'<br> MOB:'.$value->shipment->receiver->phone;
-                                                    $state = $value->shipment->receiver->address->state->name;
+                                                    $adress = $value->shipment->receiver->name.", ".
+                                                        $value->shipment->receiver->address->address.", ".
+                                                        $value->shipment->receiver->post.", ".
+                                                        $value->shipment->receiver->city_name.", ".
+                                                        $value->shipment->receiver->address->district->name.", ".
+                                                        $value->shipment->receiver->address->state->name .", ".
+                                                        $value->shipment->receiver->address->country->name.", ".
+                                                        'PIN:-'.$value->shipment->receiver->address->zip_code.
+                                                        '<br> MOB:'.$value->shipment->receiver->phone.','.$value->shipment->receiver->whatsapp_number;
+                                                    // $state = $value->shipment->receiver->address->state->name;
                                                 }
                                             }
 
@@ -108,10 +115,15 @@
                                                 <td style="text-align:center">{{$nofpc}}</td>
                                                 <td style="text-align:center">{{ $tot_weight}}</td>
                                                 <td style="text-align:center">{!!$adress!!}</td>
-                                                <td style="text-align:center">{{$state}}</td>
+                                                {{-- <td style="text-align:center">{{$state}}</td> --}}
                                                 <td style="text-align:center">
                                                     @foreach ($booking->packages as $item)
                                                         {{$item->description}}-{{$item->quantity}},
+                                                    @endforeach
+                                                </td>
+                                                <td style="text-align:center">
+                                                    @foreach($booking->boxes as $box)
+                                                        {{$box->box_name}},
                                                     @endforeach
                                                 </td>
 

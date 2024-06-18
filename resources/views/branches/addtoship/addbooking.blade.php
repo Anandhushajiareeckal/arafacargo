@@ -252,7 +252,7 @@
                                 <div class="col-md-12 text-right ">
 
                                     <div class="row floatRight" >
-                                        <a  href="{{route('branch.ships.deliverylistptint', array('ship_id' => $ships->id))}}" class="btn btn-success mr-3 mb-1"> Delivary List</a>
+                                        <a  href="{{route('branch.ships.deliverylistptint', array('ship_id' => $ships->id))}}" class="btn btn-success mr-3 mb-1"> Delivery List</a>
                                         <a  href="{{route('branch.ships.packinglistptint', array('ship_id' => $ships->id))}}" class="btn btn-success mr-3 mb-1"> Packing List </a>
                                         <a  href="{{route('branch.ships.customermanifestptint', array('ship_id' => $ships->id))}}" class="btn btn-success mr-3 mb-1"> Customer Manifest</a>
                                         <button type="submit" class="btn btn-success waves-effect waves-light changeStatus mb-1"  id="changeStatus">Change Status</button>
@@ -334,7 +334,7 @@
 
                                             $tot_temp_exist= $booking->weight;
                                             $tot_weight_exist +=$tot_temp_exist;
-                                            $tot_value_exist += $booking->total_value + $booking->box_packing_charge;
+                                            $tot_value_exist += floatval($booking->total_value) + floatval($booking->box_packing_charge);
                                             $totalPieces += 1;
                                             $List = '';
                                             $ListValue = '';
@@ -370,7 +370,7 @@
                                                 <td style="text-align:center">1</td>
                                                 <td style="text-align:center" class="boxName" boxId="{{$booking->id}}" ids="{{$ListValue}}">{{ $booking->box_name }}</td>
                                                 <td style="text-align:center">{{ number_format($booking->weight,2) }}</td>
-                                                <td style="text-align:center">{{ number_format($booking->total_value + $booking->box_packing_charge,2)}}</td>
+                                                <td style="text-align:center">{{ number_format(floatval($booking->total_value) + floatval($booking->box_packing_charge),2)}}</td>
                                                 <td style="text-align:center">{{$lastStatus}}</td>
                                                 <td style="text-align:center">{{ !empty($booking->created_at) ? date('d-m-Y', strtotime($booking->created_at)) : '' }}</td>
                                                 <td>
@@ -502,7 +502,7 @@
                                         }
                                         if($boxes->is_select == 1) {
                                             $total_count += 1;
-                                            $tot_sel_amt += number_format(($boxes->total_value + $boxes->box_packing_charge),2);
+                                            $tot_sel_amt += floatval($boxes->total_value) + floatval($boxes->box_packing_charge);
                                             $tot_sel_weight += $boxes->weight;
                                             $boxList[] = $boxes->id;
 
@@ -782,6 +782,8 @@
 
             $('#bookingList_checkbox').click(function() {
                 $('.bookingSelection').prop('checked', $(this).prop('checked')).change();
+                window.location.reload();
+
             });
 
 

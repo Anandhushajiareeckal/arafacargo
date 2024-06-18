@@ -134,7 +134,7 @@
                                 </tr>
                                 <tr>
                                     <th>Document No :</th>
-                                    <th>{{ $shipment->receiver->identification_number ?? ""}}</th>
+                                    <th>{{ $shipment->sender->identification_number ?? ""}}</th>
                                 </tr>
                                 <tr>
                                     <th>Document Type :</th>
@@ -165,7 +165,7 @@
                                 </tr>
                                 <tr>
                                     <th>Courier Company : </th>
-                                    <th style="text-transform: uppercase;">{{ $shipment->courier_company }}</th>
+                                    <th style="text-transform: uppercase;">{{ $shipment->agency_id? $shipment->agency->name:'' }}</th>
                                 </tr>
                                 <tr>
                                     <th>Shiping Date : </th>
@@ -173,19 +173,19 @@
                                 </tr>
                                 <tr>
                                     <th>Receipt Number : </th>
-                                    <th>{{ $shipment->receipt_number }}</th>
+                                    <th>{{ $shipment->receiver->whatsapp_number.', '.$shipment->receiver->phone }}</th>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <th>Packing  Type : </th>
                                     <th style="text-transform: uppercase;">{{ $shipment->packing_type }}</th>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <th>Shipping Method : </th>
-                                    <th>{{ $shipment->shiping_method }}</th>
+                                    <th>{{ $shipment->shipMethType ? $shipment->shipMethType->name : '' }}</th>
                                 </tr>
                                 <tr>
                                     <th>No. of Pcs : </th>
-                                    <th>{{ $shipment->number_of_pcs }}</th>
+                                    <th>{{ $shipment->number_of_pcs ? $shipment->number_of_pcs : ($shipment->number_of_pcs_create ? $shipment->number_of_pcs_create : 0) }}</th>
                                 </tr>
                                 <tr>
                                     <th>Weight : </th>
@@ -241,27 +241,31 @@
                                     <th style="text-transform: uppercase;">{{ $shipment->amount_electronics_weight }}</th>
                                 </tr>
                                 <tr>
-                                    <th>Packing charge</th>
+                                    <th>Packing charge :</th>
                                     <th style="text-transform: uppercase;">{{ $shipment->amount_msic_weight }}</th>
                                 </tr>
                                 <tr>
-                                    <th>Insurance </th>
+                                    <th>Additional Packing charge :</th>
+                                    <th style="text-transform: uppercase;">{{ $shipment->amount_add_pack_charge }}</th>
+                                </tr>
+                                <tr>
+                                    <th>Insurance :</th>
                                     <th style="text-transform: uppercase;">{{ $shipment->amount_insurance }}</th>
                                 </tr>
                                 <tr>
-                                    <th>AWB Fee </th>
+                                    <th>AWB Fee :</th>
                                     <th style="text-transform: uppercase;">{{ $shipment->amount_awbfee }}</th>
                                 </tr>
                                 <tr>
-                                    <th>VAT Amount </th>
+                                    <th>VAT Amount :</th>
                                     <th style="text-transform: uppercase;">{{ $shipment->amount_vat_amount }}</th>
                                 </tr>
                                 <tr>
-                                    <th>Volume weight </th>
+                                    <th>Volume weight :</th>
                                     <th style="text-transform: uppercase;">{{ $shipment->amount_volume_weight }}</th>
                                 </tr>
                                 <tr>
-                                    <th>Discount </th>
+                                    <th>Discount :</th>
                                     <th style="text-transform: uppercase;">{{ $shipment->amount_discount_weight }}</th>
                                 </tr>
 

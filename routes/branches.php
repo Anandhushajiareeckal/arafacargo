@@ -150,3 +150,6 @@ Route::group(['prefix' => 'branch', 'as' => 'branch.', "middleware" => ["branch"
 
 
 });
+
+
+Route::get('disrticts', [ShipmentController::class, 'disrticts']);

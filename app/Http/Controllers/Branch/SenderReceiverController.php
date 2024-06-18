@@ -104,7 +104,9 @@ class SenderReceiverController extends BaseController
             $customer->user_id = $user->id;
             $customer->branch_id = $request->branch_id;
             $customer->email = $request->email;
+            $customer->post = $request->post;
             $customer->type = $request->type;
+            $customer->city = $request->cities;
             $customer->identification_type = $request->client_identification_type;
             $customer->identification_number = $request->client_identification_number;
             $customer->created_by = $request->user()->id;
@@ -124,7 +126,7 @@ class SenderReceiverController extends BaseController
             $address->customer_id = $customer->id;
             $address->country_id = $request->country_id;
             $address->state_id = $request->state_id;
-            $address->city_id = $request->city_id;
+            $address->city_name = $request->city_id;
             $address->district_id = $request->district_id;
             $address->zip_code = $request->zip_code;
             $address->address = $request->address;
@@ -207,9 +209,11 @@ class SenderReceiverController extends BaseController
             $customer->country_code_whatsapp = $request->country_code_whatsapp;
             $customer->whatsapp_number = $request->whatsapp_number;
             $customer->user_id = $user->id;
+            $customer->post = $request->post;
             $customer->branch_id = $request->branch_id;
             $customer->email = $request->email;
             $customer->type = $request->type;
+            $customer->city_name = $request->cities;
             $customer->identification_type = $request->client_identification_type;
             $customer->identification_number = $request->client_identification_number;
             $customer->created_by = $request->user()->id;
@@ -231,6 +235,7 @@ class SenderReceiverController extends BaseController
             $address->customer_id = $customer->id;
             $address->country_id = $request->country_id;
             $address->state_id = $request->state_id;
+            $address->city_id = $request->city_id;
             $address->district_id = $request->district_id;
             $address->zip_code = $request->zip_code;
             $address->address = $request->address;

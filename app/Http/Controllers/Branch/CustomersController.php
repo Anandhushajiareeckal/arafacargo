@@ -41,15 +41,15 @@ class CustomersController extends BaseController
     public function store(Request $request)
     {
 
-      
+
         if( $request->country_id == 101) {
             $messages = [
                 'country_id.required' => 'Country is required',
                 'state_id.required' => 'State is required',
-                'zip_code.required' => 'Zip code is required', 
-                
+                'zip_code.required' => 'Zip code is required',
+
             ];
-    
+
             $request->validate([
                 'name' => 'required',
                 'phone' => 'required|size:'.get_phone_no_length($request->country_id),
@@ -57,7 +57,6 @@ class CustomersController extends BaseController
                 'address' => 'required',
                 'country_id' => 'required',
                 'state_id' => 'required',
-                'zip_code' => 'required'
 
             ]);
         }
@@ -68,7 +67,7 @@ class CustomersController extends BaseController
                     'country_id.required' => 'Country is required',
                     'state_id.required' => 'State is required',
                 ];
-        
+
                 $request->validate([
                     'name' => 'required',
                     'phone' => 'required',
@@ -83,7 +82,7 @@ class CustomersController extends BaseController
                     'country_id.required' => 'Country is required',
                     'state_id.required' => 'State is required',
                 ];
-        
+
                 $request->validate([
                     'name' => 'required',
                     'phone' => 'required|size:'.get_phone_no_length($request->country_id),
@@ -93,10 +92,10 @@ class CustomersController extends BaseController
                     'state_id' => 'required'
                 ]);
             }
-            
+
         }
-        
-      
+
+
         try {
             DB::beginTransaction();
             $user = new User();
@@ -112,9 +111,11 @@ class CustomersController extends BaseController
             $customer->country_code_whatsapp = $request->country_code_whatsapp;
             $customer->whatsapp_number = $request->whatsapp_number;
             $customer->user_id = $user->id;
+            $customer->post = $request->post;
             $customer->branch_id = branch()->id;
             $customer->email = $request->email;
             $customer->type = $request->client_type;
+            $customer->city_name = $request->cities;
             $customer->identification_type = $request->client_identification_type;
             $customer->identification_number = $request->client_identification_number;
             $customer->created_by = $request->user()->id;
@@ -122,17 +123,18 @@ class CustomersController extends BaseController
                 $fileName = auth()->id() . '_' . time() . '.'. $request->document->extension();
                 $type = $request->document->getClientMimeType();
                 $size = $request->document->getSize();
-    
+
                 $request->document->move(public_path('uploads/customer_logo'), $fileName);
                 $fileName = 'uploads/customer_logo/'.$fileName;
-                $customer->logo = $fileName; 
-              
+                $customer->logo = $fileName;
+
             }
             $customer->save();
             $address = new CustomerAddresses();
             $address->customer_id = $customer->id;
             $address->country_id = $request->country_id;
             $address->state_id = $request->state_id;
+            $address->city_id = $request->city_id;
             $address->district_id = $request->district_id;
             $address->zip_code = $request->zip_code;
             $address->address = $request->address;

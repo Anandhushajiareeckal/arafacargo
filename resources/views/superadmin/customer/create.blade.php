@@ -45,8 +45,8 @@
                                                     id="propertyname" required
                                                     placeholder="Enter Email id">
                                             </div>
-                                        </div> 
- 
+                                        </div>
+
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label for="logo">Selct Branch</label>
@@ -57,7 +57,7 @@
                                                 @endforeach
                                             </select>
                                             </div>
-                                        </div> 
+                                        </div>
 
                                         <div class="col-lg-3">
                                             <div class="form-group">
@@ -70,12 +70,12 @@
                                             </div>
                                         </div>
                                 </div>
-                                
-                                <div class="row"> 
+
+                                <div class="row">
                                         <div class="col-lg-2">
                                                 <div class="form-group">
                                                 <label for="">Code</label>
-                                                <select style="width: 100% !important;" class="select form-control" name="country_code_whatsapp" id="country_code_whatsapp">                                
+                                                <select style="width: 100% !important;" class="select form-control" name="country_code_whatsapp" id="country_code_whatsapp">
                                                 @foreach (get_country_code() as $code)
                                                     <option value="{{ $code }}" data-address="{{$code }}">+{{ $code }}</option>
                                                 @endforeach
@@ -89,12 +89,12 @@
                                                     id="whatsapp_number" required
                                                     placeholder="Enter contact number">
                                             </div>
-                                        </div>                                       
-                                
+                                        </div>
+
                                         <div class="col-lg-2">
                                                 <div class="form-group">
                                                 <label for="">Code</label>
-                                                <select style="width: 100% !important;" class="select form-control" name="country_code_phone" id="country_code_phone">                                
+                                                <select style="width: 100% !important;" class="select form-control" name="country_code_phone" id="country_code_phone">
                                                 @foreach (get_country_code() as $code)
                                                     <option value="{{ $code }}" data-address="{{$code }}">+{{ $code }}</option>
                                                 @endforeach
@@ -108,7 +108,7 @@
                                                     id="phone" required
                                                     placeholder="Enter contact number">
                                             </div>
-                                        </div>                                       
+                                        </div>
                                 </div>
 
                                 <div class="row">
@@ -179,9 +179,10 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="">City</label>
-                                                <select style="width: 100% !important;" class="select form-control" id="city_id" name="city_id">
+                                                {{-- <select style="width: 100% !important;" class="select form-control" id="city_id" name="city_id">
                                                     <option value="273">Al Manamah</option>
-                                                </select>
+                                                </select> --}}
+                                                <input type="text" class="form-control" name="cities" id="post" placeholder="city" >
 
                                             </div>
                                         </div>
@@ -202,7 +203,7 @@
                                                 <textarea rows="3" class="form-control" name="address" id="address" placeholder="address"></textarea>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
 
                                 <!-- end row -->
 
@@ -335,7 +336,7 @@
 
 
 
-    
+
 
     </script>
 @endsection
